@@ -32,24 +32,60 @@ public class TestServlet extends HttpServlet {
 		String js_enabled = request.getParameter("js_enabled");
 		if (js_enabled == null) {
 			/*
-			 * The non-JS version.
+			 * The non-JS version of the page.
+			 * Perform just a basic fingerprinting.
+			 * None of the characteristics that require javascript.
 			 */
-			nonJsVersion(request, response);
+			Fingerprint fingerprint = getBasicFingerprint(request);
+			serveRequest(request, response, fingerprint);
 			return;
 		} else {
 			/*
 			 * The JS enabled version of the page.
+			 * Do a full fingerprinting.
+			 * Will perform javascript fingerprinting then submit fingerprint via a POST request.
 			 */
-			jsVersion(request, response);
+			request.getRequestDispatcher("/WEB-INF/JsTest.jsp").forward(request, response);
 			return;
 		}
 	}
 
-	private void jsVersion(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		request.getRequestDispatcher("/WEB-INF/JsTest.jsp").forward(request, response);
+	/**
+	 * @see HttpServlet#doPost(HttpServletRequest request, HttpServletResponse response)
+	 */
+	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+		Fingerprint fingerprint = getBasicFingerprint(request);
+
+		/*
+		 * Extract the rest of the fingerprint from the POST details.
+		 */
+		fingerprint.setPluginDetails(request.getParameter("PluginDetails"));
+		fingerprint.setTimeZone(request.getParameter("TimeZone"));
+		fingerprint.setScreenDetails(request.getParameter("ScreenDetails"));
+		fingerprint.setFonts(request.getParameter("Fonts"));
+		fingerprint.setSuperCookie(request.getParameter("SuperCookie"));
+
+		serveRequest(request, response, fingerprint);
 	}
 
-	private void nonJsVersion(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+	public void serveRequest(HttpServletRequest request, HttpServletResponse response, Fingerprint fingerprint) throws ServletException, IOException {
+		CharacteristicsBean chrsbean = new CharacteristicsBean();
+		Integer sampleID = FingerprintDAO.processFingerprint(fingerprint, chrsbean);
+		request.setAttribute("chrBean", chrsbean);
+
+		/*
+		 * Save SampleID in a cookie if we have one now.
+		 */
+		Cookie sampleIdCookie = new Cookie("SampleID", sampleID.toString());
+		response.addCookie(sampleIdCookie);
+
+		/*
+		 * Forward to the output page.
+		 */
+		request.getRequestDispatcher("/WEB-INF/NoJsTest.jsp").forward(request, response);
+	}
+
+	public Fingerprint getBasicFingerprint(HttpServletRequest request) {
 		Fingerprint fingerprint = new Fingerprint();
 		fingerprint.setUser_agent(request.getHeader("User-Agent"));
 		fingerprint.setAccept_headers(getAcceptHeadersString(request));
@@ -75,33 +111,12 @@ public class TestServlet extends HttpServlet {
 		else {
 			fingerprint.setCookiesEnabled(false);
 		}
-
-		CharacteristicsBean chrsbean = new CharacteristicsBean();
-		Integer sampleID = FingerprintDAO.processFingerprint(fingerprint, chrsbean);
-		request.setAttribute("chrBean", chrsbean);
-
-		/*
-		 * Save SampleID in a cookie if we have one now.
-		 */
-		Cookie sampleIdCookie = new Cookie("SampleID", sampleID.toString());
-		response.addCookie(sampleIdCookie);
-
-		/*
-		 * Forward to the output page.
-		 */
-		request.getRequestDispatcher("/WEB-INF/NoJsTest.jsp").forward(request, response);
+		return fingerprint;
 	}
 
 	public String getAcceptHeadersString(HttpServletRequest request) {
 		return request.getHeader("accept") + " "
 				+ request.getHeader("accept-encoding") + " "
 				+ request.getHeader("accept-language");
-	}
-
-	/**
-	 * @see HttpServlet#doPost(HttpServletRequest request, HttpServletResponse response)
-	 */
-	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		doGet(request, response);
 	}
 }
