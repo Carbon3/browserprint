@@ -82,7 +82,7 @@ public class TestServlet extends HttpServlet {
 		/*
 		 * Forward to the output page.
 		 */
-		request.getRequestDispatcher("/WEB-INF/NoJsTest.jsp").forward(request, response);
+		request.getRequestDispatcher("/WEB-INF/Output.jsp").forward(request, response);
 	}
 
 	public Fingerprint getBasicFingerprint(HttpServletRequest request) {

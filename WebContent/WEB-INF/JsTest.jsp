@@ -13,7 +13,7 @@
 </head>
 <body>
 	Please wait...
-	<form id="detailsForm" action="Test" method="POST">
+	<form id="detailsForm" action="Test?js_enabled=true" method="POST">
 		<input type="hidden" name="PluginDetails" value="1" />
 		<input type="hidden" name="TimeZone" value="2" />
 		<input type="hidden" name="ScreenDetails" value="3" />
