@@ -5,8 +5,11 @@
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <title>Insert title here</title>
+<script src="http://code.jquery.com/jquery-1.9.1.js" type="text/javascript"></script>
+<script type="text/javascript" src="fingerprint.js"></script>
 <script type="text/javascript">
 	window.onload = function(){
+		$("#ScreenDetails").attr("value", getScreenDetails());
 		document.forms["detailsForm"].submit();
 	}
 </script>
@@ -14,11 +17,11 @@
 <body>
 	Please wait...
 	<form id="detailsForm" action="Test?js_enabled=true" method="POST">
-		<input type="hidden" name="PluginDetails" value="1" />
-		<input type="hidden" name="TimeZone" value="2" />
-		<input type="hidden" name="ScreenDetails" value="3" />
-		<input type="hidden" name="Fonts" value="4" />
-		<input type="hidden" name="SuperCookie" value="5" />
+		<input type="hidden" id="PluginDetails" name="PluginDetails" value="1" />
+		<input type="hidden" id="TimeZone" name="TimeZone" value="2" />
+		<input type="hidden" id="ScreenDetails" name="ScreenDetails" value="3" />
+		<input type="hidden" id="Fonts" name="Fonts" value="4" />
+		<input type="hidden" id="SuperCookie" name="SuperCookie" value="5" />
 	</form>
 </body>
 </html>
