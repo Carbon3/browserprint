@@ -1,0 +1,21 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>Hello, World!</title>
+<script src="//code.jquery.com/jquery-1.10.2.js"></script>
+<script type="text/javascript">
+	/*
+	 * Script that adds js_enabled=true to the end of the test_link.
+	 * This is how we know that Javascript is enabled.
+	 */
+	window.onload = function() {
+		var test_link = $("#test_link");
+		test_link.attr("href", test_link.attr("href") + "?js_enabled=true");
+	}
+</script>
+</head>
+<body>
+	<a id="test_link" href="Test">Test my browser</a>
+</body>
+</html>
