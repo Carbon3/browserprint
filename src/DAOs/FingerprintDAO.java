@@ -23,7 +23,9 @@ public class FingerprintDAO {
 	private static final String insertSampleStr = "INSERT INTO `Samples`(`UserAgent`, `AcceptHeaders`, `PluginDetails`, `TimeZone`, `ScreenDetails`, `Fonts`, `CookiesEnabled`, `SuperCookie`) VALUES(?, ?, ?, ?, ?, ?, ?, ?);";
 	private static final String getSampleCountStr = "SELECT COUNT(*) FROM `Samples`;";
 	private static final String getUserAgentCountStr = "SELECT COUNT(*) FROM `Samples` WHERE `UserAgent` = ?;";
+	private static final String getNULLUserAgentCountStr = "SELECT COUNT(*) FROM `Samples` WHERE `UserAgent` IS NULL;";
 	private static final String getAcceptHeadersCountStr = "SELECT COUNT(*) FROM `Samples` WHERE `AcceptHeaders` = ?;";
+	private static final String getNULLAcceptHeadersCountStr = "SELECT COUNT(*) FROM `Samples` WHERE `AcceptHeaders` IS NULL;";
 	private static final String getPluginDetailsCountStr = "SELECT COUNT(*) FROM `Samples` WHERE `PluginDetails` = ?;";
 	private static final String getNULLPluginDetailsCountStr = "SELECT COUNT(*) FROM `Samples` WHERE `PluginDetails` IS NULL;";
 	private static final String getTimeZoneCountStr = "SELECT COUNT(*) FROM `Samples` WHERE `TimeZone` = ?;";
@@ -74,15 +76,29 @@ public class FingerprintDAO {
 			int sampleCount = getSampleCount(conn);
 
 			ArrayList<CharacteristicBean> characteristics = chrsbean.getCharacteristics();
-
-			characteristics.add(getUserAgentCB(conn, sampleCount, fingerprint.getUser_agent()));
-			characteristics.add(getAcceptHeadersCB(conn, sampleCount, fingerprint.getAccept_headers()));
-			characteristics.add(getPluginDetailsCB(conn, sampleCount, fingerprint.getPluginDetails()));
-			characteristics.add(getTimeZoneCB(conn, sampleCount, fingerprint.getTimeZone()));
-			characteristics.add(getScreenDetailsCB(conn, sampleCount, fingerprint.getScreenDetails()));
-			characteristics.add(getFontsCB(conn, sampleCount, fingerprint.getFonts()));
-			characteristics.add(getCookiesEnabledCB(conn, sampleCount, fingerprint.isCookiesEnabled()));
-			characteristics.add(getSuperCookieCB(conn, sampleCount, fingerprint.getSuperCookie()));
+			characteristics.add(
+					getCharacteristicBean(conn, sampleCount, "User Agent", fingerprint.getUser_agent(),
+							getUserAgentCountStr, getNULLUserAgentCountStr));
+			characteristics.add(
+					getCharacteristicBean(conn, sampleCount, "HTTP_ACCEPT Headers", fingerprint.getAccept_headers(),
+							getAcceptHeadersCountStr, getNULLAcceptHeadersCountStr));
+			characteristics.add(
+					getCharacteristicBean(conn, sampleCount, "Browser Plugin Details", fingerprint.getPluginDetails(),
+							getPluginDetailsCountStr, getNULLPluginDetailsCountStr));
+			characteristics.add(
+					getCharacteristicBean(conn, sampleCount, "Time Zone", fingerprint.getTimeZone(),
+							getTimeZoneCountStr, getNULLTimeZoneCountStr));
+			characteristics.add(
+					getCharacteristicBean(conn, sampleCount, "Screen Size and Color Depth", fingerprint.getScreenDetails(),
+							getScreenDetailsCountStr, getNULLScreenDetailsCountStr));
+			characteristics.add(
+					getCharacteristicBean(conn, sampleCount, "System Fonts", fingerprint.getFonts(),
+							getFontsCountStr, getNULLFontsCountStr));
+			characteristics.add(
+					getCookiesEnabledCB(conn, sampleCount, fingerprint.isCookiesEnabled()));
+			characteristics.add(
+					getCharacteristicBean(conn, sampleCount, "Limited supercookie test", fingerprint.getSuperCookie(),
+							getSuperCookieCountStr, getNULLSuperCookieCountStr));
 
 			/*
 			 * <Debug stuff>
@@ -120,7 +136,7 @@ public class FingerprintDAO {
 	 * @return The sample ID of the inserted sample.
 	 * @throws SQLException
 	 */
-	public static Integer insertSample(Connection conn, Fingerprint fingerprint) throws SQLException {
+	private static Integer insertSample(Connection conn, Fingerprint fingerprint) throws SQLException {
 		PreparedStatement insertSample = conn.prepareStatement(insertSampleStr, Statement.RETURN_GENERATED_KEYS);
 		insertSample.setString(1, fingerprint.getUser_agent());
 		insertSample.setString(2, fingerprint.getAccept_headers());
@@ -150,7 +166,7 @@ public class FingerprintDAO {
 	 * @return
 	 * @throws SQLException
 	 */
-	public static boolean checkSampleChanged(Connection conn, Fingerprint fingerprint) throws SQLException {
+	private static boolean checkSampleChanged(Connection conn, Fingerprint fingerprint) throws SQLException {
 		boolean in_database = true;
 		/*
 		 * We have seen this user before. Check if their fingerprint has changed.
@@ -214,233 +230,13 @@ public class FingerprintDAO {
 		return in_database;
 	}
 
-	public static int getSampleCount(Connection conn) throws SQLException {
+	private static int getSampleCount(Connection conn) throws SQLException {
 		PreparedStatement getSampleCount = conn.prepareStatement(getSampleCountStr);
 		ResultSet rs = getSampleCount.executeQuery();
 		rs.next();
 		int sampleCount = rs.getInt(1);
 		rs.close();
 		return sampleCount;
-	}
-
-	/**
-	 * Create the user-agent CharacteristicBean.
-	 * 
-	 * @param conn
-	 *            A connection to the database.
-	 * @param num_samples
-	 *            The number of samples in the database.
-	 * @param value
-	 *            The value of this sample.
-	 * @return
-	 * @throws SQLException
-	 */
-	public static CharacteristicBean getUserAgentCB(Connection conn, int num_samples, String value) throws SQLException {
-		CharacteristicBean chrbean = new CharacteristicBean();
-
-		chrbean.setName("User Agent");
-		chrbean.setValue(value);
-
-		PreparedStatement getCount = conn.prepareStatement(getUserAgentCountStr);
-		getCount.setString(1, value);
-		ResultSet rs = getCount.executeQuery();
-		rs.next();
-		int count = rs.getInt(1);
-		rs.close();
-		chrbean.setInX(((double) count) / ((double) num_samples));
-		chrbean.setBits(Math.abs(Math.log(chrbean.getInX()) / Math.log(2)));
-
-		return chrbean;
-	}
-
-	/**
-	 * Create the Accept Headers CharacteristicBean.
-	 * 
-	 * @param conn
-	 *            A connection to the database.
-	 * @param num_samples
-	 *            The number of samples in the database.
-	 * @param value
-	 *            The value of this sample.
-	 * @return
-	 * @throws SQLException
-	 */
-	public static CharacteristicBean getAcceptHeadersCB(Connection conn, int num_samples, String value) throws SQLException {
-		CharacteristicBean chrbean = new CharacteristicBean();
-
-		chrbean.setName("HTTP_ACCEPT Headers");
-		chrbean.setValue(value);
-
-		PreparedStatement getCount = conn.prepareStatement(getAcceptHeadersCountStr);
-		getCount.setString(1, value);
-		ResultSet rs = getCount.executeQuery();
-		rs.next();
-		int count = rs.getInt(1);
-		rs.close();
-		chrbean.setInX(((double) count) / ((double) num_samples));
-		chrbean.setBits(Math.abs(Math.log(chrbean.getInX()) / Math.log(2)));
-
-		return chrbean;
-	}
-
-	/**
-	 * Create the Plugin Details CharacteristicBean.
-	 * 
-	 * @param conn
-	 *            A connection to the database.
-	 * @param num_samples
-	 *            The number of samples in the database.
-	 * @param value
-	 *            The value of this sample.
-	 * @return
-	 * @throws SQLException
-	 */
-	public static CharacteristicBean getPluginDetailsCB(Connection conn, int num_samples, String value) throws SQLException {
-		CharacteristicBean chrbean = new CharacteristicBean();
-
-		chrbean.setName("Browser Plugin Details");
-
-		PreparedStatement getCount;
-		if (value != null) {
-			chrbean.setValue(value);
-
-			getCount = conn.prepareStatement(getPluginDetailsCountStr);
-			getCount.setString(1, value);
-		}
-		else {
-			chrbean.setValue(NO_JAVASCRIPT);
-
-			getCount = conn.prepareStatement(getNULLPluginDetailsCountStr);
-		}
-
-		ResultSet rs = getCount.executeQuery();
-		rs.next();
-		int count = rs.getInt(1);
-		rs.close();
-		chrbean.setInX(((double) count) / ((double) num_samples));
-		chrbean.setBits(Math.abs(Math.log(chrbean.getInX()) / Math.log(2)));
-
-		return chrbean;
-	}
-
-	/**
-	 * Create the Time Zone CharacteristicBean.
-	 * 
-	 * @param conn
-	 *            A connection to the database.
-	 * @param num_samples
-	 *            The number of samples in the database.
-	 * @param value
-	 *            The value of this sample.
-	 * @return
-	 * @throws SQLException
-	 */
-	public static CharacteristicBean getTimeZoneCB(Connection conn, int num_samples, String value) throws SQLException {
-		CharacteristicBean chrbean = new CharacteristicBean();
-
-		chrbean.setName("Time Zone");
-
-		PreparedStatement getCount;
-		if (value != null) {
-			chrbean.setValue(value);
-
-			getCount = conn.prepareStatement(getTimeZoneCountStr);
-			getCount.setString(1, value);
-		}
-		else {
-			chrbean.setValue(NO_JAVASCRIPT);
-
-			getCount = conn.prepareStatement(getNULLTimeZoneCountStr);
-		}
-
-		ResultSet rs = getCount.executeQuery();
-		rs.next();
-		int count = rs.getInt(1);
-		rs.close();
-		chrbean.setInX(((double) count) / ((double) num_samples));
-		chrbean.setBits(Math.abs(Math.log(chrbean.getInX()) / Math.log(2)));
-
-		return chrbean;
-	}
-
-	/**
-	 * Create the Screen Details CharacteristicBean.
-	 * 
-	 * @param conn
-	 *            A connection to the database.
-	 * @param num_samples
-	 *            The number of samples in the database.
-	 * @param value
-	 *            The value of this sample.
-	 * @return
-	 * @throws SQLException
-	 */
-	public static CharacteristicBean getScreenDetailsCB(Connection conn, int num_samples, String value) throws SQLException {
-		CharacteristicBean chrbean = new CharacteristicBean();
-
-		chrbean.setName("Screen Size and Color Depth");
-
-		PreparedStatement getCount;
-		if (value != null) {
-			chrbean.setValue(value);
-
-			getCount = conn.prepareStatement(getScreenDetailsCountStr);
-			getCount.setString(1, value);
-		}
-		else {
-			chrbean.setValue(NO_JAVASCRIPT);
-
-			getCount = conn.prepareStatement(getNULLScreenDetailsCountStr);
-		}
-
-		ResultSet rs = getCount.executeQuery();
-		rs.next();
-		int count = rs.getInt(1);
-		rs.close();
-		chrbean.setInX(((double) count) / ((double) num_samples));
-		chrbean.setBits(Math.abs(Math.log(chrbean.getInX()) / Math.log(2)));
-
-		return chrbean;
-	}
-
-	/**
-	 * Create the System Fonts CharacteristicBean.
-	 * 
-	 * @param conn
-	 *            A connection to the database.
-	 * @param num_samples
-	 *            The number of samples in the database.
-	 * @param value
-	 *            The value of this sample.
-	 * @return
-	 * @throws SQLException
-	 */
-	public static CharacteristicBean getFontsCB(Connection conn, int num_samples, String value) throws SQLException {
-		CharacteristicBean chrbean = new CharacteristicBean();
-
-		chrbean.setName("System Fonts");
-
-		PreparedStatement getCount;
-		if (value != null) {
-			chrbean.setValue(value);
-
-			getCount = conn.prepareStatement(getFontsCountStr);
-			getCount.setString(1, value);
-		}
-		else {
-			chrbean.setValue(NO_JAVASCRIPT);
-
-			getCount = conn.prepareStatement(getNULLFontsCountStr);
-		}
-
-		ResultSet rs = getCount.executeQuery();
-		rs.next();
-		int count = rs.getInt(1);
-		rs.close();
-		chrbean.setInX(((double) count) / ((double) num_samples));
-		chrbean.setBits(Math.abs(Math.log(chrbean.getInX()) / Math.log(2)));
-
-		return chrbean;
 	}
 
 	/**
@@ -455,7 +251,7 @@ public class FingerprintDAO {
 	 * @return
 	 * @throws SQLException
 	 */
-	public static CharacteristicBean getCookiesEnabledCB(Connection conn, int num_samples, boolean value) throws SQLException {
+	private static CharacteristicBean getCookiesEnabledCB(Connection conn, int num_samples, boolean value) throws SQLException {
 		CharacteristicBean chrbean = new CharacteristicBean();
 
 		chrbean.setName("Are Cookies Enabled?");
@@ -479,7 +275,7 @@ public class FingerprintDAO {
 	}
 
 	/**
-	 * Create the Super Cookie CharacteristicBean.
+	 * Create a CharacteristicBean.
 	 * 
 	 * @param conn
 	 *            A connection to the database.
@@ -490,24 +286,23 @@ public class FingerprintDAO {
 	 * @return
 	 * @throws SQLException
 	 */
-	public static CharacteristicBean getSuperCookieCB(Connection conn, int num_samples, String value) throws SQLException {
+	private static CharacteristicBean getCharacteristicBean(Connection conn, int num_samples, String name, String value, String countQryStr, String nullCountQryStr) throws SQLException {
 		CharacteristicBean chrbean = new CharacteristicBean();
 
-		chrbean.setName("Limited supercookie test");
+		chrbean.setName(name);
 
 		PreparedStatement getCount;
 		if (value != null) {
 			chrbean.setValue(value);
 
-			getCount = conn.prepareStatement(getSuperCookieCountStr);
+			getCount = conn.prepareStatement(countQryStr);
 			getCount.setString(1, value);
 		}
 		else {
 			chrbean.setValue(NO_JAVASCRIPT);
 
-			getCount = conn.prepareStatement(getNULLSuperCookieCountStr);
+			getCount = conn.prepareStatement(nullCountQryStr);
 		}
-
 
 		ResultSet rs = getCount.executeQuery();
 		rs.next();
