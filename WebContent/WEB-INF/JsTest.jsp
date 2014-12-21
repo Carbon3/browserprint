@@ -9,6 +9,7 @@
 <script type="text/javascript" src="fingerprint.js"></script>
 <script type="text/javascript">
 	window.onload = function(){
+		$("#PluginDetails").attr("value", getPluginDetails());
 		$("#TimeZone").attr("value", getTimeZone());
 		$("#ScreenDetails").attr("value", getScreenDetails());
 		document.forms["detailsForm"].submit();

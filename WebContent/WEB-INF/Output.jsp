@@ -11,6 +11,7 @@
 <title>Test</title>
 </head>
 <body>
+	<a href="index.html">Back</a>
 	<table>
 		<tr>
 			<th>Browser Characteristic</th>
