@@ -7,6 +7,8 @@ import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.ArrayList;
 
+import org.apache.commons.lang3.StringEscapeUtils;
+
 import beans.CharacteristicBean;
 import beans.CharacteristicsBean;
 import datastructures.Fingerprint;
@@ -294,7 +296,7 @@ public class FingerprintDAO {
 
 		PreparedStatement getCount;
 		if (value != null) {
-			chrbean.setValue(value);
+			chrbean.setValue(StringEscapeUtils.escapeHtml4(value));
 
 			getCount = conn.prepareStatement(countQryStr);
 			getCount.setString(1, value);

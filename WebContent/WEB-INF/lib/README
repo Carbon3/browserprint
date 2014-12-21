@@ -1,0 +1,8 @@
+commons-lang3-3.3.2.jar
+	Used for escaping HTML.
+
+jstl-1.2.jar
+	Used for Java standard tags.
+
+mysql-connector-java-5.1.25-bin.jar
+	Used for MySQL.
