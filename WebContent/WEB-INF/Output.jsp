@@ -1,7 +1,7 @@
 <%@page language="java" contentType="text/html; charset=ISO-8859-1" pageEncoding="ISO-8859-1"%>
 <%@page session="false"%>
 <%@taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
-
+<%@taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
 <jsp:useBean id="chrBean" class="beans.CharacteristicsBean" scope="request" />
 
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
@@ -11,7 +11,6 @@
 <title>Test</title>
 </head>
 <body>
-	Text goes here.
 	<table>
 		<tr>
 			<th>Browser Characteristic</th>
@@ -20,9 +19,10 @@
 			<th>value</th>
 		</tr>
 		<c:forEach var="chr" items="${ chrBean.characteristics }"><tr>
+		<% java.text.DecimalFormat df = new java.text.DecimalFormat("#.##"); %>
 			<td>${ chr.name }</td>
-			<td>${ chr.bits }</td>
-			<td>${ chr.inX }</td>
+			<td><fmt:formatNumber value="${ chr.bits }" maxFractionDigits="2"/></td>
+			<td><fmt:formatNumber value="${ chr.inX }" maxFractionDigits="2"/></td>
 			<td>${ chr.value }</td>
 		</tr>
 		</c:forEach>

@@ -77,6 +77,7 @@ public class TestServlet extends HttpServlet {
 		 * Save SampleID in a cookie if we have one now.
 		 */
 		Cookie sampleIdCookie = new Cookie("SampleID", sampleID.toString());
+		sampleIdCookie.setMaxAge(60 * 60 * 24 * 30);//30 days
 		response.addCookie(sampleIdCookie);
 
 		/*
