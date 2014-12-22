@@ -9,7 +9,7 @@
 	<script type="text/javascript" src="fingerprint.js"></script>
 	<script type="text/javascript">
 	window.onload = function(){
-		//
+		//PluginDetails
 		$('<input>').attr({
     		type: 'hidden',
     		id: 'PluginDetails',
@@ -33,7 +33,7 @@
     		value: getScreenDetails()
 		}).appendTo('#formdiv');
 		
-		document.forms["detailsForm"].submit();
+		$('#detailsForm').submit();
 	}
 	</script>
 </head>
