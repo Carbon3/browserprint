@@ -3,19 +3,19 @@
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
 <html>
 <head>
-<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-<title>Insert title here</title>
-<script src="jquery-2.1.3.min.js" type="text/javascript"></script>
-<script src="PluginDetect.js" type="text/javascript"></script>
-<script type="text/javascript" src="fingerprint.js"></script>
-<script type="text/javascript">
+	<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+	<title>Libre-Panopticlick</title>
+	<script src="jquery-2.1.3.min.js" type="text/javascript"></script>
+	<script src="PluginDetect.js" type="text/javascript"></script>
+	<script type="text/javascript" src="fingerprint.js"></script>
+	<script type="text/javascript">
 	window.onload = function(){
 		$("#PluginDetails").attr("value", getPluginDetails());
 		$("#TimeZone").attr("value", getTimeZone());
 		$("#ScreenDetails").attr("value", getScreenDetails());
 		document.forms["detailsForm"].submit();
 	}
-</script>
+	</script>
 </head>
 <body>
 	Please wait...

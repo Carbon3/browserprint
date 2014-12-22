@@ -1,0 +1,13 @@
+@CHARSET "UTF-8";
+body{
+	font-size: 0.8em;
+	text-align: center;
+}
+
+table#characteristics{
+	border-collapse: collapse;
+}
+
+td,th{
+	border: 1px solid gray;
+}

@@ -42,7 +42,7 @@ public class FingerprintDAO {
 
 	private static final String NO_JAVASCRIPT = "no javascript";
 
-	public static final Integer processFingerprint(Fingerprint fingerprint, CharacteristicsBean chrsbean) {
+	public static final Integer processFingerprint(Fingerprint fingerprint, CharacteristicsBean chrsbean, CharacteristicBean uniquenessbean) {
 		Connection conn = null;
 		try {
 			conn = Database.getConnection();
@@ -67,16 +67,26 @@ public class FingerprintDAO {
 			}
 
 			/*
-			 * --------------------------------------------------
-			 * Get the fingerprint's statistics.
-			 * --------------------------------------------------
-			 */
-
-			/*
 			 * Get number of samples.
 			 */
 			int sampleCount = getSampleCount(conn);
 
+			/*
+			 * Get uniqueness.
+			 */
+			int sampleOccurrences = getSampleOccurrences(conn, fingerprint);
+			uniquenessbean.setName("");
+			if (sampleOccurrences == 1) {
+				uniquenessbean.setValue("unique");
+			} else {
+				uniquenessbean.setValue("");
+			}
+			uniquenessbean.setInX(((double) sampleCount) / ((double) sampleOccurrences));
+			uniquenessbean.setBits(Math.abs(Math.log(uniquenessbean.getInX()) / Math.log(2)));
+
+			/*
+			 * Get each characteristic.
+			 */
 			ArrayList<CharacteristicBean> characteristics = chrsbean.getCharacteristics();
 			characteristics.add(
 					getCharacteristicBean(conn, sampleCount, "User Agent", fingerprint.getUser_agent(),
@@ -239,6 +249,72 @@ public class FingerprintDAO {
 		int sampleCount = rs.getInt(1);
 		rs.close();
 		return sampleCount;
+	}
+
+	/**
+	 * Check whether a fingerprint with all the given details, including matching SampleID,
+	 * is already inside the database.
+	 * 
+	 * @param conn
+	 * @param fingerprint
+	 * @return
+	 * @throws SQLException
+	 */
+	private static int getSampleOccurrences(Connection conn, Fingerprint fingerprint) throws SQLException {
+		/*
+		 * We have seen this user before. Check if their fingerprint has changed.
+		 */
+		String query = "SELECT COUNT(*) FROM `Samples` WHERE"
+				+ " `UserAgent`" + (fingerprint.getUser_agent() == null ? " IS NULL" : " = ?")
+				+ " AND `AcceptHeaders`" + (fingerprint.getAccept_headers() == null ? " IS NULL" : " = ?")
+				+ " AND `PluginDetails`" + (fingerprint.getPluginDetails() == null ? " IS NULL" : " = ?")
+				+ " AND `TimeZone`" + (fingerprint.getTimeZone() == null ? " IS NULL" : " = ?")
+				+ " AND `ScreenDetails`" + (fingerprint.getScreenDetails() == null ? " IS NULL" : " = ?")
+				+ " AND `Fonts`" + (fingerprint.getFonts() == null ? " IS NULL" : " = ?")
+				+ " AND `CookiesEnabled` = ?"
+				+ " AND `SuperCookie`" + (fingerprint.getSuperCookie() == null ? " IS NULL" : " = ?")
+				+ ";";
+		PreparedStatement checkExists = conn.prepareStatement(query);
+
+		int index = 1;
+		if (fingerprint.getUser_agent() != null) {
+			checkExists.setString(index, fingerprint.getUser_agent());
+			++index;
+		}
+		if (fingerprint.getAccept_headers() != null) {
+			checkExists.setString(index, fingerprint.getAccept_headers());
+			++index;
+		}
+		if (fingerprint.getPluginDetails() != null) {
+			checkExists.setString(index, fingerprint.getPluginDetails());
+			++index;
+		}
+		if (fingerprint.getTimeZone() != null) {
+			checkExists.setString(index, fingerprint.getTimeZone());
+			++index;
+		}
+		if (fingerprint.getScreenDetails() != null) {
+			checkExists.setString(index, fingerprint.getScreenDetails());
+			++index;
+		}
+		if (fingerprint.getFonts() != null) {
+			checkExists.setString(index, fingerprint.getFonts());
+			++index;
+		}
+		checkExists.setBoolean(index, fingerprint.isCookiesEnabled());
+		++index;
+		if (fingerprint.getSuperCookie() != null) {
+			checkExists.setString(index, fingerprint.getSuperCookie());
+			++index;
+		}
+
+		ResultSet rs = checkExists.executeQuery();
+
+		rs.next();
+		int count = rs.getInt(1);
+		rs.close();
+		checkExists.close();
+		return count;
 	}
 
 	/**

@@ -9,6 +9,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import DAOs.FingerprintDAO;
+import beans.CharacteristicBean;
 import beans.CharacteristicsBean;
 import datastructures.Fingerprint;
 
@@ -70,14 +71,16 @@ public class TestServlet extends HttpServlet {
 
 	public void serveRequest(HttpServletRequest request, HttpServletResponse response, Fingerprint fingerprint) throws ServletException, IOException {
 		CharacteristicsBean chrsbean = new CharacteristicsBean();
-		Integer sampleID = FingerprintDAO.processFingerprint(fingerprint, chrsbean);
+		CharacteristicBean uniquenessbean = new CharacteristicBean();
+		Integer sampleID = FingerprintDAO.processFingerprint(fingerprint, chrsbean, uniquenessbean);
 		request.setAttribute("chrBean", chrsbean);
+		request.setAttribute("uniquessbean", uniquenessbean);
 
 		/*
 		 * Save SampleID in a cookie if we have one now.
 		 */
 		Cookie sampleIdCookie = new Cookie("SampleID", sampleID.toString());
-		sampleIdCookie.setMaxAge(60 * 60 * 24 * 30);//30 days
+		sampleIdCookie.setMaxAge(60 * 60 * 24 * 30);// 30 days
 		response.addCookie(sampleIdCookie);
 
 		/*
