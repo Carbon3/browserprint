@@ -9,9 +9,30 @@
 	<script type="text/javascript" src="fingerprint.js"></script>
 	<script type="text/javascript">
 	window.onload = function(){
-		$("#PluginDetails").attr("value", getPluginDetails());
-		$("#TimeZone").attr("value", getTimeZone());
-		$("#ScreenDetails").attr("value", getScreenDetails());
+		//
+		$('<input>').attr({
+    		type: 'hidden',
+    		id: 'PluginDetails',
+    		name: 'PluginDetails',
+    		value: getPluginDetails()
+		}).appendTo('#formdiv');
+		
+		//TimeZone
+		$('<input>').attr({
+    		type: 'hidden',
+    		id: 'TimeZone',
+    		name: 'TimeZone',
+    		value: getTimeZone()
+		}).appendTo('#formdiv');
+
+		//ScreenDetails
+		$('<input>').attr({
+    		type: 'hidden',
+    		id: 'ScreenDetails',
+    		name: 'ScreenDetails',
+    		value: getScreenDetails()
+		}).appendTo('#formdiv');
+		
 		document.forms["detailsForm"].submit();
 	}
 	</script>
@@ -21,13 +42,10 @@
 		Please wait...
 	</p>
 	<form id="detailsForm" action="Test?js_enabled=true" method="POST">
-		<p>
-			<input type="hidden" id="PluginDetails" name="PluginDetails" value="-">
-			<input type="hidden" id="TimeZone" name="TimeZone" value="-">
-			<input type="hidden" id="ScreenDetails" name="ScreenDetails" value="-">
-			<input type="hidden" id="Fonts" name="Fonts" value="-">
-			<input type="hidden" id="SuperCookie" name="SuperCookie" value="-">
-		</p>
+		<div id="formdiv">
+			<input type="hidden" id="Fonts" name="Fonts" value="Not implemented">
+			<input type="hidden" id="SuperCookie" name="SuperCookie" value="Not implemented">
+		</div>
 	</form>
 </body>
 </html>
