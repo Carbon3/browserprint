@@ -50,22 +50,28 @@ public class FingerprintDAO {
 			conn = Database.getConnection();
 			conn.setReadOnly(false);
 
-			Integer sampleID = fingerprint.getSampleID();
-			{
-				boolean log_sample = true;
-				if (fingerprint.getSampleID() != null) {
+			Integer currentSampleID = null;
+			ArrayList<Integer> sampleIDs = fingerprint.getSampleIDs();
+			boolean log_sample = true;
+			for (Integer sampleID : sampleIDs) {
+				if (sampleID != null) {
 					/*
 					 * We have seen this user before. Check if their fingerprint has changed.
 					 */
-					log_sample = checkSampleChanged(conn, fingerprint);
+					log_sample = checkSampleChanged(conn, sampleID, fingerprint);
+					if (log_sample == false) {
+						// We've seen this exact sample before, including SampleID.
+						currentSampleID = sampleID;
+						break;
+					}
 				}
+			}
 
-				/*
-				 * Write fingerprint sample to database.
-				 */
-				if (log_sample) {
-					sampleID = insertSample(conn, fingerprint);
-				}
+			/*
+			 * Write fingerprint sample to database.
+			 */
+			if (log_sample) {
+				currentSampleID = insertSample(conn, fingerprint);
 			}
 
 			/*
@@ -133,7 +139,7 @@ public class FingerprintDAO {
 			 * </Debug stuff>
 			 */
 
-			return sampleID;
+			return currentSampleID;
 
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -186,10 +192,10 @@ public class FingerprintDAO {
 	 * 
 	 * @param conn
 	 * @param fingerprint
-	 * @return
+	 * @return false if we've seen this exact sample (including SampleID) before.
 	 * @throws SQLException
 	 */
-	private static boolean checkSampleChanged(Connection conn, Fingerprint fingerprint) throws SQLException {
+	private static boolean checkSampleChanged(Connection conn, int sampleID, Fingerprint fingerprint) throws SQLException {
 		boolean in_database = true;
 		/*
 		 * We have seen this user before. Check if their fingerprint has changed.
@@ -206,7 +212,7 @@ public class FingerprintDAO {
 				+ " AND `DoNotTrack`" + (fingerprint.getDoNotTrack() == null ? " IS NULL" : " = ?")
 				+ ";";
 		PreparedStatement checkExists = conn.prepareStatement(query);
-		checkExists.setInt(1, fingerprint.getSampleID());
+		checkExists.setInt(1, sampleID);
 
 		int index = 2;
 		if (fingerprint.getUser_agent() != null) {

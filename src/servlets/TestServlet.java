@@ -1,6 +1,7 @@
 package servlets;
 
 import java.io.IOException;
+import java.util.ArrayList;
 
 import javax.servlet.ServletException;
 import javax.servlet.http.Cookie;
@@ -79,9 +80,8 @@ public class TestServlet extends HttpServlet {
 		/*
 		 * Save SampleID in a cookie if we have one now.
 		 */
-		Cookie sampleIdCookie = new Cookie("SampleID", sampleID.toString());
-		sampleIdCookie.setMaxAge(60 * 60 * 24 * 30);// 30 days
-		response.addCookie(sampleIdCookie);
+		fingerprint.getSampleIDs().add(sampleID);
+		saveSampleIDs(response, fingerprint.getSampleIDs());
 
 		/*
 		 * Forward to the output page.
@@ -98,25 +98,52 @@ public class TestServlet extends HttpServlet {
 		if (cookies != null) {
 			fingerprint.setCookiesEnabled(true);
 
-			/*
-			 * Get SampleID if the cookies have one.
-			 */
-			for (int i = 0; i < cookies.length; ++i) {
-				if (cookies[i].getName().equals("SampleID")) {
-					try {
-						Integer sampleID = Integer.parseInt(cookies[i].getValue());
-						fingerprint.setSampleID(sampleID);
-					} catch (NumberFormatException ex) {
-						// Ignore. Pretend invalid sampleID doesn't exist.
-					}
-					break;
-				}
-			}
 		}
 		else {
 			fingerprint.setCookiesEnabled(false);
 		}
+		fingerprint.setSampleIDs(getSampleIDs(request));
+
 		return fingerprint;
+	}
+
+	public ArrayList<Integer> getSampleIDs(HttpServletRequest request) {
+		Cookie cookies[] = request.getCookies();
+
+		ArrayList<Integer> sampleIDs = new ArrayList<Integer>();
+		if (cookies == null) {
+			// No SampleIDs. Just return an empty list.
+			return sampleIDs;
+		}
+
+		// Find the SampleIDs cookie.
+		for (int i = 0; i < cookies.length; ++i) {
+			if (cookies[i].getName().equals("SampleIDs")) {
+				// Cookie found. Split it into an array of SampleIDs.
+				String sampleIDstrs[] = cookies[i].getValue().split(",");
+				for (String sampleIDstr : sampleIDstrs) {
+					try {
+						// Add the SampleID to our list.
+						Integer sampleID = Integer.parseInt(sampleIDstr);
+						sampleIDs.add(sampleID);
+					} catch (NumberFormatException ex) {
+						// Ignore. Pretend invalid sampleID doesn't exist.
+					}
+				}
+				break;
+			}
+		}
+		return sampleIDs;
+	}
+
+	public void saveSampleIDs(HttpServletResponse response, ArrayList<Integer> sampleIDs) {
+		String sampleIDstr = "";
+		for (Integer sampleID : sampleIDs) {
+			sampleIDstr += sampleID + ",";
+		}
+		Cookie sampleIdCookie = new Cookie("SampleIDs", sampleIDstr);
+		sampleIdCookie.setMaxAge(60 * 60 * 24 * 30);// 30 days
+		response.addCookie(sampleIdCookie);
 	}
 
 	public String getAcceptHeadersString(HttpServletRequest request) {
