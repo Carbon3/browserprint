@@ -33,6 +33,14 @@
     		value: getScreenDetails()
 		}).appendTo('#formdiv');
 		
+		//SuperCookie
+		$('<input>').attr({
+    		type: 'hidden',
+    		id: 'SuperCookie',
+    		name: 'SuperCookie',
+    		value: getSuperCookie()
+		}).appendTo('#formdiv');
+		
 		$('#detailsForm').submit();
 	}
 	</script>
@@ -44,7 +52,6 @@
 	<form id="detailsForm" action="Test?js_enabled=true" method="POST">
 		<div id="formdiv">
 			<input type="hidden" id="Fonts" name="Fonts" value="Not implemented">
-			<input type="hidden" id="SuperCookie" name="SuperCookie" value="Not implemented">
 		</div>
 	</form>
 </body>

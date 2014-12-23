@@ -18,8 +18,8 @@ function getPluginDetails() {
 
 	if (plugins == "") {
 		/*
-		 * Try the method that works with IE.
-		 * Uses an MIT licensed script, PluginDetect.
+		 * Try the method that works with IE. Uses an MIT licensed script,
+		 * PluginDetect.
 		 */
 		var plugin_names = [ "Java", "QuickTime", "DevalVR", "Shockwave",
 				"Flash", "WindowsMediaplayer", "Silverlight", "VLC" ];
@@ -40,4 +40,43 @@ function getScreenDetails() {
 
 function getTimeZone() {
 	return new Date().getTimezoneOffset();
+}
+
+function getSuperCookie() {
+	var test = "";
+
+	test += "DOM localStorage: ";
+	if ('localStorage' in window && window['localStorage'] !== null) {
+		test += "Yes";
+	} else {
+		test += "No";
+	}
+	test += ", ";
+
+	test += "DOM sessionStorage: ";
+	if ('sessionStorage' in window && window['sessionStorage'] !== null) {
+		test += "Yes";
+	} else {
+		test += "No";
+	}
+	test += ", ";
+
+	test += "IE userData: ";
+	var persistDiv = $('<div id="tmpDiv" style="behavior:url(#default#userdata)"></div>');
+	persistDiv.appendTo(document.body);
+	try {
+		tmpDiv.setAttribute("remember", "original value");
+		tmpDiv.save("oXMLStore");
+		tmpDiv.setAttribute("remember", "overwritten");
+		tmpDiv.load("oXMLStore");
+		if ((tmpDiv.getAttribute("remember")) == "original value") {
+			test += "Yes";
+		} else {
+			test += "No";
+		}
+	} catch (ex) {
+		return test += "No";
+	}
+
+	return test;
 }
