@@ -22,7 +22,7 @@ public class FingerprintDAO {
 	 * @return the threadID of the post if successful. Else returns null if the
 	 *         post doesn't exist or an error occurs.
 	 */
-	private static final String insertSampleStr = "INSERT INTO `Samples`(`UserAgent`, `AcceptHeaders`, `PluginDetails`, `TimeZone`, `ScreenDetails`, `Fonts`, `CookiesEnabled`, `SuperCookie`) VALUES(?, ?, ?, ?, ?, ?, ?, ?);";
+	private static final String insertSampleStr = "INSERT INTO `Samples`(`UserAgent`, `AcceptHeaders`, `PluginDetails`, `TimeZone`, `ScreenDetails`, `Fonts`, `CookiesEnabled`, `SuperCookie`, `DoNotTrack`) VALUES(?, ?, ?, ?, ?, ?, ?, ?, ?);";
 	private static final String getSampleCountStr = "SELECT COUNT(*) FROM `Samples`;";
 	private static final String getUserAgentCountStr = "SELECT COUNT(*) FROM `Samples` WHERE `UserAgent` = ?;";
 	private static final String getNULLUserAgentCountStr = "SELECT COUNT(*) FROM `Samples` WHERE `UserAgent` IS NULL;";
@@ -39,6 +39,8 @@ public class FingerprintDAO {
 	private static final String getCookiesEnabledStr = "SELECT COUNT(*) FROM `Samples` WHERE `CookiesEnabled` = ?;";
 	private static final String getSuperCookieCountStr = "SELECT COUNT(*) FROM `Samples` WHERE `SuperCookie` = ?;";
 	private static final String getNULLSuperCookieCountStr = "SELECT COUNT(*) FROM `Samples` WHERE `SuperCookie` IS NULL;";
+	private static final String getDoNotTrackCountStr = "SELECT COUNT(*) FROM `Samples` WHERE `DoNotTrack` = ?;";
+	private static final String getNULLDoNotTrackCountStr = "SELECT COUNT(*) FROM `Samples` WHERE `DoNotTrack` IS NULL;";
 
 	private static final String NO_JAVASCRIPT = "no javascript";
 
@@ -111,6 +113,14 @@ public class FingerprintDAO {
 			characteristics.add(
 					getCharacteristicBean(conn, sampleCount, "Limited supercookie test", fingerprint.getSuperCookie(),
 							getSuperCookieCountStr, getNULLSuperCookieCountStr));
+			{
+				CharacteristicBean doNotTrack = getCharacteristicBean(conn, sampleCount, "Do Not Track header", fingerprint.getDoNotTrack(),
+						getDoNotTrackCountStr, getNULLDoNotTrackCountStr);
+				if (doNotTrack.getValue().equals(NO_JAVASCRIPT)) {
+					doNotTrack.setValue("No preference");
+				}
+				characteristics.add(doNotTrack);
+			}
 
 			/*
 			 * <Debug stuff>
@@ -158,6 +168,7 @@ public class FingerprintDAO {
 		insertSample.setString(6, fingerprint.getFonts());
 		insertSample.setBoolean(7, fingerprint.isCookiesEnabled());
 		insertSample.setString(8, fingerprint.getSuperCookie());
+		insertSample.setString(9, fingerprint.getDoNotTrack());
 		insertSample.execute();
 
 		ResultSet rs = insertSample.getGeneratedKeys();
@@ -192,6 +203,7 @@ public class FingerprintDAO {
 				+ " AND `Fonts`" + (fingerprint.getFonts() == null ? " IS NULL" : " = ?")
 				+ " AND `CookiesEnabled` = ?"
 				+ " AND `SuperCookie`" + (fingerprint.getSuperCookie() == null ? " IS NULL" : " = ?")
+				+ " AND `DoNotTrack`" + (fingerprint.getDoNotTrack() == null ? " IS NULL" : " = ?")
 				+ ";";
 		PreparedStatement checkExists = conn.prepareStatement(query);
 		checkExists.setInt(1, fingerprint.getSampleID());
@@ -225,6 +237,10 @@ public class FingerprintDAO {
 		++index;
 		if (fingerprint.getSuperCookie() != null) {
 			checkExists.setString(index, fingerprint.getSuperCookie());
+			++index;
+		}
+		if (fingerprint.getDoNotTrack() != null) {
+			checkExists.setString(index, fingerprint.getDoNotTrack());
 			++index;
 		}
 

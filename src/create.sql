@@ -12,6 +12,7 @@ CREATE TABLE `Samples` (
   `Fonts` TEXT,
   `CookiesEnabled` BOOL NOT NULL,
   `SuperCookie` TEXT,
+  `DoNotTrack` TEXT,
   PRIMARY KEY(`SampleID`)
 )
 ENGINE=InnoDB;

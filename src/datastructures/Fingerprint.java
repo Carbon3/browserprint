@@ -13,6 +13,7 @@ public class Fingerprint {
 	private boolean cookiesEnabled;
 
 	private String superCookie;
+	private String doNotTrack;
 
 	public Fingerprint() {
 		sampleID = null;
@@ -24,6 +25,7 @@ public class Fingerprint {
 		fonts = null;
 		cookiesEnabled = false;
 		superCookie = null;
+		doNotTrack = null;
 	}
 
 	public Integer getSampleID() {
@@ -97,4 +99,13 @@ public class Fingerprint {
 	public void setSuperCookie(String superCookie) {
 		this.superCookie = superCookie;
 	}
+
+	public String getDoNotTrack() {
+		return doNotTrack;
+	}
+
+	public void setDoNotTrack(String doNotTrack) {
+		this.doNotTrack = doNotTrack;
+	}
+
 }

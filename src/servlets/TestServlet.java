@@ -93,6 +93,7 @@ public class TestServlet extends HttpServlet {
 		Fingerprint fingerprint = new Fingerprint();
 		fingerprint.setUser_agent(request.getHeader("User-Agent"));
 		fingerprint.setAccept_headers(getAcceptHeadersString(request));
+		fingerprint.setDoNotTrack(request.getHeader("DNT"));
 		Cookie cookies[] = request.getCookies();
 		if (cookies != null) {
 			fingerprint.setCookiesEnabled(true);
