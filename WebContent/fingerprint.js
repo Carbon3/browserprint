@@ -46,20 +46,29 @@ function getSuperCookie() {
 	var test = "";
 
 	test += "DOM localStorage: ";
-	if ('localStorage' in window && window['localStorage'] !== null) {
-		test += "Yes";
-	} else {
+	try {
+		if ('localStorage' in window && window['localStorage'] !== null) {
+			test += "Yes";
+		} else {
+			test += "No";
+		}
+	} catch (ex) {
 		test += "No";
 	}
 	test += ", ";
 
 	test += "DOM sessionStorage: ";
-	if ('sessionStorage' in window && window['sessionStorage'] !== null) {
-		test += "Yes";
-	} else {
+	try{
+		if ('sessionStorage' in window && window['sessionStorage'] !== null) {
+			test += "Yes";
+		} else {
+			test += "No";
+		}
+	} catch (ex) {
 		test += "No";
 	}
 	test += ", ";
+	
 
 	test += "IE userData: ";
 	var persistDiv = $('<div id="tmpDiv" style="behavior:url(#default#userdata)"></div>');
@@ -75,7 +84,7 @@ function getSuperCookie() {
 			test += "No";
 		}
 	} catch (ex) {
-		return test += "No";
+		test += "No";
 	}
 
 	return test;

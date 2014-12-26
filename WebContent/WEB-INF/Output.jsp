@@ -38,8 +38,7 @@
 			<td><fmt:formatNumber value="${ chr.bits }" maxFractionDigits="2"/></td>
 			<td><fmt:formatNumber value="${ chr.inX }" maxFractionDigits="2"/></td>
 			<td>${ chr.value }</td>
-		</tr>
-		</c:forEach>
+		</tr></c:forEach>
 	</table>
 </body>
 </html>
