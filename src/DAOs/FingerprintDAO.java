@@ -111,14 +111,17 @@ public class FingerprintDAO {
 			characteristics.add(
 					getCharacteristicBean(conn, sampleCount, "Screen Size and Color Depth", fingerprint.getScreenDetails(),
 							getScreenDetailsCountStr, getNULLScreenDetailsCountStr));
-			characteristics.add(
-					getCharacteristicBean(conn, sampleCount, "System Fonts", fingerprint.getFonts(),
-							getFontsCountStr, getNULLFontsCountStr));
+			{
+				CharacteristicBean fonts = getCharacteristicBean(conn, sampleCount, "System Fonts", fingerprint.getFonts(), getFontsCountStr, getNULLFontsCountStr);
+				if (fonts.getValue().equals("")) {
+					fonts.setValue("No fonts detected");
+				}
+				characteristics.add(fonts);
+			}
 			characteristics.add(
 					getCookiesEnabledCB(conn, sampleCount, fingerprint.isCookiesEnabled()));
 			characteristics.add(
-					getCharacteristicBean(conn, sampleCount, "Limited supercookie test", fingerprint.getSuperCookie(),
-							getSuperCookieCountStr, getNULLSuperCookieCountStr));
+					getCharacteristicBean(conn, sampleCount, "Limited supercookie test", fingerprint.getSuperCookie(),getSuperCookieCountStr, getNULLSuperCookieCountStr));
 			{
 				CharacteristicBean doNotTrack = getCharacteristicBean(conn, sampleCount, "Do Not Track header", fingerprint.getDoNotTrack(),
 						getDoNotTrackCountStr, getNULLDoNotTrackCountStr);

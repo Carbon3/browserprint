@@ -33,6 +33,13 @@
     		value: getScreenDetails()
 		}).appendTo('#formdiv');
 		
+		//Fonts
+		$('<input>').attr({
+    		type: 'hidden',
+    		id: 'Fonts',
+    		name: 'Fonts'
+		}).appendTo('#formdiv');
+		
 		//SuperCookie
 		$('<input>').attr({
     		type: 'hidden',
@@ -41,7 +48,23 @@
     		value: getSuperCookie()
 		}).appendTo('#formdiv');
 		
+		window.setTimeout(submitDetailsForm, 5000);//Wait for a while before submitting the page.
+	}
+	
+	function submitDetailsForm(){
 		$('#detailsForm').submit();
+	}
+
+	//For the FontList swf to call
+	function populateFontList(fontArr)
+	{
+		var fonts = "";
+		fonts = fontArr[0];
+		for(var i = 1; i < fontArr.length; ++i){
+			fonts += ", ";
+			fonts += fontArr[i];
+		}
+		$('#Fonts').attr('value', fonts);
 	}
 	</script>
 </head>
@@ -51,8 +74,10 @@
 	</p>
 	<form id="detailsForm" action="Test?js_enabled=true" method="POST">
 		<div id="formdiv">
-			<input type="hidden" id="Fonts" name="Fonts" value="Not implemented">
 		</div>
 	</form>
+	<object type="application/x-shockwave-flash" data="FontList.swf">
+    	<param value="FontList.swf" />
+	</object>
 </body>
 </html>
