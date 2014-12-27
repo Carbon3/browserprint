@@ -1,0 +1,24 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="ISO-8859-1">
+<title>Insert title here</title>
+<script type="text/javascript">
+function populateFontList(fontArr)
+{
+	var fonts = "";
+	fonts = fontArr[0];
+	for(var i = 1; i < fontArr.length; ++i){
+		fonts += ", ";
+		fonts += fontArr[i];
+	}
+	alert(fonts);
+}
+</script>
+</head>
+<body>
+<object type="application/x-shockwave-flash" data="FontList.swf">
+    <param value="FontList.swf" />
+</object>
+</body>
+</html>
