@@ -22,31 +22,36 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 THE SOFTWARE.*/
 
 package {
-import flash.display.Sprite;
-import flash.text.Font;
-import flash.text.FontType;
-import flash.text.FontStyle;
-import flash.external.ExternalInterface;
    
-public class FontList extends Sprite
-{
-	ExternalInterface.addCallback("getDeviceFonts", getDeviceFonts);
-       	public function FontList(){
+    import flash.display.Sprite;
+    import flash.text.Font;
+    import flash.text.FontType;
+    import flash.text.FontStyle;
+    import flash.external.ExternalInterface;
+   
+    public class FontList extends Sprite
+    {
+        public function FontList()
+        {
+            ExternalInterface.call('populateFontList', getDeviceFonts());
         }
        
-       	public function getDeviceFonts():Array{
-		var embeddedAndDeviceFonts:Array = Font.enumerateFonts(true);
-
-		var deviceFontNames:Array = [];
-		for each (var font:Font in embeddedAndDeviceFonts){
-			if (font.fontType == FontType.EMBEDDED || font.fontStyle != FontStyle.REGULAR){
-				continue;
-			}
-			deviceFontNames.push(font.fontName);
-		}
-
-		deviceFontNames.sort();
-		return deviceFontNames;
-	}
-}
+        public function getDeviceFonts():Array
+        {
+            var embeddedAndDeviceFonts:Array = Font.enumerateFonts(true);
+           
+            var deviceFontNames:Array = [];
+            for each (var font:Font in embeddedAndDeviceFonts)
+            {
+                if (font.fontType == FontType.EMBEDDED
+                    || font.fontStyle != FontStyle.REGULAR
+                    )
+                    continue;
+                deviceFontNames.push(font.fontName);
+            }
+           
+            deviceFontNames.sort();
+            return deviceFontNames;
+        }
+    }
 }

@@ -48,7 +48,9 @@
     		value: getSuperCookie()
 		}).appendTo('#formdiv');
 		
-		window.setTimeout(submitDetailsForm, 5000);//Wait for a while before submitting the page.
+		//Wait for a while before submitting the page.
+		//We do this to allow time for the Flash to detect and write the fonts out.
+		window.setTimeout(submitDetailsForm, 5000);
 	}
 	
 	function submitDetailsForm(){
