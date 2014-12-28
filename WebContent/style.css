@@ -6,8 +6,15 @@ body{
 
 table#characteristics{
 	border-collapse: collapse;
+	margin-left: auto;
+	margin-right: auto;
+	max-width: 900px;
 }
 
 td,th{
 	border: 1px solid gray;
+}
+
+td.tableValue{
+	font-size: 0.9em;
 }

@@ -131,17 +131,6 @@ public class FingerprintDAO {
 				characteristics.add(doNotTrack);
 			}
 
-			/*
-			 * <Debug stuff>
-			 */
-			CharacteristicBean chrbean = new CharacteristicBean();
-			characteristics.add(chrbean);
-			chrbean.setName("Sample count [DEBUG]");
-			chrbean.setInX(sampleCount);
-			/*
-			 * </Debug stuff>
-			 */
-
 			return currentSampleID;
 
 		} catch (Exception e) {

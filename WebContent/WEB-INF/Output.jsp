@@ -37,7 +37,7 @@
 			<td>${ chr.name }</td>
 			<td><fmt:formatNumber value="${ chr.bits }" maxFractionDigits="2"/></td>
 			<td><fmt:formatNumber value="${ chr.inX }" maxFractionDigits="2"/></td>
-			<td>${ chr.value }</td>
+			<td class="tableValue">${ chr.value }</td>
 		</tr></c:forEach>
 	</table>
 </body>

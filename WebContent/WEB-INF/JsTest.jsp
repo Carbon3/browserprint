@@ -50,7 +50,7 @@
 		
 		//Wait for a while before submitting the page.
 		//We do this to allow time for the Flash to detect and write the fonts out.
-		window.setTimeout(submitDetailsForm, 5000);
+		window.setTimeout(submitDetailsForm, 4000);
 	}
 	
 	function submitDetailsForm(){
@@ -78,8 +78,8 @@
 		<div id="formdiv">
 		</div>
 	</form>
-	<object type="application/x-shockwave-flash" data="FontList.swf">
-    	<param value="FontList.swf" />
-	</object>
+	<div>
+		<object type="application/x-shockwave-flash" data="FontList.swf"></object>
+	</div>
 </body>
 </html>
