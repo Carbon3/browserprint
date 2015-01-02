@@ -22,25 +22,9 @@ public class FingerprintDAO {
 	 * @return the threadID of the post if successful. Else returns null if the
 	 *         post doesn't exist or an error occurs.
 	 */
-	private static final String insertSampleStr = "INSERT INTO `Samples`(`UserAgent`, `AcceptHeaders`, `PluginDetails`, `TimeZone`, `ScreenDetails`, `Fonts`, `CookiesEnabled`, `SuperCookie`, `DoNotTrack`) VALUES(?, ?, ?, ?, ?, ?, ?, ?, ?);";
+	private static final String insertSampleStr = "INSERT INTO `Samples`(`UserAgent`, `AcceptHeaders`, `PluginDetails`, `TimeZone`, `ScreenDetails`, `Fonts`, `CookiesEnabled`, `SuperCookie`, `DoNotTrack`, `ClockDifference`) VALUES(?, ?, ?, ?, ?, ?, ?, ?, ?, ?);";
 	private static final String getSampleCountStr = "SELECT COUNT(*) FROM `Samples`;";
-	private static final String getUserAgentCountStr = "SELECT COUNT(*) FROM `Samples` WHERE `UserAgent` = ?;";
-	private static final String getNULLUserAgentCountStr = "SELECT COUNT(*) FROM `Samples` WHERE `UserAgent` IS NULL;";
-	private static final String getAcceptHeadersCountStr = "SELECT COUNT(*) FROM `Samples` WHERE `AcceptHeaders` = ?;";
-	private static final String getNULLAcceptHeadersCountStr = "SELECT COUNT(*) FROM `Samples` WHERE `AcceptHeaders` IS NULL;";
-	private static final String getPluginDetailsCountStr = "SELECT COUNT(*) FROM `Samples` WHERE `PluginDetails` = ?;";
-	private static final String getNULLPluginDetailsCountStr = "SELECT COUNT(*) FROM `Samples` WHERE `PluginDetails` IS NULL;";
-	private static final String getTimeZoneCountStr = "SELECT COUNT(*) FROM `Samples` WHERE `TimeZone` = ?;";
-	private static final String getNULLTimeZoneCountStr = "SELECT COUNT(*) FROM `Samples` WHERE `TimeZone` IS NULL;";
-	private static final String getScreenDetailsCountStr = "SELECT COUNT(*) FROM `Samples` WHERE `ScreenDetails` = ?;";
-	private static final String getNULLScreenDetailsCountStr = "SELECT COUNT(*) FROM `Samples` WHERE `ScreenDetails` IS NULL;";
-	private static final String getFontsCountStr = "SELECT COUNT(*) FROM `Samples` WHERE `Fonts` = ?;";
-	private static final String getNULLFontsCountStr = "SELECT COUNT(*) FROM `Samples` WHERE `Fonts` IS NULL;";
 	private static final String getCookiesEnabledStr = "SELECT COUNT(*) FROM `Samples` WHERE `CookiesEnabled` = ?;";
-	private static final String getSuperCookieCountStr = "SELECT COUNT(*) FROM `Samples` WHERE `SuperCookie` = ?;";
-	private static final String getNULLSuperCookieCountStr = "SELECT COUNT(*) FROM `Samples` WHERE `SuperCookie` IS NULL;";
-	private static final String getDoNotTrackCountStr = "SELECT COUNT(*) FROM `Samples` WHERE `DoNotTrack` = ?;";
-	private static final String getNULLDoNotTrackCountStr = "SELECT COUNT(*) FROM `Samples` WHERE `DoNotTrack` IS NULL;";
 
 	private static final String NO_JAVASCRIPT = "no javascript";
 
@@ -97,22 +81,17 @@ public class FingerprintDAO {
 			 */
 			ArrayList<CharacteristicBean> characteristics = chrsbean.getCharacteristics();
 			characteristics.add(
-					getCharacteristicBean(conn, sampleCount, "User Agent", fingerprint.getUser_agent(),
-							getUserAgentCountStr, getNULLUserAgentCountStr));
+					getCharacteristicBean(conn, sampleCount, "User Agent", "UserAgent", fingerprint.getUser_agent()));
 			characteristics.add(
-					getCharacteristicBean(conn, sampleCount, "HTTP_ACCEPT Headers", fingerprint.getAccept_headers(),
-							getAcceptHeadersCountStr, getNULLAcceptHeadersCountStr));
+					getCharacteristicBean(conn, sampleCount, "HTTP_ACCEPT Headers", "AcceptHeaders", fingerprint.getAccept_headers()));
 			characteristics.add(
-					getCharacteristicBean(conn, sampleCount, "Browser Plugin Details", fingerprint.getPluginDetails(),
-							getPluginDetailsCountStr, getNULLPluginDetailsCountStr));
+					getCharacteristicBean(conn, sampleCount, "Browser Plugin Details", "PluginDetails", fingerprint.getPluginDetails()));
 			characteristics.add(
-					getCharacteristicBean(conn, sampleCount, "Time Zone", fingerprint.getTimeZone(),
-							getTimeZoneCountStr, getNULLTimeZoneCountStr));
+					getCharacteristicBean(conn, sampleCount, "Time Zone", "TimeZone", fingerprint.getTimeZone()));
 			characteristics.add(
-					getCharacteristicBean(conn, sampleCount, "Screen Size and Color Depth", fingerprint.getScreenDetails(),
-							getScreenDetailsCountStr, getNULLScreenDetailsCountStr));
+					getCharacteristicBean(conn, sampleCount, "Screen Size and Color Depth", "ScreenDetails", fingerprint.getScreenDetails()));
 			{
-				CharacteristicBean fonts = getCharacteristicBean(conn, sampleCount, "System Fonts", fingerprint.getFonts(), getFontsCountStr, getNULLFontsCountStr);
+				CharacteristicBean fonts = getCharacteristicBean(conn, sampleCount, "System Fonts", "Fonts", fingerprint.getFonts());
 				if (fonts.getValue().equals("")) {
 					fonts.setValue("No fonts detected");
 				}
@@ -121,15 +100,16 @@ public class FingerprintDAO {
 			characteristics.add(
 					getCookiesEnabledCB(conn, sampleCount, fingerprint.isCookiesEnabled()));
 			characteristics.add(
-					getCharacteristicBean(conn, sampleCount, "Limited supercookie test", fingerprint.getSuperCookie(),getSuperCookieCountStr, getNULLSuperCookieCountStr));
+					getCharacteristicBean(conn, sampleCount, "Limited supercookie test", "SuperCookie", fingerprint.getSuperCookie()));
 			{
-				CharacteristicBean doNotTrack = getCharacteristicBean(conn, sampleCount, "Do Not Track header", fingerprint.getDoNotTrack(),
-						getDoNotTrackCountStr, getNULLDoNotTrackCountStr);
+				CharacteristicBean doNotTrack = getCharacteristicBean(conn, sampleCount, "Do Not Track header", "DoNotTrack", fingerprint.getDoNotTrack());
 				if (doNotTrack.getValue().equals(NO_JAVASCRIPT)) {
 					doNotTrack.setValue("No preference");
 				}
 				characteristics.add(doNotTrack);
 			}
+			characteristics.add(
+					getCharacteristicBean(conn, sampleCount, "Clock Skew", "ClockDifference", fingerprint.getClockDifference()));
 
 			return currentSampleID;
 
@@ -167,6 +147,12 @@ public class FingerprintDAO {
 		insertSample.setBoolean(7, fingerprint.isCookiesEnabled());
 		insertSample.setString(8, fingerprint.getSuperCookie());
 		insertSample.setString(9, fingerprint.getDoNotTrack());
+
+		if (fingerprint.getClockDifference() != null) {
+			insertSample.setLong(10, fingerprint.getClockDifference());
+		} else {
+			insertSample.setNull(10, java.sql.Types.BIGINT);
+		}
 		insertSample.execute();
 
 		ResultSet rs = insertSample.getGeneratedKeys();
@@ -202,6 +188,7 @@ public class FingerprintDAO {
 				+ " AND `CookiesEnabled` = ?"
 				+ " AND `SuperCookie`" + (fingerprint.getSuperCookie() == null ? " IS NULL" : " = ?")
 				+ " AND `DoNotTrack`" + (fingerprint.getDoNotTrack() == null ? " IS NULL" : " = ?")
+				+ " AND `ClockDifference`" + (fingerprint.getClockDifference() == null ? " IS NULL" : " = ?")
 				+ ";";
 		PreparedStatement checkExists = conn.prepareStatement(query);
 		checkExists.setInt(1, sampleID);
@@ -239,6 +226,10 @@ public class FingerprintDAO {
 		}
 		if (fingerprint.getDoNotTrack() != null) {
 			checkExists.setString(index, fingerprint.getDoNotTrack());
+			++index;
+		}
+		if (fingerprint.getClockDifference() != null) {
+			checkExists.setLong(index, fingerprint.getClockDifference());
 			++index;
 		}
 
@@ -379,22 +370,68 @@ public class FingerprintDAO {
 	 * @return
 	 * @throws SQLException
 	 */
-	private static CharacteristicBean getCharacteristicBean(Connection conn, int num_samples, String name, String value, String countQryStr, String nullCountQryStr) throws SQLException {
+	private static CharacteristicBean getCharacteristicBean(Connection conn, int num_samples, String name, String dbname, String value) throws SQLException {
 		CharacteristicBean chrbean = new CharacteristicBean();
 
 		chrbean.setName(name);
 
 		PreparedStatement getCount;
+		String querystr = "SELECT COUNT(*) FROM `Samples` WHERE `" + dbname + "`";
 		if (value != null) {
 			chrbean.setValue(StringEscapeUtils.escapeHtml4(value));
+			querystr += " = ?;";
 
-			getCount = conn.prepareStatement(countQryStr);
+			getCount = conn.prepareStatement(querystr);
 			getCount.setString(1, value);
 		}
 		else {
 			chrbean.setValue(NO_JAVASCRIPT);
 
-			getCount = conn.prepareStatement(nullCountQryStr);
+			querystr += " IS NULL;";
+			getCount = conn.prepareStatement(querystr);
+		}
+
+		ResultSet rs = getCount.executeQuery();
+		rs.next();
+		int count = rs.getInt(1);
+		rs.close();
+		chrbean.setInX(((double) num_samples) / ((double) count));
+		chrbean.setBits(Math.abs(Math.log(chrbean.getInX()) / Math.log(2)));
+
+		return chrbean;
+	}
+
+	/**
+	 * Create a CharacteristicBean.
+	 * 
+	 * @param conn
+	 *            A connection to the database.
+	 * @param num_samples
+	 *            The number of samples in the database.
+	 * @param value
+	 *            The value of this sample.
+	 * @return
+	 * @throws SQLException
+	 */
+	private static CharacteristicBean getCharacteristicBean(Connection conn, int num_samples, String name, String dbname, Long value) throws SQLException {
+		CharacteristicBean chrbean = new CharacteristicBean();
+
+		chrbean.setName(name);
+
+		PreparedStatement getCount;
+		String querystr = "SELECT COUNT(*) FROM `Samples` WHERE `" + dbname + "`";
+		if (value != null) {
+			chrbean.setValue(value.toString());
+			querystr += " = ?;";
+
+			getCount = conn.prepareStatement(querystr);
+			getCount.setLong(1, value);
+		}
+		else {
+			chrbean.setValue(NO_JAVASCRIPT);
+
+			querystr += " IS NULL;";
+			getCount = conn.prepareStatement(querystr);
 		}
 
 		ResultSet rs = getCount.executeQuery();

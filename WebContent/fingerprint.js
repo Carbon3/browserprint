@@ -89,3 +89,9 @@ function getSuperCookie() {
 
 	return test;
 }
+
+function getTime(){
+	//var time = Math.round(new Date().getTime() / 1000);
+	var time = new Date().getTime();
+	return time;
+}

@@ -2,6 +2,7 @@ package servlets;
 
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Date;
 
 import javax.servlet.ServletException;
 import javax.servlet.http.Cookie;
@@ -66,6 +67,21 @@ public class TestServlet extends HttpServlet {
 		fingerprint.setScreenDetails(request.getParameter("ScreenDetails"));
 		fingerprint.setFonts(request.getParameter("Fonts"));
 		fingerprint.setSuperCookie(request.getParameter("SuperCookie"));
+
+		{
+			long ourTime = new Date().getTime();
+			long theirTime;
+			try {
+				theirTime = Long.parseLong(request.getParameter("Time"));
+			} catch (NumberFormatException ex) {
+				//Difference of 0.
+				theirTime = ourTime;
+			}
+			
+			//Get how many minutes our times differ by.
+			long difference = (ourTime - theirTime) / (1000 * 60);
+			fingerprint.setClockDifference(difference);
+		}
 
 		serveRequest(request, response, fingerprint);
 	}

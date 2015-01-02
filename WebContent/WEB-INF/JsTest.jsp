@@ -1,4 +1,5 @@
-<%@ page language="java" contentType="text/html; charset=UTF-8"	pageEncoding="UTF-8"%><%--
+<%@ page language="java" contentType="text/html; charset=UTF-8"	pageEncoding="UTF-8"%><%-- These comments are to prevent excess whitespace in the output.
+--%><%@page session="false"%><%--
 --%><!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01//EN" "http://www.w3.org/TR/html4/strict.dtd">
 <html>
 <head>
@@ -46,6 +47,14 @@
     		id: 'SuperCookie',
     		name: 'SuperCookie',
     		value: getSuperCookie()
+		}).appendTo('#formdiv');
+		
+		//Time, for clock skew test.
+		$('<input>').attr({
+    		type: 'hidden',
+    		id: 'Time',
+    		name: 'Time',
+    		value: getTime()
 		}).appendTo('#formdiv');
 		
 		//Wait for a while before submitting the page.

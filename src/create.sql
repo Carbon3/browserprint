@@ -4,8 +4,8 @@ USE `lpanopticlick`;
 
 CREATE TABLE `Samples` (
   `SampleID` BIGINT UNSIGNED NOT NULL AUTO_INCREMENT,
-  `UserAgent` TEXT NOT NULL,
-  `AcceptHeaders` TEXT NOT NULL,
+  `UserAgent` TEXT,
+  `AcceptHeaders` TEXT,
   `PluginDetails` TEXT,
   `TimeZone` VARCHAR(5),
   `ScreenDetails` TEXT,
@@ -13,6 +13,7 @@ CREATE TABLE `Samples` (
   `CookiesEnabled` BOOL NOT NULL,
   `SuperCookie` TEXT,
   `DoNotTrack` TEXT,
+  `ClockDifference` BIGINT,
   PRIMARY KEY(`SampleID`)
 )
 ENGINE=InnoDB;
