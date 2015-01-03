@@ -1,0 +1,34 @@
+Libre-Panopticlick implements the following tests:
+
+-----User Agent
+The User-Agent header of the HTTP request.
+
+-----HTTP_ACCEPT Headers
+The concatenation of three headers from the HTTP request.
+The Accept request header, the Accept-Encoding request header, and the Accept-Language request header.
+
+-----Browser Plugin Details
+A list of the browsers installed plugins as detected using JavaScript.
+
+-----Time Zone
+The time-zone configured on the client's machine.
+
+-----Screen Size and Color Depth
+The screen size and colour depth of the monitor displaying the client's web browser.
+
+-----System Fonts
+The fonts installed on the client's machine, detected using Flash.
+
+-----Are Cookies Enabled?
+Whether cookies are enabled.
+
+-----Limited supercookie test
+Three tests of whether DOM storage is supported (and enabled) in the client's web browser.
+Tests for localStorage, sessionStorage, and Internet Explorer's userData.
+
+-----Do Not Track header
+The value of the DNT (Do Not Track) header from the HTTP request.
+
+-----Clock Skew
+The approximate amount of difference between the time on the client's computer and the clock on the server.
+i.e., the clock on the client's computer is 5 minutes ahead of the clock on the server.
