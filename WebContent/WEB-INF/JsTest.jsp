@@ -5,7 +5,7 @@
 <head>
 	<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 	<title>Libre-Panopticlick</title>
-	<script type="text/javascript" src="jquery-2.1.3.min.js"></script>
+	<script type="text/javascript" src="jquery-1.11.2.min.js"></script>
 	<script type="text/javascript" src="PluginDetect.js"></script>
 	<script type="text/javascript" src="fingerprint.js"></script>
 	<script type="text/javascript">
