@@ -109,7 +109,7 @@ public class FingerprintDAO {
 				characteristics.add(doNotTrack);
 			}
 			characteristics.add(
-					getCharacteristicBean(conn, sampleCount, "Clock Skew", "ClockDifference", fingerprint.getClockDifference()));
+					getCharacteristicBean(conn, sampleCount, "Client/server time difference (minutes)", "ClockDifference", fingerprint.getClockDifference()));
 
 			return currentSampleID;
 
