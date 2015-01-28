@@ -49,7 +49,14 @@
     		value: getSuperCookie()
 		}).appendTo('#formdiv');
 		
+		//Wait for a while before submitting the page.
+		//We do this to allow time for the Flash to detect and write the fonts out.
+		window.setTimeout(submitDetailsForm, 4000);
+	}
+	
+	function submitDetailsForm(){
 		//Time, for clock skew test.
+		//We put this here to avoid the timer altering the time by however many seconds.
 		$('<input>').attr({
     		type: 'hidden',
     		id: 'Time',
@@ -57,12 +64,6 @@
     		value: getTime()
 		}).appendTo('#formdiv');
 		
-		//Wait for a while before submitting the page.
-		//We do this to allow time for the Flash to detect and write the fonts out.
-		window.setTimeout(submitDetailsForm, 4000);
-	}
-	
-	function submitDetailsForm(){
 		$('#detailsForm').submit();
 	}
 
