@@ -95,3 +95,12 @@ function getTime(){
 	var time = new Date().getTime();
 	return time;
 }
+
+function getDateTime(){
+	try{
+		var d = new Date(0);
+		return d.toLocaleString();	
+	}catch(ex){
+		return "Error";
+	}
+}

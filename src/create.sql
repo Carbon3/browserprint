@@ -14,6 +14,7 @@ CREATE TABLE `Samples` (
   `SuperCookie` TEXT,
   `DoNotTrack` TEXT,
   `ClockDifference` BIGINT,
+  `DateTime` TEXT,
   PRIMARY KEY(`SampleID`)
 )
 ENGINE=InnoDB;

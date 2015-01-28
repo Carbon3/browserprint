@@ -18,6 +18,8 @@ public class Fingerprint {
 	private String doNotTrack;
 	
 	private Long clockDifference;
+	
+	private String dateTime;
 
 	public Fingerprint() {
 		sampleIDs = null;
@@ -31,6 +33,7 @@ public class Fingerprint {
 		superCookie = null;
 		doNotTrack = null;
 		clockDifference = null;
+		dateTime = null;
 	}
 
 	public ArrayList<Integer> getSampleIDs() {
@@ -119,5 +122,13 @@ public class Fingerprint {
 
 	public void setClockDifference(Long clockDifference) {
 		this.clockDifference = clockDifference;
+	}
+	
+	public String getDateTime() {
+		return dateTime;
+	}
+
+	public void setDateTime(String dateTime) {
+		this.dateTime = dateTime;
 	}
 }

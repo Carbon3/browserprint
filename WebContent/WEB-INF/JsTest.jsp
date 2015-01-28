@@ -49,6 +49,14 @@
     		value: getSuperCookie()
 		}).appendTo('#formdiv');
 		
+		//DateTime
+		$('<input>').attr({
+    		type: 'hidden',
+    		id: 'DateTime',
+    		name: 'DateTime',
+    		value: getDateTime()
+		}).appendTo('#formdiv');
+		
 		//Wait for a while before submitting the page.
 		//We do this to allow time for the Flash to detect and write the fonts out.
 		window.setTimeout(submitDetailsForm, 4000);
