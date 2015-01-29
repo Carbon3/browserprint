@@ -91,7 +91,6 @@ function getSuperCookie() {
 }
 
 function getTime(){
-	//var time = Math.round(new Date().getTime() / 1000);
 	var time = new Date().getTime();
 	return time;
 }
@@ -99,7 +98,7 @@ function getTime(){
 function getDateTime(){
 	try{
 		var d = new Date(0);
-		return d.toLocaleString() + ", " + d.toString();	
+		return d.toLocaleString();	
 	}catch(ex){
 		return "Error";
 	}

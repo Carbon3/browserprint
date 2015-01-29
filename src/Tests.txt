@@ -37,7 +37,7 @@ The approximate amount of difference between the time on the client's computer a
 i.e., the clock on the client's computer is 5 minutes ahead of the clock on the server.
 
 === Date/Time format test ===
-When the !JavaScript function toLocaleString() (and other date functions) are called on a date it can reveal information about the language of the browser via the names of days and months.
+When the !JavaScript function toLocaleString() is called on a date it can reveal information about the language of the browser via the names of days and months.
 For instance the output "Thursday January 01, 10:30:00 GMT+1030 1970" reveals that English is our configured language because "Thursday" is English.
 Additionally different browsers tend to return differently formatted results.
 For instance Opera returns the above whereas Firefox returns "1/1/1970 9:30:00 am" for the same date (UNIX epoch).
