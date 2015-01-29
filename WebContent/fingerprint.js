@@ -99,7 +99,7 @@ function getTime(){
 function getDateTime(){
 	try{
 		var d = new Date(0);
-		return d.toLocaleString();	
+		return d.toLocaleString() + ", " + d.toString();	
 	}catch(ex){
 		return "Error";
 	}
