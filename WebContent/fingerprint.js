@@ -103,3 +103,7 @@ function getDateTime(){
 		return "Error";
 	}
 }
+
+function getMathTan(){
+	return Math.tan(-1e300);
+}

@@ -20,6 +20,7 @@ public class Fingerprint {
 	private Long clockDifference;
 	
 	private String dateTime;
+	private String mathTan;
 
 	public Fingerprint() {
 		sampleIDs = null;
@@ -34,6 +35,7 @@ public class Fingerprint {
 		doNotTrack = null;
 		clockDifference = null;
 		dateTime = null;
+		mathTan = null;
 	}
 
 	public ArrayList<Integer> getSampleIDs() {
@@ -130,5 +132,13 @@ public class Fingerprint {
 
 	public void setDateTime(String dateTime) {
 		this.dateTime = dateTime;
+	}
+	
+	public String getMathTan() {
+		return mathTan;
+	}
+
+	public void setMathTan(String mathTan) {
+		this.mathTan = mathTan;
 	}
 }

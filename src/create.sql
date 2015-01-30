@@ -15,6 +15,7 @@ CREATE TABLE `Samples` (
   `DoNotTrack` TEXT,
   `ClockDifference` BIGINT,
   `DateTime` TEXT,
+  `MathTan` TEXT,
   PRIMARY KEY(`SampleID`)
 )
 ENGINE=InnoDB;

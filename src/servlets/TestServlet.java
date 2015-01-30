@@ -68,6 +68,7 @@ public class TestServlet extends HttpServlet {
 		fingerprint.setFonts(request.getParameter("Fonts"));
 		fingerprint.setSuperCookie(request.getParameter("SuperCookie"));
 		fingerprint.setDateTime(request.getParameter("DateTime"));
+		fingerprint.setMathTan(request.getParameter("MathTan"));
 
 		{
 			long ourTime = new Date().getTime();
@@ -114,7 +115,6 @@ public class TestServlet extends HttpServlet {
 		Cookie cookies[] = request.getCookies();
 		if (cookies != null) {
 			fingerprint.setCookiesEnabled(true);
-
 		}
 		else {
 			fingerprint.setCookiesEnabled(false);

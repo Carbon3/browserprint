@@ -22,7 +22,7 @@ public class FingerprintDAO {
 	 * @return the threadID of the post if successful. Else returns null if the
 	 *         post doesn't exist or an error occurs.
 	 */
-	private static final String insertSampleStr = "INSERT INTO `Samples`(`UserAgent`, `AcceptHeaders`, `PluginDetails`, `TimeZone`, `ScreenDetails`, `Fonts`, `CookiesEnabled`, `SuperCookie`, `DoNotTrack`, `ClockDifference`, `DateTime`) VALUES(?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?);";
+	private static final String insertSampleStr = "INSERT INTO `Samples`(`UserAgent`, `AcceptHeaders`, `PluginDetails`, `TimeZone`, `ScreenDetails`, `Fonts`, `CookiesEnabled`, `SuperCookie`, `DoNotTrack`, `ClockDifference`, `DateTime`, `MathTan`) VALUES(?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?);";
 	private static final String getSampleCountStr = "SELECT COUNT(*) FROM `Samples`;";
 	private static final String getCookiesEnabledStr = "SELECT COUNT(*) FROM `Samples` WHERE `CookiesEnabled` = ?;";
 
@@ -112,6 +112,8 @@ public class FingerprintDAO {
 					getCharacteristicBean(conn, sampleCount, "Client/server time difference (minutes)", "ClockDifference", fingerprint.getClockDifference()));
 			characteristics.add(
 					getCharacteristicBean(conn, sampleCount, "Date/Time format", "DateTime", fingerprint.getDateTime()));
+			characteristics.add(
+					getCharacteristicBean(conn, sampleCount, "Math/Tan function", "MathTan", fingerprint.getMathTan()));
 
 			return currentSampleID;
 
@@ -155,6 +157,7 @@ public class FingerprintDAO {
 			insertSample.setNull(10, java.sql.Types.BIGINT);
 		}
 		insertSample.setString(11, fingerprint.getDateTime());
+		insertSample.setString(12, fingerprint.getMathTan());
 		
 		insertSample.execute();
 
@@ -193,6 +196,7 @@ public class FingerprintDAO {
 				+ " AND `DoNotTrack`" + (fingerprint.getDoNotTrack() == null ? " IS NULL" : " = ?")
 				+ " AND `ClockDifference`" + (fingerprint.getClockDifference() == null ? " IS NULL" : " = ?")
 				+ " AND `DateTime`" + (fingerprint.getDateTime() == null ? " IS NULL" : " = ?")
+				+ " AND `MathTan`" + (fingerprint.getMathTan() == null ? " IS NULL" : " = ?")
 				+ ";";
 		PreparedStatement checkExists = conn.prepareStatement(query);
 		checkExists.setInt(1, sampleID);
@@ -238,6 +242,10 @@ public class FingerprintDAO {
 		}
 		if (fingerprint.getDateTime() != null) {
 			checkExists.setString(index, fingerprint.getDateTime());
+			++index;
+		}
+		if (fingerprint.getMathTan() != null) {
+			checkExists.setString(index, fingerprint.getMathTan());
 			++index;
 		}
 
@@ -289,6 +297,7 @@ public class FingerprintDAO {
 				+ " AND `DoNotTrack`" + (fingerprint.getDoNotTrack() == null ? " IS NULL" : " = ?")
 				+ " AND `ClockDifference`" + (fingerprint.getClockDifference() == null ? " IS NULL" : " = ?")
 				+ " AND `DateTime`" + (fingerprint.getDateTime() == null ? " IS NULL" : " = ?")
+				+ " AND `MathTan`" + (fingerprint.getMathTan() == null ? " IS NULL" : " = ?")
 				+ ";";
 		PreparedStatement checkExists = conn.prepareStatement(query);
 
@@ -333,6 +342,10 @@ public class FingerprintDAO {
 		}
 		if (fingerprint.getDateTime() != null) {
 			checkExists.setString(index, fingerprint.getDateTime());
+			++index;
+		}
+		if (fingerprint.getMathTan() != null) {
+			checkExists.setString(index, fingerprint.getMathTan());
 			++index;
 		}
 

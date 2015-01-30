@@ -43,3 +43,8 @@ Additionally different browsers tend to return differently formatted results.
 For instance Opera returns the above whereas Firefox returns "1/1/1970 9:30:00 am" for the same date (UNIX epoch).
 Additionally timezone information may be revealed.
 For instance the above were taken on a computer configured for CST (+9:30), which is why the times shown aren't midnight.
+
+=== Math / Tan function ===
+The same math functions run on different platforms and browsers can produce different results.
+In particular we are interested in the output of Math.tan(-1e300), which has been observed to produce different values depending on operating system.
+For instance on a 64bit Linux machine it produces the value -1.4214488238747245 and on a Windows machine it produces the value -4.987183803371025.

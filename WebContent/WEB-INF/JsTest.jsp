@@ -57,6 +57,14 @@
     		value: getDateTime()
 		}).appendTo('#formdiv');
 		
+		//MathTan
+		$('<input>').attr({
+    		type: 'hidden',
+    		id: 'MathTan',
+    		name: 'MathTan',
+    		value: getMathTan()
+		}).appendTo('#formdiv');
+		
 		//Wait for a while before submitting the page.
 		//We do this to allow time for the Flash to detect and write the fonts out.
 		window.setTimeout(submitDetailsForm, 4000);
