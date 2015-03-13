@@ -1,50 +1,48 @@
-#summary A list of the tests implemented by Libre-Panopticlick.
-
-= Supported Tests =
+# Supported Tests
 Libre-Panopticlick implements the following tests:
 
-=== User Agent ===
+### User Agent
 The User-Agent header of the HTTP request.
 
-=== HTTP_ACCEPT Headers ===
+### HTTP\_ACCEPT Headers
 The concatenation of three headers from the HTTP request:
 the Accept request header, the Accept-Encoding request header, and the Accept-Language request header.
 
-=== Browser Plugin Details ===
-A list of the browsers installed plugins as detected using !JavaScript.
+### Browser Plugin Details
+A list of the browsers installed plugins as detected using JavaScript.
 
-=== Time Zone ===
+### Time Zone
 The time-zone configured on the client's machine.
 
-=== Screen Size and Color Depth ===
+### Screen Size and Color Depth
 The screen size and colour depth of the monitor displaying the client's web browser.
 
-=== System Fonts ===
+### System Fonts
 The fonts installed on the client's machine, detected using Flash.
 
-=== Are Cookies Enabled? ===
+### Are Cookies Enabled?
 Whether cookies are enabled.
 
-=== Limited supercookie test ===
+### Limited supercookie test
 Three tests of whether DOM storage is supported (and enabled) in the client's web browser.
 Tests for localStorage, sessionStorage, and Internet Explorer's userData.
 
-=== Do Not Track header ===
+### Do Not Track header
 The value of the DNT (Do Not Track) header from the HTTP request.
 
-=== Client/server time difference (minutes) ===
+### Client/server time difference (minutes)
 The approximate amount of difference between the time on the client's computer and the clock on the server.
 i.e., the clock on the client's computer is 5 minutes ahead of the clock on the server.
 
-=== Date/Time format test ===
-When the !JavaScript function toLocaleString() is called on a date it can reveal information about the language of the browser via the names of days and months.
+### Date/Time format test
+When the JavaScript function toLocaleString() is called on a date it can reveal information about the language of the browser via the names of days and months.
 For instance the output "Thursday January 01, 10:30:00 GMT+1030 1970" reveals that English is our configured language because "Thursday" is English.
 Additionally different browsers tend to return differently formatted results.
 For instance Opera returns the above whereas Firefox returns "1/1/1970 9:30:00 am" for the same date (UNIX epoch).
 Additionally timezone information may be revealed.
 For instance the above were taken on a computer configured for CST (+9:30), which is why the times shown aren't midnight.
 
-=== Math / Tan function ===
+### Math / Tan function
 The same math functions run on different platforms and browsers can produce different results.
 In particular we are interested in the output of Math.tan(-1e300), which has been observed to produce different values depending on operating system.
 For instance on a 64bit Linux machine it produces the value -1.4214488238747245 and on a Windows machine it produces the value -4.987183803371025.

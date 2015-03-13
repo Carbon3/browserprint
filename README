@@ -1,16 +1,14 @@
-#summary A quick overview of how to get the project up and running.
-
-= Installation =
+# Installation
 Here we give a quick overview of one way the project can be deployed.
 You need to have Apache Tomcat and MySQL installed for this to work.
 
- * Run the create.sql file found in the src directory through MySQL.
- * Copy the file libre-panopticlick.war to your Tomcat webapps directory.
- * Start Tomcat (`<`!TomcatDirectory`>`/bin/startup.sh). The .war file will be automatically unpacked by Tomcat.
- * Stop Tomcat (`<`!TomcatDirectory`>`/bin/shutdown.sh).
- * Delete the file libre-panopticlick.war from your webapps directory.
- * Edit libre-panopticlick/META-INFO/context.xml to fit your database.
- * Start Tomcat.
+  * Run the create.sql file found in the src directory through MySQL.
+  * Copy the file libre-panopticlick.war to your Tomcat webapps directory.
+  * Start Tomcat (`<`TomcatDirectory`>`/bin/startup.sh). The .war file will be automatically unpacked by Tomcat.
+  * Stop Tomcat (`<`TomcatDirectory`>`/bin/shutdown.sh).
+  * Delete the file libre-panopticlick.war from your webapps directory.
+  * Edit libre-panopticlick/META-INFO/context.xml to fit your database.
+  * Start Tomcat.
 
 The page can now be accessed at http://localhost:8080/libre-panopticlick/ (assuming default Tomcat settings).
 
