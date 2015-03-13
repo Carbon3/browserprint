@@ -1,3 +1,5 @@
+An open-source version of the EFF's Panopticlick. Is currently in beta. Basically functional but has room for improvement.
+
 # Installation
 Here we give a quick overview of one way the project can be deployed.
 You need to have Apache Tomcat and MySQL installed for this to work.
