@@ -22,9 +22,8 @@ public class FingerprintDAO {
 	 * @return the threadID of the post if successful. Else returns null if the
 	 *         post doesn't exist or an error occurs.
 	 */
-	private static final String insertSampleStr = "INSERT INTO `Samples`(`UserAgent`, `AcceptHeaders`, `PluginDetails`, `TimeZone`, `ScreenDetails`, `Fonts`, `CookiesEnabled`, `SuperCookie`, `DoNotTrack`, `ClockDifference`, `DateTime`, `MathTan`) VALUES(?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?);";
+	private static final String insertSampleStr = "INSERT INTO `Samples`(`UserAgent`, `AcceptHeaders`, `PluginDetails`, `TimeZone`, `ScreenDetails`, `Fonts`, `CookiesEnabled`, `SuperCookie`, `DoNotTrack`, `ClockDifference`, `DateTime`, `MathTan`, `UsingTor`) VALUES(?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?);";
 	private static final String getSampleCountStr = "SELECT COUNT(*) FROM `Samples`;";
-	private static final String getCookiesEnabledStr = "SELECT COUNT(*) FROM `Samples` WHERE `CookiesEnabled` = ?;";
 
 	private static final String NO_JAVASCRIPT = "no javascript";
 
@@ -98,7 +97,7 @@ public class FingerprintDAO {
 				characteristics.add(fonts);
 			}
 			characteristics.add(
-					getCookiesEnabledCB(conn, sampleCount, fingerprint.isCookiesEnabled()));
+					getCharacteristicBean(conn, sampleCount, "Are Cookies Enabled?", "CookiesEnabled", fingerprint.isCookiesEnabled()));
 			characteristics.add(
 					getCharacteristicBean(conn, sampleCount, "Limited supercookie test", "SuperCookie", fingerprint.getSuperCookie()));
 			{
@@ -114,6 +113,8 @@ public class FingerprintDAO {
 					getCharacteristicBean(conn, sampleCount, "Date/Time format", "DateTime", fingerprint.getDateTime()));
 			characteristics.add(
 					getCharacteristicBean(conn, sampleCount, "Math/Tan function", "MathTan", fingerprint.getMathTan()));
+			characteristics.add(
+					getCharacteristicBean(conn, sampleCount, "Using Tor?", "UsingTor", fingerprint.isUsingTor()));
 
 			return currentSampleID;
 
@@ -158,7 +159,8 @@ public class FingerprintDAO {
 		}
 		insertSample.setString(11, fingerprint.getDateTime());
 		insertSample.setString(12, fingerprint.getMathTan());
-		
+		insertSample.setBoolean(13, fingerprint.isUsingTor());
+
 		insertSample.execute();
 
 		ResultSet rs = insertSample.getGeneratedKeys();
@@ -197,6 +199,7 @@ public class FingerprintDAO {
 				+ " AND `ClockDifference`" + (fingerprint.getClockDifference() == null ? " IS NULL" : " = ?")
 				+ " AND `DateTime`" + (fingerprint.getDateTime() == null ? " IS NULL" : " = ?")
 				+ " AND `MathTan`" + (fingerprint.getMathTan() == null ? " IS NULL" : " = ?")
+				+ " AND `UsingTor` = ?"
 				+ ";";
 		PreparedStatement checkExists = conn.prepareStatement(query);
 		checkExists.setInt(1, sampleID);
@@ -248,6 +251,8 @@ public class FingerprintDAO {
 			checkExists.setString(index, fingerprint.getMathTan());
 			++index;
 		}
+		checkExists.setBoolean(index, fingerprint.isUsingTor());
+		++index;
 
 		ResultSet rs = checkExists.executeQuery();
 
@@ -298,6 +303,7 @@ public class FingerprintDAO {
 				+ " AND `ClockDifference`" + (fingerprint.getClockDifference() == null ? " IS NULL" : " = ?")
 				+ " AND `DateTime`" + (fingerprint.getDateTime() == null ? " IS NULL" : " = ?")
 				+ " AND `MathTan`" + (fingerprint.getMathTan() == null ? " IS NULL" : " = ?")
+				+ " AND `UsingTor` = ?"
 				+ ";";
 		PreparedStatement checkExists = conn.prepareStatement(query);
 
@@ -348,6 +354,8 @@ public class FingerprintDAO {
 			checkExists.setString(index, fingerprint.getMathTan());
 			++index;
 		}
+		checkExists.setBoolean(index, fingerprint.isUsingTor());
+		++index;
 
 		ResultSet rs = checkExists.executeQuery();
 
@@ -370,10 +378,10 @@ public class FingerprintDAO {
 	 * @return
 	 * @throws SQLException
 	 */
-	private static CharacteristicBean getCookiesEnabledCB(Connection conn, int num_samples, boolean value) throws SQLException {
+	private static CharacteristicBean getCharacteristicBean(Connection conn, int num_samples, String name, String dbname, boolean value) throws SQLException {
 		CharacteristicBean chrbean = new CharacteristicBean();
 
-		chrbean.setName("Are Cookies Enabled?");
+		chrbean.setName(name);
 		if (value) {
 			chrbean.setValue("Yes");
 		}
@@ -381,8 +389,10 @@ public class FingerprintDAO {
 			chrbean.setValue("No");
 		}
 
-		PreparedStatement getCount = conn.prepareStatement(getCookiesEnabledStr);
+		PreparedStatement getCount;
+		getCount = conn.prepareStatement("SELECT COUNT(*) FROM `Samples` WHERE `" + dbname + "` = ?");
 		getCount.setBoolean(1, value);
+
 		ResultSet rs = getCount.executeQuery();
 		rs.next();
 		int count = rs.getInt(1);

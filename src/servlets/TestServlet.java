@@ -10,6 +10,7 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import util.TorCheck;
 import DAOs.FingerprintDAO;
 import beans.CharacteristicBean;
 import beans.CharacteristicsBean;
@@ -128,6 +129,9 @@ public class TestServlet extends HttpServlet {
 		fingerprint.setUser_agent(request.getHeader("User-Agent"));
 		fingerprint.setAccept_headers(getAcceptHeadersString(request));
 		fingerprint.setDoNotTrack(request.getHeader("DNT"));
+		
+		fingerprint.setUsingTor(TorCheck.isUsingTor(request.getLocalAddr(), request.getLocalPort(), request.getRemoteAddr()) == true);
+		
 		Cookie cookies[] = request.getCookies();
 		if (cookies != null) {
 			fingerprint.setCookiesEnabled(true);

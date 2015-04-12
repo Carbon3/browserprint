@@ -16,6 +16,7 @@ CREATE TABLE `Samples` (
   `ClockDifference` BIGINT,
   `DateTime` TEXT,
   `MathTan` TEXT,
+  `UsingTor` BOOL NOT NULL,
   PRIMARY KEY(`SampleID`)
 )
 ENGINE=InnoDB;
