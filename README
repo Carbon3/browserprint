@@ -10,6 +10,7 @@ You need to have Apache Tomcat and MySQL installed for this to work.
   * Stop Tomcat (`<`TomcatDirectory`>`/bin/shutdown.sh).
   * Delete the file libre-panopticlick.war from your webapps directory.
   * Edit libre-panopticlick/META-INFO/context.xml to fit your database.
+  * Configure the server's public IP address as serversPublicIP in libre-panopticlick/WEB-INF/web.xml.
   * Start Tomcat.
 
 The page can now be accessed at http://localhost:8080/libre-panopticlick/ (assuming default Tomcat settings).

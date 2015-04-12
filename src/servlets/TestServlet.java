@@ -3,6 +3,7 @@ package servlets;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.Enumeration;
 
 import javax.servlet.ServletException;
 import javax.servlet.http.Cookie;
@@ -130,7 +131,9 @@ public class TestServlet extends HttpServlet {
 		fingerprint.setAccept_headers(getAcceptHeadersString(request));
 		fingerprint.setDoNotTrack(request.getHeader("DNT"));
 		
-		fingerprint.setUsingTor(TorCheck.isUsingTor(request.getLocalAddr(), request.getLocalPort(), request.getRemoteAddr()) == true);
+		fingerprint.setUsingTor(TorCheck.isUsingTor(
+				getServletContext().getInitParameter("serversPublicIP"),
+				request.getLocalPort(), request.getRemoteAddr()) == true);
 		
 		Cookie cookies[] = request.getCookies();
 		if (cookies != null) {

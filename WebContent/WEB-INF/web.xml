@@ -19,4 +19,13 @@
     <servlet-name>TestServlet</servlet-name>
     <url-pattern>/Test</url-pattern>
   </servlet-mapping>
+  <!--
+  	Set this to the server's public IP address.
+  	This parameter exists because if the server is configured with a private address available via port forwarding it makes the server's IP address appear as a private address
+  	 and hence the TorDNSEL request used to determine if a client is using Tor will always fail for most exit relays because most exit relays block the private IP address ranges. 
+   -->
+  <context-param>
+    <param-name>serversPublicIP</param-name>
+    <param-value>1.2.3.4</param-value>
+  </context-param>
 </web-app>
