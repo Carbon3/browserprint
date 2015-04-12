@@ -46,3 +46,7 @@ For instance the above were taken on a computer configured for CST (+9:30), whic
 The same math functions run on different platforms and browsers can produce different results.
 In particular we are interested in the output of Math.tan(-1e300), which has been observed to produce different values depending on operating system.
 For instance on a 64bit Linux machine it produces the value -1.4214488238747245 and on a Windows machine it produces the value -4.987183803371025.
+
+### Using Tor?
+Checks whether a client's request came from a Tor exit node, and hence whether they're using Tor.
+It does so by performing a TorDNSEL request for each client.
