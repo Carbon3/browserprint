@@ -88,6 +88,15 @@ public class TestServlet extends HttpServlet {
 		serveRequest(request, response, fingerprint);
 	}
 
+	/**
+	 * Finalise a request then forward it to the output page.
+	 * 
+	 * @param request
+	 * @param response
+	 * @param fingerprint
+	 * @throws ServletException
+	 * @throws IOException
+	 */
 	public void serveRequest(HttpServletRequest request, HttpServletResponse response, Fingerprint fingerprint) throws ServletException, IOException {
 		CharacteristicsBean chrsbean = new CharacteristicsBean();
 		CharacteristicBean uniquenessbean = new CharacteristicBean();
@@ -107,6 +116,13 @@ public class TestServlet extends HttpServlet {
 		request.getRequestDispatcher("/WEB-INF/Output.jsp").forward(request, response);
 	}
 
+	/**
+	 * Get the basic fingerprint of a request.
+	 * This consists of fingerprint properties that can be taken without JavaScript.
+	 * 
+	 * @param request
+	 * @return
+	 */
 	public Fingerprint getBasicFingerprint(HttpServletRequest request) {
 		Fingerprint fingerprint = new Fingerprint();
 		fingerprint.setUser_agent(request.getHeader("User-Agent"));
@@ -124,6 +140,13 @@ public class TestServlet extends HttpServlet {
 		return fingerprint;
 	}
 
+	/**
+	 * Get the sample IDs from a request.
+	 * Each sample ID represents a different fingerprint that was offered up by this browser in the past.
+	 * The browser keeps track of previous sample IDs to prevent double counting of fingerprints.
+	 * @param request
+	 * @return
+	 */
 	public ArrayList<Integer> getSampleIDs(HttpServletRequest request) {
 		Cookie cookies[] = request.getCookies();
 
@@ -153,6 +176,11 @@ public class TestServlet extends HttpServlet {
 		return sampleIDs;
 	}
 
+	/**
+	 * Save a set of sample IDs to a cookie in the HTTP response.
+	 * @param response
+	 * @param sampleIDs
+	 */
 	public void saveSampleIDs(HttpServletResponse response, ArrayList<Integer> sampleIDs) {
 		String sampleIDstr = "";
 		for (Integer sampleID : sampleIDs) {
@@ -163,6 +191,11 @@ public class TestServlet extends HttpServlet {
 		response.addCookie(sampleIdCookie);
 	}
 
+	/**
+	 * Get the accept headers of a request.
+	 * @param request
+	 * @return
+	 */
 	public String getAcceptHeadersString(HttpServletRequest request) {
 		return request.getHeader("accept") + " "
 				+ request.getHeader("accept-encoding") + " "
