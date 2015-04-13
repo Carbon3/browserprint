@@ -19,7 +19,7 @@ public class TorCheck {
 	 *            IP address of alleged exit relay.
 	 * @return
 	 */
-	public static Boolean isUsingTor(String localIP, int localPort, String exitIP) {
+	public static Boolean isUsingTor(String localIP, int localPort, String exitIP, String DNSELServer) {
 		/*
 		 * Reverse both IP addresses
 		 */
@@ -31,7 +31,7 @@ public class TorCheck {
 		 */
 		Process proc;
 		try {
-			proc = Runtime.getRuntime().exec("dig " + reversedExitIP + "." + localPort + "." + reversedMyIP + ".ip-port.exitlist.torproject.org");
+			proc = Runtime.getRuntime().exec("dig " + reversedExitIP + "." + localPort + "." + reversedMyIP + ".ip-port.exitlist." + DNSELServer);
 		} catch (IOException e) {
 			// e.printStackTrace();
 			return null;
@@ -52,7 +52,7 @@ public class TorCheck {
 					/*
 					 * Check that DNSEL returned 127.0.0.2, indicating that there is an exit node at that address that allows us to contact our local address / port.
 					 */
-					Pattern p = Pattern.compile("^" + reversedExitIP + "." + localPort + "." + reversedMyIP + ".ip-port.exitlist.torproject.org. \\d+ IN A 127.0.0.2$");
+					Pattern p = Pattern.compile("^" + reversedExitIP + "." + localPort + "." + reversedMyIP + ".ip-port.exitlist." + DNSELServer + ". \\d+ IN A 127.0.0.2$");
 					if (p.matcher(line).matches()) {
 						retval = true;
 						break;
@@ -83,12 +83,14 @@ public class TorCheck {
 
 	/**
 	 * Test the checker.
+	 * 
 	 * @param args
 	 */
 	public static void main(String args[]) {
 		String myIP = "1.2.3.5";
 		String exitIP = "27.124.124.122";
+		String DNSELServer = "torproject.org";
 
-		System.out.println("Using Tor? " + isUsingTor(myIP, 443, exitIP));
+		System.out.println("Using Tor? " + isUsingTor(myIP, 443, exitIP, DNSELServer));
 	}
 }

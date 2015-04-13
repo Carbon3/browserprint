@@ -78,11 +78,11 @@ public class TestServlet extends HttpServlet {
 			try {
 				theirTime = Long.parseLong(request.getParameter("Time"));
 			} catch (NumberFormatException ex) {
-				//Difference of 0.
+				// Difference of 0.
 				theirTime = ourTime;
 			}
-			
-			//Get how many minutes our times differ by.
+
+			// Get how many minutes our times differ by.
 			long difference = (ourTime - theirTime) / (1000 * 60);
 			fingerprint.setClockDifference(difference);
 		}
@@ -130,11 +130,13 @@ public class TestServlet extends HttpServlet {
 		fingerprint.setUser_agent(request.getHeader("User-Agent"));
 		fingerprint.setAccept_headers(getAcceptHeadersString(request));
 		fingerprint.setDoNotTrack(request.getHeader("DNT"));
-		
+
 		fingerprint.setUsingTor(TorCheck.isUsingTor(
 				getServletContext().getInitParameter("serversPublicIP"),
-				request.getLocalPort(), request.getRemoteAddr()) == true);
-		
+				request.getLocalPort(), request.getRemoteAddr(),
+				getServletContext().getInitParameter("TorDNSELServer")
+				) == true);
+
 		Cookie cookies[] = request.getCookies();
 		if (cookies != null) {
 			fingerprint.setCookiesEnabled(true);
@@ -151,6 +153,7 @@ public class TestServlet extends HttpServlet {
 	 * Get the sample IDs from a request.
 	 * Each sample ID represents a different fingerprint that was offered up by this browser in the past.
 	 * The browser keeps track of previous sample IDs to prevent double counting of fingerprints.
+	 * 
 	 * @param request
 	 * @return
 	 */
@@ -185,6 +188,7 @@ public class TestServlet extends HttpServlet {
 
 	/**
 	 * Save a set of sample IDs to a cookie in the HTTP response.
+	 * 
 	 * @param response
 	 * @param sampleIDs
 	 */
@@ -200,6 +204,7 @@ public class TestServlet extends HttpServlet {
 
 	/**
 	 * Get the accept headers of a request.
+	 * 
 	 * @param request
 	 * @return
 	 */

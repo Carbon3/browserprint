@@ -28,4 +28,12 @@
     <param-name>serversPublicIP</param-name>
     <param-value>1.2.3.4</param-value>
   </context-param>
+  <!--
+  	The TorDNSEL server we want to use for the Using Tor? test.
+  	Configurable in case you want to set up your own rather than using the Tor Project's. 
+   -->
+  <context-param>
+    <param-name>TorDNSELServer</param-name>
+    <param-value>torproject.org</param-value>
+  </context-param>
 </web-app>
