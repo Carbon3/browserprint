@@ -52,7 +52,7 @@ public class TorCheck {
 					/*
 					 * Check that DNSEL returned 127.0.0.2, indicating that there is an exit node at that address that allows us to contact our local address / port.
 					 */
-					Pattern p = Pattern.compile("^" + reversedExitIP + "." + localPort + "." + reversedMyIP + ".ip-port.exitlist." + DNSELServer + ". \\d+ IN A 127.0.0.2$");
+					Pattern p = Pattern.compile("^" + reversedExitIP + "." + localPort + "." + reversedMyIP + ".ip-port.exitlist." + DNSELServer + ". \\d+\\s+IN\\s+A\\s+127.0.0.2$");
 					if (p.matcher(line).matches()) {
 						retval = true;
 						break;
