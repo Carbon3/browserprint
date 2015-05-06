@@ -8,19 +8,17 @@ import javax.servlet.FilterConfig;
 import javax.servlet.ServletException;
 import javax.servlet.ServletRequest;
 import javax.servlet.ServletResponse;
-import javax.servlet.http.Cookie;
-import javax.servlet.http.HttpServletResponse;
 
 /**
  * Servlet Filter implementation class CookieFilter.
- * Creates a cookie that's used to test whether cookies are enabled.
+ * Sets the character encoding of the request to UTF-8.
  */
-public class CookieFilter implements Filter {
+public class UTF8Filter implements Filter {
 
 	/**
 	 * Default constructor.
 	 */
-	public CookieFilter() {
+	public UTF8Filter() {
 		// TODO Auto-generated constructor stub
 	}
 
@@ -42,8 +40,7 @@ public class CookieFilter implements Filter {
 	 * @see Filter#doFilter(ServletRequest, ServletResponse, FilterChain)
 	 */
 	public void doFilter(ServletRequest request, ServletResponse response, FilterChain chain) throws IOException, ServletException {
-		Cookie cookie = new Cookie("cookies_enabled", "true");
-		((HttpServletResponse)response).addCookie(cookie);
+		request.setCharacterEncoding("UTF-8");
 
 		// pass the request along the filter chain
 		chain.doFilter(request, response);

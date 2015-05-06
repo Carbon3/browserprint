@@ -1,39 +1,53 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<web-app xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns="http://java.sun.com/xml/ns/javaee" xsi:schemaLocation="http://java.sun.com/xml/ns/javaee http://java.sun.com/xml/ns/javaee/web-app_3_0.xsd" id="WebApp_ID" version="3.0">
-  <display-name>Panopticlick</display-name>
-  <welcome-file-list>
-    <welcome-file>index.html</welcome-file>
-    <welcome-file>index.htm</welcome-file>
-    <welcome-file>index.jsp</welcome-file>
-    <welcome-file>default.html</welcome-file>
-    <welcome-file>default.htm</welcome-file>
-    <welcome-file>default.jsp</welcome-file>
-  </welcome-file-list>
-  <servlet>
-    <description></description>
-    <display-name>TestServlet</display-name>
-    <servlet-name>TestServlet</servlet-name>
-    <servlet-class>servlets.TestServlet</servlet-class>
-  </servlet>
-  <servlet-mapping>
-    <servlet-name>TestServlet</servlet-name>
-    <url-pattern>/Test</url-pattern>
-  </servlet-mapping>
-  <!--
-  	Set this to the server's public IP address.
-  	This parameter exists because if the server is configured with a private address available via port forwarding it makes the server's IP address appear as a private address
-  	 and hence the TorDNSEL request used to determine if a client is using Tor will always fail for most exit relays because most exit relays block the private IP address ranges. 
-   -->
-  <context-param>
-    <param-name>serversPublicIP</param-name>
-    <param-value>1.2.3.4</param-value>
-  </context-param>
-  <!--
-  	The TorDNSEL server we want to use for the Using Tor? test.
-  	Configurable in case you want to set up your own rather than using the Tor Project's. 
-   -->
-  <context-param>
-    <param-name>TorDNSELServer</param-name>
-    <param-value>torproject.org</param-value>
-  </context-param>
+<web-app xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xmlns="http://java.sun.com/xml/ns/javaee"
+	xsi:schemaLocation="http://java.sun.com/xml/ns/javaee http://java.sun.com/xml/ns/javaee/web-app_3_0.xsd"
+	id="WebApp_ID" version="3.0">
+	<display-name>Panopticlick</display-name>
+	<welcome-file-list>
+		<welcome-file>index.jsp</welcome-file>
+	</welcome-file-list>
+	<servlet>
+		<description></description>
+		<display-name>TestServlet</display-name>
+		<servlet-name>TestServlet</servlet-name>
+		<servlet-class>servlets.TestServlet</servlet-class>
+	</servlet>
+	<servlet-mapping>
+		<servlet-name>TestServlet</servlet-name>
+		<url-pattern>/Test</url-pattern>
+	</servlet-mapping>
+	<!-- Set up the filters -->
+	<filter>
+		<filter-name>UTF8Filter</filter-name>
+		<filter-class>filters.UTF8Filter</filter-class>
+	</filter>
+	<filter-mapping>
+		<filter-name>UTF8Filter</filter-name>
+		<url-pattern>/*</url-pattern>
+	</filter-mapping>
+	<filter>
+		<filter-name>CookieFilter</filter-name>
+		<filter-class>filters.CookieFilter</filter-class>
+	</filter>
+	<filter-mapping>
+		<filter-name>CookieFilter</filter-name>
+		<url-pattern>/*</url-pattern>
+	</filter-mapping>
+	<!-- Set this to the server's public IP address. This parameter exists because 
+		if the server is configured with a private address available via port forwarding 
+		it makes the server's IP address appear as a private address and hence the 
+		TorDNSEL request used to determine if a client is using Tor will always fail 
+		for most exit relays because most exit relays block the private IP address 
+		ranges. -->
+	<context-param>
+		<param-name>serversPublicIP</param-name>
+		<param-value>1.2.3.4</param-value>
+	</context-param>
+	<!-- The TorDNSEL server we want to use for the Using Tor? test. Configurable 
+		in case you want to set up your own rather than using the Tor Project's. -->
+	<context-param>
+		<param-name>TorDNSELServer</param-name>
+		<param-value>torproject.org</param-value>
+	</context-param>
 </web-app>
