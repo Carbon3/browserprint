@@ -18,3 +18,21 @@ td,th{
 td.tableValue{
 	font-size: 0.9em;
 }
+
+#content{
+	margin: 0 auto;
+	text-align: left;
+	width: 500px;
+}
+
+#testLink{
+	text-align: center;
+}
+
+#footer{
+	padding-top: 20px;
+	margin: 0 auto;
+	width: 600px;
+	font-size: 0.8em;
+	text-align: center;
+}

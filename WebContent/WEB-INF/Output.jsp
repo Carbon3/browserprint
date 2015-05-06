@@ -13,7 +13,7 @@
 </head>
 <body>
 	<p>
-		<a href="index.html">Back</a>
+		<a href=".">Back</a>
 	</p>
 	<p><c:choose><c:when test='${ uniquessbean.value.equals("unique") }'>
 		Your browser fingerprint <strong>appears to be unique</strong> among the <fmt:formatNumber value="${ uniquessbean.inX }" maxFractionDigits="0"/> tested so far.
@@ -40,5 +40,6 @@
 			<td class="tableValue">${ chr.value }</td>
 		</tr></c:forEach>
 	</table>
+<%@include file="footer.html" %>
 </body>
 </html>
