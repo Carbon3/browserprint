@@ -22,9 +22,10 @@
 		<filter-name>UTF8Filter</filter-name>
 		<filter-class>filters.UTF8Filter</filter-class>
 	</filter>
-	<filter-mapping>
+	<filter-mapping>	
 		<filter-name>UTF8Filter</filter-name>
 		<url-pattern>/*</url-pattern>
+		<dispatcher>REQUEST</dispatcher>
 	</filter-mapping>
 	<filter>
 		<filter-name>CookieFilter</filter-name>
@@ -33,6 +34,7 @@
 	<filter-mapping>
 		<filter-name>CookieFilter</filter-name>
 		<url-pattern>/*</url-pattern>
+		<dispatcher>REQUEST</dispatcher>
 	</filter-mapping>
 	<!-- Set this to the server's public IP address. This parameter exists because 
 		if the server is configured with a private address available via port forwarding 
