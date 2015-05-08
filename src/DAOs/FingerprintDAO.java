@@ -79,42 +79,101 @@ public class FingerprintDAO {
 			 * Get each characteristic.
 			 */
 			ArrayList<CharacteristicBean> characteristics = chrsbean.getCharacteristics();
-			characteristics.add(
-					getCharacteristicBean(conn, sampleCount, "User Agent", "UserAgent", fingerprint.getUser_agent()));
-			characteristics.add(
-					getCharacteristicBean(conn, sampleCount, "HTTP_ACCEPT Headers", "AcceptHeaders", fingerprint.getAccept_headers()));
-			characteristics.add(
-					getCharacteristicBean(conn, sampleCount, "Browser Plugin Details", "PluginDetails", fingerprint.getPluginDetails()));
-			characteristics.add(
-					getCharacteristicBean(conn, sampleCount, "Time Zone", "TimeZone", fingerprint.getTimeZone()));
-			characteristics.add(
-					getCharacteristicBean(conn, sampleCount, "Screen Size and Color Depth", "ScreenDetails", fingerprint.getScreenDetails()));
 			{
-				CharacteristicBean fonts = getCharacteristicBean(conn, sampleCount, "System Fonts", "Fonts", fingerprint.getFonts());
-				if (fonts.getValue().equals("")) {
-					fonts.setValue("No fonts detected");
-				}
-				characteristics.add(fonts);
+				CharacteristicBean bean = getCharacteristicBean(conn, sampleCount, "UserAgent", fingerprint.getUser_agent());
+				bean.setName("User Agent");
+				bean.setNameHoverText("The User-Agent header sent with the HTTP request for the page.");
+				characteristics.add(bean);
 			}
-			characteristics.add(
-					getCharacteristicBean(conn, sampleCount, "Are Cookies Enabled?", "CookiesEnabled", fingerprint.isCookiesEnabled()));
-			characteristics.add(
-					getCharacteristicBean(conn, sampleCount, "Limited supercookie test", "SuperCookie", fingerprint.getSuperCookie()));
 			{
-				CharacteristicBean doNotTrack = getCharacteristicBean(conn, sampleCount, "Do Not Track header", "DoNotTrack", fingerprint.getDoNotTrack());
-				if (doNotTrack.getValue().equals(NO_JAVASCRIPT)) {
-					doNotTrack.setValue("No preference");
-				}
-				characteristics.add(doNotTrack);
+				CharacteristicBean bean = getCharacteristicBean(conn, sampleCount, "AcceptHeaders", fingerprint.getAccept_headers());
+				bean.setName("HTTP_ACCEPT Headers");
+				bean.setNameHoverText("The concatenation of three headers from the HTTP request:"
+						+ " The Accept request header, the Accept-Encoding request header, and the Accept-Language request header.");
+				characteristics.add(bean);
 			}
-			characteristics.add(
-					getCharacteristicBean(conn, sampleCount, "Client/server time difference (minutes)", "ClockDifference", fingerprint.getClockDifference()));
-			characteristics.add(
-					getCharacteristicBean(conn, sampleCount, "Date/Time format", "DateTime", fingerprint.getDateTime()));
-			characteristics.add(
-					getCharacteristicBean(conn, sampleCount, "Math/Tan function", "MathTan", fingerprint.getMathTan()));
-			characteristics.add(
-					getCharacteristicBean(conn, sampleCount, "Using Tor?", "UsingTor", fingerprint.isUsingTor()));
+			{
+				CharacteristicBean bean = getCharacteristicBean(conn, sampleCount, "PluginDetails", fingerprint.getPluginDetails());
+				bean.setName("Browser Plugin Details");
+				bean.setNameHoverText("A list of the browsers installed plugins as detected using JavaScript.");
+				characteristics.add(bean);
+			}
+			{
+				CharacteristicBean bean = getCharacteristicBean(conn, sampleCount, "TimeZone", fingerprint.getTimeZone());
+				bean.setName("Time Zone");
+				bean.setNameHoverText("The time-zone configured on the client's machine.");
+				characteristics.add(bean);
+			}
+			{
+				CharacteristicBean bean = getCharacteristicBean(conn, sampleCount, "ScreenDetails", fingerprint.getScreenDetails());
+				bean.setName("Screen Size and Color Depth");
+				bean.setNameHoverText("The screen size and colour depth of the monitor displaying the client's web browser.");
+				characteristics.add(bean);
+			}
+			{
+				CharacteristicBean bean = getCharacteristicBean(conn, sampleCount, "Fonts", fingerprint.getFonts());
+				if (bean.getValue().equals("")) {
+					bean.setValue("No fonts detected");
+				}
+				bean.setName("System Fonts");
+				bean.setNameHoverText("The fonts installed on the client's machine, detected using Flash.");
+				characteristics.add(bean);
+			}
+			{
+				CharacteristicBean bean = getCharacteristicBean(conn, sampleCount, "CookiesEnabled", fingerprint.isCookiesEnabled());
+				bean.setName("Are Cookies Enabled?");
+				bean.setNameHoverText("Whether cookies are enabled.");
+				characteristics.add(bean);
+			}
+			{
+				CharacteristicBean bean = getCharacteristicBean(conn, sampleCount, "SuperCookie", fingerprint.getSuperCookie());
+				bean.setName("Limited supercookie test");
+				bean.setNameHoverText("Three tests of whether DOM storage is supported (and enabled) in the client's web browser."
+						+ " Tests for localStorage, sessionStorage, and Internet Explorer's userData.");
+				characteristics.add(bean);
+			}
+			{
+				CharacteristicBean bean = getCharacteristicBean(conn, sampleCount, "DoNotTrack", fingerprint.getDoNotTrack());
+				if (bean.getValue().equals(NO_JAVASCRIPT)) {
+					bean.setValue("No preference");
+				}
+				bean.setName("Do Not Track header");
+				bean.setNameHoverText("The value of the DNT (Do Not Track) header from the HTTP request.");
+				characteristics.add(bean);
+			}
+			{
+				CharacteristicBean bean = getCharacteristicBean(conn, sampleCount, "ClockDifference", fingerprint.getClockDifference());
+				bean.setName("Client/server time difference (minutes)");
+				bean.setNameHoverText("The approximate amount of difference between the time on the client's computer and the clock on the server."
+						+ " i.e., the clock on the client's computer is 5 minutes ahead of the clock on the server.");
+				characteristics.add(bean);
+			}
+			{
+				CharacteristicBean bean = getCharacteristicBean(conn, sampleCount, "DateTime", fingerprint.getDateTime());
+				bean.setName("Date/Time format");
+				bean.setNameHoverText("When the JavaScript function toLocaleString() is called on a date it can reveal information about the language of the browser via the names of days and months."
+						+ " For instance the output 'Thursday January 01, 10:30:00 GMT+1030 1970' reveals that English is our configured language because 'Thursday' is English."
+						+ " Additionally different browsers tend to return differently formatted results."
+						+ " For instance Opera returns the above whereas Firefox returns '1/1/1970 9:30:00 am' for the same date (UNIX epoch)."
+						+ " Additionally timezone information may be revealed."
+						+ " For instance the above were taken on a computer configured for CST (+9:30), which is why the times shown aren't midnight.");
+				characteristics.add(bean);
+			}
+			{
+				CharacteristicBean bean = getCharacteristicBean(conn, sampleCount, "MathTan", fingerprint.getMathTan());
+				bean.setName("Math/Tan function");
+				bean.setNameHoverText("The same math functions run on different platforms and browsers can produce different results."
+						+ " In particular we are interested in the output of Math.tan(-1e300), which has been observed to produce different values depending on operating system."
+						+ " For instance on a 64bit Linux machine it produces the value -1.4214488238747245 and on a Windows machine it produces the value -4.987183803371025.");
+				characteristics.add(bean);
+			}
+			{
+				CharacteristicBean bean = getCharacteristicBean(conn, sampleCount, "UsingTor", fingerprint.isUsingTor());
+				bean.setName("Using Tor?");
+				bean.setNameHoverText("Checks whether a client's request came from a Tor exit node, and hence whether they're using Tor."
+						+ " It does so by performing a TorDNSEL request for each client.");
+				characteristics.add(bean);
+			}
 
 			return currentSampleID;
 
@@ -378,10 +437,9 @@ public class FingerprintDAO {
 	 * @return
 	 * @throws SQLException
 	 */
-	private static CharacteristicBean getCharacteristicBean(Connection conn, int num_samples, String name, String dbname, boolean value) throws SQLException {
+	private static CharacteristicBean getCharacteristicBean(Connection conn, int num_samples, String dbname, boolean value) throws SQLException {
 		CharacteristicBean chrbean = new CharacteristicBean();
 
-		chrbean.setName(name);
 		if (value) {
 			chrbean.setValue("Yes");
 		}
@@ -416,10 +474,8 @@ public class FingerprintDAO {
 	 * @return
 	 * @throws SQLException
 	 */
-	private static CharacteristicBean getCharacteristicBean(Connection conn, int num_samples, String name, String dbname, String value) throws SQLException {
+	private static CharacteristicBean getCharacteristicBean(Connection conn, int num_samples, String dbname, String value) throws SQLException {
 		CharacteristicBean chrbean = new CharacteristicBean();
-
-		chrbean.setName(name);
 
 		PreparedStatement getCount;
 		String querystr = "SELECT COUNT(*) FROM `Samples` WHERE `" + dbname + "`";
@@ -459,10 +515,8 @@ public class FingerprintDAO {
 	 * @return
 	 * @throws SQLException
 	 */
-	private static CharacteristicBean getCharacteristicBean(Connection conn, int num_samples, String name, String dbname, Long value) throws SQLException {
+	private static CharacteristicBean getCharacteristicBean(Connection conn, int num_samples, String dbname, Long value) throws SQLException {
 		CharacteristicBean chrbean = new CharacteristicBean();
-
-		chrbean.setName(name);
 
 		PreparedStatement getCount;
 		String querystr = "SELECT COUNT(*) FROM `Samples` WHERE `" + dbname + "`";

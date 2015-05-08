@@ -34,7 +34,7 @@
 			<th>value</th>
 		</tr>
 		<c:forEach var="chr" items="${ chrBean.characteristics }"><tr>
-			<td>${ chr.name }</td>
+			<td class="hovertext" title="${ chr.nameHoverText }">${ chr.name }</td>
 			<td><fmt:formatNumber value="${ chr.bits }" maxFractionDigits="2"/></td>
 			<td><fmt:formatNumber value="${ chr.inX }" maxFractionDigits="2"/></td>
 			<td class="tableValue">${ chr.value }</td>

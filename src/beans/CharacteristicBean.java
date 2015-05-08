@@ -2,12 +2,14 @@ package beans;
 
 public class CharacteristicBean {
 	private String name;
+	private String nameHoverText;
 	private double bits;
 	private double inX;
 	private String value;
 
 	public CharacteristicBean(){
 		name = "";
+		nameHoverText = "";
 		bits = 0;
 		inX = 0;
 		value = "";
@@ -19,6 +21,14 @@ public class CharacteristicBean {
 
 	public void setName(String name) {
 		this.name = name;
+	}
+	
+	public String getNameHoverText() {
+		return nameHoverText;
+	}
+
+	public void setNameHoverText(String nameHoverText) {
+		this.nameHoverText = nameHoverText;
 	}
 
 	public double getBits() {
