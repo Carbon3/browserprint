@@ -40,3 +40,7 @@ td.tableValue{
 .hovertext{
 	cursor: help;
 }
+
+.hovertext:hover{
+	text-decoration:underline;
+}
