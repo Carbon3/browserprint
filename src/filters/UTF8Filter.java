@@ -40,6 +40,7 @@ public class UTF8Filter implements Filter {
 	 * @see Filter#doFilter(ServletRequest, ServletResponse, FilterChain)
 	 */
 	public void doFilter(ServletRequest request, ServletResponse response, FilterChain chain) throws IOException, ServletException {
+		//response.setContentType("text/html; charset=UTF-8");
 		request.setCharacterEncoding("UTF-8");
 
 		// pass the request along the filter chain
