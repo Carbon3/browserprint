@@ -1,6 +1,7 @@
 package servlets;
 
 import java.io.IOException;
+import java.io.UnsupportedEncodingException;
 import java.util.ArrayList;
 import java.util.Date;
 
@@ -111,6 +112,10 @@ public class TestServlet extends HttpServlet {
 		fingerprint.getSampleIDs().add(sampleID);
 		saveSampleIDs(response, fingerprint.getSampleIDs());
 
+		String tmp = request.getHeader("User-Agent");
+		String valueAsUTF8 = new String(tmp.getBytes("ISO8859-1"), "UTF-8");
+		System.out.println(valueAsUTF8);
+
 		/*
 		 * Forward to the output page.
 		 */
@@ -126,10 +131,10 @@ public class TestServlet extends HttpServlet {
 	 */
 	public Fingerprint getBasicFingerprint(HttpServletRequest request) {
 		Fingerprint fingerprint = new Fingerprint();
-		fingerprint.setUser_agent(request.getHeader("User-Agent"));
-		fingerprint.setAccept_headers(getAcceptHeadersString(request));
-		fingerprint.setDoNotTrack(request.getHeader("DNT"));
 
+		fingerprint.setUser_agent(getUserAgentHeaderString(request));
+		fingerprint.setAccept_headers(getAcceptHeadersString(request));
+		fingerprint.setDoNotTrack(getDoNotTrackHeaderString(request));
 		fingerprint.setUsingTor(TorCheck.isUsingTor(
 				getServletContext().getInitParameter("serversPublicIP"),
 				request.getLocalPort(), request.getRemoteAddr(),
@@ -202,14 +207,58 @@ public class TestServlet extends HttpServlet {
 	}
 
 	/**
+	 * Get the User-Agent string of a request.
+	 * 
+	 * @param request
+	 * @return
+	 */
+	public String getUserAgentHeaderString(HttpServletRequest request) {
+		String useragent;
+		try {
+			// We get the header in this more long-winded way so that it may have unicode characters in it, such as Chinese.
+			useragent = new String(request.getHeader("User-Agent").getBytes("ISO8859-1"), "UTF-8");
+		} catch (UnsupportedEncodingException e) {
+			// Fallback to regular method.
+			useragent = request.getHeader("User-Agent");
+		}
+		return useragent;
+	}
+
+	/**
 	 * Get the accept headers of a request.
 	 * 
 	 * @param request
 	 * @return
 	 */
 	public String getAcceptHeadersString(HttpServletRequest request) {
-		return request.getHeader("accept") + " "
-				+ request.getHeader("accept-encoding") + " "
-				+ request.getHeader("accept-language");
+		try {
+			// We get the headers this more long-winded way so that they may have unicode characters inside them.
+			return new String(request.getHeader("accept").getBytes("ISO8859-1"), "UTF-8") + " "
+					+ new String(request.getHeader("accept-encoding").getBytes("ISO8859-1"), "UTF-8") + " "
+					+ new String(request.getHeader("accept-language").getBytes("ISO8859-1"), "UTF-8");
+		} catch (UnsupportedEncodingException e) {
+			// Fallback to regular method.
+			return request.getHeader("accept") + " "
+					+ request.getHeader("accept-encoding") + " "
+					+ request.getHeader("accept-language");
+		}
+	}
+
+	/**
+	 * Get the DNT header string of a request.
+	 * 
+	 * @param request
+	 * @return
+	 */
+	public String getDoNotTrackHeaderString(HttpServletRequest request) {
+		String dnt;
+		try {
+			// We get the header in this more long-winded way so that it may have unicode characters in it, such as Chinese.
+			dnt = new String(request.getHeader("DNT").getBytes("ISO8859-1"), "UTF-8");
+		} catch (UnsupportedEncodingException e) {
+			// Fallback to regular method.
+			dnt = request.getHeader("DNT");
+		}
+		return dnt;
 	}
 }
