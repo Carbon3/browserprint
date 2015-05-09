@@ -112,10 +112,6 @@ public class TestServlet extends HttpServlet {
 		fingerprint.getSampleIDs().add(sampleID);
 		saveSampleIDs(response, fingerprint.getSampleIDs());
 
-		String tmp = request.getHeader("User-Agent");
-		String valueAsUTF8 = new String(tmp.getBytes("ISO8859-1"), "UTF-8");
-		System.out.println(valueAsUTF8);
-
 		/*
 		 * Forward to the output page.
 		 */
