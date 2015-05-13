@@ -229,16 +229,31 @@ public class TestServlet extends HttpServlet {
 	 * @return
 	 */
 	public String getAcceptHeadersString(HttpServletRequest request) {
+		String accept = request.getHeader("accept");
+		if(accept == null){
+			accept = "";
+		}
+		
+		String accept_encoding = request.getHeader("accept-encoding");
+		if(accept_encoding == null){
+			accept_encoding = "";
+		}
+		
+		String accept_language = request.getHeader("accept-language");
+		if(accept_language == null){
+			accept_language = "";
+		}
+		
 		try {
 			// We get the headers this more long-winded way so that they may have unicode characters inside them.
-			return new String(request.getHeader("accept").getBytes("ISO8859-1"), "UTF-8") + " "
-					+ new String(request.getHeader("accept-encoding").getBytes("ISO8859-1"), "UTF-8") + " "
-					+ new String(request.getHeader("accept-language").getBytes("ISO8859-1"), "UTF-8");
-		} catch (Exception e) {
+			return new String(accept.getBytes("ISO8859-1"), "UTF-8") + " "
+					+ new String(accept_encoding.getBytes("ISO8859-1"), "UTF-8") + " "
+					+ new String(accept_language.getBytes("ISO8859-1"), "UTF-8");
+		} catch (UnsupportedEncodingException e) {
 			// Fallback to regular method.
-			return request.getHeader("accept") + " "
-					+ request.getHeader("accept-encoding") + " "
-					+ request.getHeader("accept-language");
+			return accept + " "
+					+ accept_encoding + " "
+					+ accept_language;
 		}
 	}
 
