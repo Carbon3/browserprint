@@ -133,9 +133,11 @@ public class TestServlet extends HttpServlet {
 		fingerprint.setDoNotTrack(getDoNotTrackHeaderString(request));
 		fingerprint.setUsingTor(TorCheck.isUsingTor(
 				getServletContext().getInitParameter("serversPublicIP"),
-				request.getLocalPort(), request.getRemoteAddr(),
+				request.getLocalPort(),
+				request.getRemoteAddr(),
 				getServletContext().getInitParameter("TorDNSELServer")
 				) == true);
+		fingerprint.setIpAddress(request.getRemoteAddr());
 
 		Cookie cookies[] = request.getCookies();
 		if (cookies != null) {
@@ -213,7 +215,7 @@ public class TestServlet extends HttpServlet {
 		try {
 			// We get the header in this more long-winded way so that it may have unicode characters in it, such as Chinese.
 			useragent = new String(request.getHeader("User-Agent").getBytes("ISO8859-1"), "UTF-8");
-		} catch (UnsupportedEncodingException e) {
+		} catch (Exception e) {
 			// Fallback to regular method.
 			useragent = request.getHeader("User-Agent");
 		}
@@ -232,7 +234,7 @@ public class TestServlet extends HttpServlet {
 			return new String(request.getHeader("accept").getBytes("ISO8859-1"), "UTF-8") + " "
 					+ new String(request.getHeader("accept-encoding").getBytes("ISO8859-1"), "UTF-8") + " "
 					+ new String(request.getHeader("accept-language").getBytes("ISO8859-1"), "UTF-8");
-		} catch (UnsupportedEncodingException e) {
+		} catch (Exception e) {
 			// Fallback to regular method.
 			return request.getHeader("accept") + " "
 					+ request.getHeader("accept-encoding") + " "
@@ -251,7 +253,7 @@ public class TestServlet extends HttpServlet {
 		try {
 			// We get the header in this more long-winded way so that it may have unicode characters in it, such as Chinese.
 			dnt = new String(request.getHeader("DNT").getBytes("ISO8859-1"), "UTF-8");
-		} catch (UnsupportedEncodingException e) {
+		} catch (Exception e) {
 			// Fallback to regular method.
 			dnt = request.getHeader("DNT");
 		}

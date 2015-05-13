@@ -23,6 +23,7 @@ public class Fingerprint {
 	private String mathTan;
 
 	private boolean usingTor;
+	private String ipAddress;
 
 	public Fingerprint() {
 		sampleIDs = null;
@@ -39,6 +40,7 @@ public class Fingerprint {
 		dateTime = null;
 		mathTan = null;
 		usingTor = false;
+		ipAddress = null;
 	}
 
 	public ArrayList<Integer> getSampleIDs() {
@@ -151,5 +153,13 @@ public class Fingerprint {
 
 	public void setUsingTor(boolean usingTor) {
 		this.usingTor = usingTor;
+	}
+
+	public String getIpAddress() {
+		return ipAddress;
+	}
+
+	public void setIpAddress(String ipAddress) {
+		this.ipAddress = ipAddress;
 	}
 }

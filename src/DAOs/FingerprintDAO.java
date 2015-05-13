@@ -22,7 +22,7 @@ public class FingerprintDAO {
 	 * @return the threadID of the post if successful. Else returns null if the
 	 *         post doesn't exist or an error occurs.
 	 */
-	private static final String insertSampleStr = "INSERT INTO `Samples`(`UserAgent`, `AcceptHeaders`, `PluginDetails`, `TimeZone`, `ScreenDetails`, `Fonts`, `CookiesEnabled`, `SuperCookie`, `DoNotTrack`, `ClockDifference`, `DateTime`, `MathTan`, `UsingTor`) VALUES(?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?);";
+	private static final String insertSampleStr = "INSERT INTO `Samples`(`IP`,`TimeStamp`,`UserAgent`, `AcceptHeaders`, `PluginDetails`, `TimeZone`, `ScreenDetails`, `Fonts`, `CookiesEnabled`, `SuperCookie`, `DoNotTrack`, `ClockDifference`, `DateTime`, `MathTan`, `UsingTor`) VALUES(?, NOW(), ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?);";
 	private static final String getSampleCountStr = "SELECT COUNT(*) FROM `Samples`;";
 
 	private static final String NO_JAVASCRIPT = "no javascript";
@@ -202,23 +202,38 @@ public class FingerprintDAO {
 	 */
 	private static Integer insertSample(Connection conn, Fingerprint fingerprint) throws SQLException {
 		PreparedStatement insertSample = conn.prepareStatement(insertSampleStr, Statement.RETURN_GENERATED_KEYS);
-		insertSample.setString(1, fingerprint.getUser_agent());
-		insertSample.setString(2, fingerprint.getAccept_headers());
-		insertSample.setString(3, fingerprint.getPluginDetails());
-		insertSample.setString(4, fingerprint.getTimeZone());
-		insertSample.setString(5, fingerprint.getScreenDetails());
-		insertSample.setString(6, fingerprint.getFonts());
-		insertSample.setBoolean(7, fingerprint.isCookiesEnabled());
-		insertSample.setString(8, fingerprint.getSuperCookie());
-		insertSample.setString(9, fingerprint.getDoNotTrack());
+		int index = 1;
+		insertSample.setString(index, fingerprint.getIpAddress());
+		++index;
+		insertSample.setString(index, fingerprint.getUser_agent());
+		++index;
+		insertSample.setString(index, fingerprint.getAccept_headers());
+		++index;
+		insertSample.setString(index, fingerprint.getPluginDetails());
+		++index;
+		insertSample.setString(index, fingerprint.getTimeZone());
+		++index;
+		insertSample.setString(index, fingerprint.getScreenDetails());
+		++index;
+		insertSample.setString(index, fingerprint.getFonts());
+		++index;
+		insertSample.setBoolean(index, fingerprint.isCookiesEnabled());
+		++index;
+		insertSample.setString(index, fingerprint.getSuperCookie());
+		++index;
+		insertSample.setString(index, fingerprint.getDoNotTrack());
+		++index;
 		if (fingerprint.getClockDifference() != null) {
-			insertSample.setLong(10, fingerprint.getClockDifference());
+			insertSample.setLong(index, fingerprint.getClockDifference());
 		} else {
-			insertSample.setNull(10, java.sql.Types.BIGINT);
+			insertSample.setNull(index, java.sql.Types.BIGINT);
 		}
-		insertSample.setString(11, fingerprint.getDateTime());
-		insertSample.setString(12, fingerprint.getMathTan());
-		insertSample.setBoolean(13, fingerprint.isUsingTor());
+		++index;
+		insertSample.setString(index, fingerprint.getDateTime());
+		++index;
+		insertSample.setString(index, fingerprint.getMathTan());
+		++index;
+		insertSample.setBoolean(index, fingerprint.isUsingTor());
 
 		insertSample.execute();
 

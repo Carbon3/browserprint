@@ -3,6 +3,8 @@ CREATE DATABASE `lpanopticlick`;
 USE `lpanopticlick`;
 
 CREATE TABLE `Samples` (
+  `IP` TEXT NOT NULL,
+  `TimeStamp` DATETIME NOT NULL,
   `SampleID` BIGINT UNSIGNED NOT NULL AUTO_INCREMENT,
   `UserAgent` TEXT,
   `AcceptHeaders` TEXT,
