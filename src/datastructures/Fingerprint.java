@@ -1,9 +1,9 @@
 package datastructures;
 
-import java.util.ArrayList;
 
 public class Fingerprint {
-	private ArrayList<Integer> sampleIDs;
+	private Integer sampleSetID;
+	
 	private String user_agent;
 	private String accept_headers;
 
@@ -26,7 +26,7 @@ public class Fingerprint {
 	private String ipAddress;
 
 	public Fingerprint() {
-		sampleIDs = null;
+		sampleSetID = null;
 		user_agent = null;
 		accept_headers = null;
 		pluginDetails = null;
@@ -43,14 +43,14 @@ public class Fingerprint {
 		ipAddress = null;
 	}
 
-	public ArrayList<Integer> getSampleIDs() {
-		return sampleIDs;
+	public Integer getSampleSetID() {
+		return sampleSetID;
 	}
 
-	public void setSampleIDs(ArrayList<Integer> sampleIDs) {
-		this.sampleIDs = sampleIDs;
+	public void setSampleSetID(Integer sampleSetID) {
+		this.sampleSetID = sampleSetID;
 	}
-
+	
 	public String getUser_agent() {
 		return user_agent;
 	}

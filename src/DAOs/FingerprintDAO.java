@@ -33,28 +33,22 @@ public class FingerprintDAO {
 			conn = Database.getConnection();
 			conn.setReadOnly(false);
 
-			Integer currentSampleID = null;
-			ArrayList<Integer> sampleIDs = fingerprint.getSampleIDs();
-			boolean log_sample = true;
-			for (Integer sampleID : sampleIDs) {
-				if (sampleID != null) {
-					/*
-					 * We have seen this user before. Check if their fingerprint has changed.
-					 */
-					log_sample = checkSampleChanged(conn, sampleID, fingerprint);
-					if (log_sample == false) {
-						// We've seen this exact sample before, including SampleID.
-						currentSampleID = sampleID;
-						break;
-					}
-				}
-			}
-
 			/*
-			 * Write fingerprint sample to database.
+			 * Check if we've seen this sample before.
 			 */
-			if (log_sample) {
-				currentSampleID = insertSample(conn, fingerprint);
+			Integer sampleID = checkSampleChanged(conn, fingerprint);
+
+			if (sampleID == null) {
+				/*
+				 * We haven't seen this sample before.
+				 * Record it.
+				 */
+				sampleID = insertSample(conn, fingerprint);
+				
+				/*
+				 * Insert SampleID into SampleSets table.
+				 */
+				insertSampleSet(conn, fingerprint, sampleID);
 			}
 
 			/*
@@ -175,7 +169,7 @@ public class FingerprintDAO {
 				characteristics.add(bean);
 			}
 
-			return currentSampleID;
+			return sampleID;
 
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -194,6 +188,7 @@ public class FingerprintDAO {
 	}
 
 	/**
+	 * Insert a sample into the Samples database.
 	 * 
 	 * @param conn
 	 * @param fingerprint
@@ -243,24 +238,72 @@ public class FingerprintDAO {
 			sampleID = rs.getInt(1);
 		}
 		rs.close();
+		insertSample.close();
 		return sampleID;
 	}
-
+	
 	/**
-	 * Check whether a fingerprint with all the given details, including matching SampleID,
-	 * is already inside the database.
 	 * 
 	 * @param conn
 	 * @param fingerprint
-	 * @return false if we've seen this exact sample (including SampleID) before.
+	 * @param sampleID
+	 * @return
 	 * @throws SQLException
 	 */
-	private static boolean checkSampleChanged(Connection conn, int sampleID, Fingerprint fingerprint) throws SQLException {
-		boolean in_database = true;
+	private static void insertSampleSet(Connection conn, Fingerprint fingerprint, Integer sampleID) throws SQLException {
+		if(fingerprint.getSampleSetID() == null){
+			/*
+			 * Insert whole new SampleSetID.
+			 */
+			String query = "INSERT INTO `SampleSets`(`SampleID`) VALUES(?);";
+			PreparedStatement insertSampleSet = conn.prepareStatement(query, Statement.RETURN_GENERATED_KEYS);
+			
+			insertSampleSet.setInt(1, sampleID);
+			insertSampleSet.execute();
+			
+			ResultSet rs = insertSampleSet.getGeneratedKeys();
+			if (rs.next()) {
+				fingerprint.setSampleSetID(rs.getInt(1));
+			}
+			rs.close();
+			insertSampleSet.close();
+		}
+		else{
+			/*
+			 * Insert new SampleID for existing SampleSetID.
+			 */
+			String query = "INSERT INTO `SampleSets`(`SampleSetID`,`SampleID`) VALUES(?, ?);";
+			PreparedStatement insertSampleSet = conn.prepareStatement(query);
+			
+			insertSampleSet.setInt(1, fingerprint.getSampleSetID());
+			insertSampleSet.setInt(2, sampleID);
+			insertSampleSet.execute();
+			
+			insertSampleSet.close();
+		}
+	}
+
+	/**
+	 * Returns the sampleID of the matching sample if we've seen this sample (with SampleSetID) before.
+	 * Otherwise returns null.
+	 * 
+	 * @param conn
+	 * @param fingerprint
+	 * @return
+	 * @throws SQLException
+	 */
+	private static Integer checkSampleChanged(Connection conn, Fingerprint fingerprint) throws SQLException {
+		if(fingerprint.getSampleSetID() == null){
+			/*
+			 * We know we haven't seen this sample before because there's no SampleSetID.
+			 */
+			return null;
+		}
+		
 		/*
 		 * We have seen this user before. Check if their fingerprint has changed.
 		 */
-		String query = "SELECT TRUE FROM `Samples` WHERE `SampleID` = ?"
+		String query = "SELECT `Samples`.`SampleID` FROM `SampleSets` INNER JOIN `Samples` ON `SampleSets`.`SampleID` = `Samples`.`SampleID` WHERE `SampleSetID` = ?"
 				+ " AND `UserAgent`" + (fingerprint.getUser_agent() == null ? " IS NULL" : " = ?")
 				+ " AND `AcceptHeaders`" + (fingerprint.getAccept_headers() == null ? " IS NULL" : " = ?")
 				+ " AND `PluginDetails`" + (fingerprint.getPluginDetails() == null ? " IS NULL" : " = ?")
@@ -276,9 +319,11 @@ public class FingerprintDAO {
 				+ " AND `UsingTor` = ?"
 				+ ";";
 		PreparedStatement checkExists = conn.prepareStatement(query);
-		checkExists.setInt(1, sampleID);
+		
+		int index = 1;
+		checkExists.setInt(index, fingerprint.getSampleSetID());
+		++index;
 
-		int index = 2;
 		if (fingerprint.getUser_agent() != null) {
 			checkExists.setString(index, fingerprint.getUser_agent());
 			++index;
@@ -330,16 +375,17 @@ public class FingerprintDAO {
 
 		ResultSet rs = checkExists.executeQuery();
 
+		Integer sampleID = null;
 		if (rs.next()) {
 			/*
 			 * We've seen this sample before and the fingerprint hasn't changed,
 			 * don't log it.
 			 */
-			in_database = false;
+			sampleID = rs.getInt(1);
 		}
 		rs.close();
 		checkExists.close();
-		return in_database;
+		return sampleID;
 	}
 
 	private static int getSampleCount(Connection conn) throws SQLException {

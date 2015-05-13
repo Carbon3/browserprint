@@ -2,7 +2,6 @@ package servlets;
 
 import java.io.IOException;
 import java.io.UnsupportedEncodingException;
-import java.util.ArrayList;
 import java.util.Date;
 
 import javax.servlet.ServletException;
@@ -99,18 +98,17 @@ public class TestServlet extends HttpServlet {
 	 * @throws ServletException
 	 * @throws IOException
 	 */
-	public void serveRequest(HttpServletRequest request, HttpServletResponse response, Fingerprint fingerprint) throws ServletException, IOException {
+	private void serveRequest(HttpServletRequest request, HttpServletResponse response, Fingerprint fingerprint) throws ServletException, IOException {
 		CharacteristicsBean chrsbean = new CharacteristicsBean();
 		CharacteristicBean uniquenessbean = new CharacteristicBean();
-		Integer sampleID = FingerprintDAO.processFingerprint(fingerprint, chrsbean, uniquenessbean);
+		FingerprintDAO.processFingerprint(fingerprint, chrsbean, uniquenessbean);
 		request.setAttribute("chrBean", chrsbean);
 		request.setAttribute("uniquessbean", uniquenessbean);
 
 		/*
-		 * Save SampleID in a cookie if we have one now.
+		 * Save SampleSetID in a cookie if we have one now.
 		 */
-		fingerprint.getSampleIDs().add(sampleID);
-		saveSampleIDs(response, fingerprint.getSampleIDs());
+		saveSampleSetID(response, fingerprint.getSampleSetID());
 
 		/*
 		 * Forward to the output page.
@@ -125,7 +123,7 @@ public class TestServlet extends HttpServlet {
 	 * @param request
 	 * @return
 	 */
-	public Fingerprint getBasicFingerprint(HttpServletRequest request) {
+	private Fingerprint getBasicFingerprint(HttpServletRequest request) {
 		Fingerprint fingerprint = new Fingerprint();
 
 		fingerprint.setUser_agent(getUserAgentHeaderString(request));
@@ -146,46 +144,39 @@ public class TestServlet extends HttpServlet {
 		else {
 			fingerprint.setCookiesEnabled(false);
 		}
-		fingerprint.setSampleIDs(getSampleIDs(request));
+		fingerprint.setSampleSetID(getSampleSetID(request));
 
 		return fingerprint;
 	}
 
 	/**
-	 * Get the sample IDs from a request.
-	 * Each sample ID represents a different fingerprint that was offered up by this browser in the past.
-	 * The browser keeps track of previous sample IDs to prevent double counting of fingerprints.
+	 * Get the SampleSetID from a request.
+	 * The browser uses this to prevent double counting of fingerprints.
 	 * 
 	 * @param request
 	 * @return
 	 */
-	public ArrayList<Integer> getSampleIDs(HttpServletRequest request) {
+	private Integer getSampleSetID(HttpServletRequest request) {
 		Cookie cookies[] = request.getCookies();
 
-		ArrayList<Integer> sampleIDs = new ArrayList<Integer>();
 		if (cookies == null) {
 			// No SampleIDs. Just return an empty list.
-			return sampleIDs;
+			return null;
 		}
 
 		// Find the SampleIDs cookie.
+		Integer sampleSetID = null;
 		for (int i = 0; i < cookies.length; ++i) {
-			if (cookies[i].getName().equals("SampleIDs")) {
-				// Cookie found. Split it into an array of SampleIDs.
-				String sampleIDstrs[] = cookies[i].getValue().split(",");
-				for (String sampleIDstr : sampleIDstrs) {
-					try {
-						// Add the SampleID to our list.
-						Integer sampleID = Integer.parseInt(sampleIDstr);
-						sampleIDs.add(sampleID);
-					} catch (NumberFormatException ex) {
-						// Ignore. Pretend invalid sampleID doesn't exist.
-					}
+			if (cookies[i].getName().equals("SampleSetID")) {
+				try {
+					sampleSetID = Integer.parseInt(cookies[i].getValue());
+					break;
+				} catch (NumberFormatException ex) {
+					// Ignore. Pretend invalid SampleSetID doesn't exist.
 				}
-				break;
 			}
 		}
-		return sampleIDs;
+		return sampleSetID;
 	}
 
 	/**
@@ -194,14 +185,15 @@ public class TestServlet extends HttpServlet {
 	 * @param response
 	 * @param sampleIDs
 	 */
-	public void saveSampleIDs(HttpServletResponse response, ArrayList<Integer> sampleIDs) {
-		String sampleIDstr = "";
-		for (Integer sampleID : sampleIDs) {
-			sampleIDstr += sampleID + ",";
+	private void saveSampleSetID(HttpServletResponse response, Integer sampleSetID) {
+		if (sampleSetID == null) {
+			//This should never happen, but if it somehow did it could cause a null pointer exception.
+			return;
+		}else{
+			Cookie sampleSetIdCookie = new Cookie("SampleSetID", sampleSetID.toString());
+			sampleSetIdCookie.setMaxAge(60 * 60 * 24 * 30);// 30 days
+			response.addCookie(sampleSetIdCookie);
 		}
-		Cookie sampleIdCookie = new Cookie("SampleIDs", sampleIDstr);
-		sampleIdCookie.setMaxAge(60 * 60 * 24 * 30);// 30 days
-		response.addCookie(sampleIdCookie);
 	}
 
 	/**
@@ -210,7 +202,7 @@ public class TestServlet extends HttpServlet {
 	 * @param request
 	 * @return
 	 */
-	public String getUserAgentHeaderString(HttpServletRequest request) {
+	private String getUserAgentHeaderString(HttpServletRequest request) {
 		String useragent;
 		try {
 			// We get the header in this more long-winded way so that it may have unicode characters in it, such as Chinese.
@@ -228,22 +220,22 @@ public class TestServlet extends HttpServlet {
 	 * @param request
 	 * @return
 	 */
-	public String getAcceptHeadersString(HttpServletRequest request) {
+	private String getAcceptHeadersString(HttpServletRequest request) {
 		String accept = request.getHeader("accept");
-		if(accept == null){
+		if (accept == null) {
 			accept = "";
 		}
-		
+
 		String accept_encoding = request.getHeader("accept-encoding");
-		if(accept_encoding == null){
+		if (accept_encoding == null) {
 			accept_encoding = "";
 		}
-		
+
 		String accept_language = request.getHeader("accept-language");
-		if(accept_language == null){
+		if (accept_language == null) {
 			accept_language = "";
 		}
-		
+
 		try {
 			// We get the headers this more long-winded way so that they may have unicode characters inside them.
 			return new String(accept.getBytes("ISO8859-1"), "UTF-8") + " "
@@ -263,7 +255,7 @@ public class TestServlet extends HttpServlet {
 	 * @param request
 	 * @return
 	 */
-	public String getDoNotTrackHeaderString(HttpServletRequest request) {
+	private String getDoNotTrackHeaderString(HttpServletRequest request) {
 		String dnt;
 		try {
 			// We get the header in this more long-winded way so that it may have unicode characters in it, such as Chinese.
