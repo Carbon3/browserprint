@@ -52,4 +52,12 @@
 		<param-name>TorDNSELServer</param-name>
 		<param-value>torproject.org</param-value>
 	</context-param>
+	<!-- Specify how we should handle IP addresses.
+		FULL means save the full IP address.
+		PARTIAL means zero out the last octet.
+		Default is PARTIAL. -->
+	<context-param>
+		<param-name>IpAddressHandling</param-name>
+		<param-value>FULL</param-value>
+	</context-param>
 </web-app>

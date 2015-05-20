@@ -135,7 +135,8 @@ public class TestServlet extends HttpServlet {
 				request.getRemoteAddr(),
 				getServletContext().getInitParameter("TorDNSELServer")
 				) == true);
-		fingerprint.setIpAddress(request.getRemoteAddr());
+		
+		fingerprint.setIpAddress(getClientIP(request));
 
 		Cookie cookies[] = request.getCookies();
 		if (cookies != null) {
@@ -265,5 +266,28 @@ public class TestServlet extends HttpServlet {
 			dnt = request.getHeader("DNT");
 		}
 		return dnt;
+	}
+	
+	/**
+	 * Get the client's IP address in the format we want to save it.
+	 * Format corresponds to IpAddressHandling context parameter in web.xml.
+	 *  FULL means save the full IP address.
+	 *  PARTIAL means zero out the last octet.
+	 *  Default is PARTIAL.
+	 * @param request
+	 * @return
+	 */
+	private String getClientIP(HttpServletRequest request){
+		String ipHandling = getServletContext().getInitParameter("IpAddressHandling");
+		if(ipHandling != null){
+			if(ipHandling.equals("FULL")){
+				//Collect full IP address.
+				return request.getRemoteAddr();
+			}
+		}
+		//Default handling method: Collect IP address with last octet set to zero
+		String ip = request.getRemoteAddr();
+		ip = ip.replaceAll("\\.\\d+$", ".0");
+		return ip;
 	}
 }
