@@ -18,20 +18,53 @@
 <link type="text/css" href="style.css" rel="stylesheet">
 </head>
 <body>
-<div>
-	<h1>Libre-Panopticlick</h1>
-</div>
+<%@include file="WEB-INF/header.html" %>
 <div id="content">
+	<h2>Information we collect</h2>
 	<p>
-		Lorem ipsum dolor sit amet, consectetur adipiscing elit. Donec a diam lectus. Sed sit amet ipsum mauris. Maecenas congue ligula ac quam viverra nec consectetur ante hendrerit.
 	</p>
+	
+	<h3>Test results</h3>
 	<p>
-		Information we collect: ...
+		We keep the results of all the fingerprint tests.
+		This includes:
+		<ul>
+			<li>The User-Agent header of the HTTP request for the page.</li>
+			<li>The Accept header, the Accept-Encoding header, and the Accept-Language header from the HTTP request for the page.</li>
+			<li>The value of the DNT (Do Not Track) header from the HTTP request for the page.</li>
+			<li>Whether the client is thought to be using Tor or not. Detected by performing a TorDNSEL request.</li>
+			<li>A list of your installed browser plugins, as detected using JavaScript.</li>
+			<li>The time-zone configured on your machine, as detected using JavaScript.</li>
+			<li>The screen size and colour depth of the monitor displaying the client's web browser, as detected using JavaScript.</li>
+			<li>The fonts installed on the client's machine, detected using Flash.</li>
+			<li>Whether cookies are enabled, detected by creating a cookie and then retrieving it.</li>
+			<li>Whether localStorage, sessionStorage, and Internet Explorer's userData are available in the browser, detected using JavaScript.</li>
+			<li>The difference between the client and the server's clocks, in minutes, detected using JavaScript.</li>
+			<li>The value returned by the JavaScript function toLocaleString() called on the UNIX epoch.</li>
+			<li>The output of the JavaScript Math.tan(-1e300).</li>
+		</ul>
 	</p>
+	
+	<h3>Cookies</h3>
 	<p>
-		One cookie is set to expire when the browser closes, this is only to check whether cookies are enabled.
+		The site makes use of cookies.
+		One cookie is set to expire when the browser closes, this is used only to check whether cookies are enabled.
 		Another cookie set to expire after 30 days, for the main purpose of preventing double counting of fingerprints.
 	</p>
+	
+	<h3>IP addresses</h3>
+	<p>
+	</p>
+	
+	<h3>Timestamps</h3>
+	<p>
+	</p>
+	
+	<h2>Use of data</h2>
+	<p></p>
+	
+	<h3>Sharing of data</h3>
+	<p></p>
 </div>
 <%@include file="WEB-INF/footer.html" %>
 </body>

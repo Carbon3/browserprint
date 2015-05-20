@@ -12,6 +12,7 @@
 	<link type="text/css" href="style.css" rel="stylesheet">
 </head>
 <body>
+<%@include file="header.html" %>
 	<p>
 		<a href=".">Back</a>
 	</p>
