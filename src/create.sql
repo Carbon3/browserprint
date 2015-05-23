@@ -19,6 +19,7 @@ CREATE TABLE `Samples` (
   `DateTime` TEXT,
   `MathTan` TEXT,
   `UsingTor` BOOL NOT NULL,
+  `AdsBlocked` BOOL,
   PRIMARY KEY(`SampleID`)
 )
 ENGINE=InnoDB;

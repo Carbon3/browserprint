@@ -72,6 +72,18 @@ public class TestServlet extends HttpServlet {
 		fingerprint.setMathTan(request.getParameter("MathTan"));
 
 		{
+			String adsBlocked = request.getParameter("AdsBlocked");
+			if (adsBlocked != null) {
+				if (adsBlocked.equals("1")) {
+					fingerprint.setAdsBlocked(true);
+				}
+				else if(adsBlocked.equals("0")){
+					fingerprint.setAdsBlocked(false);
+				}
+			}
+		}
+
+		{
 			long ourTime = new Date().getTime();
 			long theirTime;
 			try {
@@ -135,7 +147,7 @@ public class TestServlet extends HttpServlet {
 				request.getRemoteAddr(),
 				getServletContext().getInitParameter("TorDNSELServer")
 				) == true);
-		
+
 		fingerprint.setIpAddress(getClientIP(request));
 
 		Cookie cookies[] = request.getCookies();
@@ -188,9 +200,9 @@ public class TestServlet extends HttpServlet {
 	 */
 	private void saveSampleSetID(HttpServletResponse response, Integer sampleSetID) {
 		if (sampleSetID == null) {
-			//This should never happen, but if it somehow did it could cause a null pointer exception.
+			// This should never happen, but if it somehow did it could cause a null pointer exception.
 			return;
-		}else{
+		} else {
 			Cookie sampleSetIdCookie = new Cookie("SampleSetID", sampleSetID.toString());
 			sampleSetIdCookie.setMaxAge(60 * 60 * 24 * 30);// 30 days
 			response.addCookie(sampleSetIdCookie);
@@ -267,25 +279,26 @@ public class TestServlet extends HttpServlet {
 		}
 		return dnt;
 	}
-	
+
 	/**
 	 * Get the client's IP address in the format we want to save it.
 	 * Format corresponds to IpAddressHandling context parameter in web.xml.
-	 *  FULL means save the full IP address.
-	 *  PARTIAL means zero out the last octet.
-	 *  Default is PARTIAL.
+	 * FULL means save the full IP address.
+	 * PARTIAL means zero out the last octet.
+	 * Default is PARTIAL.
+	 * 
 	 * @param request
 	 * @return
 	 */
-	private String getClientIP(HttpServletRequest request){
+	private String getClientIP(HttpServletRequest request) {
 		String ipHandling = getServletContext().getInitParameter("IpAddressHandling");
-		if(ipHandling != null){
-			if(ipHandling.equals("FULL")){
-				//Collect full IP address.
+		if (ipHandling != null) {
+			if (ipHandling.equals("FULL")) {
+				// Collect full IP address.
 				return request.getRemoteAddr();
 			}
 		}
-		//Default handling method: Collect IP address with last octet set to zero
+		// Default handling method: Collect IP address with last octet set to zero
 		String ip = request.getRemoteAddr();
 		ip = ip.replaceAll("\\.\\d+$", ".0");
 		return ip;

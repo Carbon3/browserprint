@@ -24,6 +24,8 @@ public class Fingerprint {
 
 	private boolean usingTor;
 	private String ipAddress;
+	
+	private Boolean adsBlocked;
 
 	public Fingerprint() {
 		sampleSetID = null;
@@ -41,6 +43,7 @@ public class Fingerprint {
 		mathTan = null;
 		usingTor = false;
 		ipAddress = null;
+		adsBlocked = null;
 	}
 
 	public Integer getSampleSetID() {
@@ -161,5 +164,13 @@ public class Fingerprint {
 
 	public void setIpAddress(String ipAddress) {
 		this.ipAddress = ipAddress;
+	}
+
+	public Boolean getAdsBlocked() {
+		return adsBlocked;
+	}
+
+	public void setAdsBlocked(Boolean adsBlocked) {
+		this.adsBlocked = adsBlocked;
 	}
 }

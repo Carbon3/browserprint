@@ -22,7 +22,7 @@ public class FingerprintDAO {
 	 * @return the threadID of the post if successful. Else returns null if the
 	 *         post doesn't exist or an error occurs.
 	 */
-	private static final String insertSampleStr = "INSERT INTO `Samples`(`IP`,`TimeStamp`,`UserAgent`, `AcceptHeaders`, `PluginDetails`, `TimeZone`, `ScreenDetails`, `Fonts`, `CookiesEnabled`, `SuperCookie`, `DoNotTrack`, `ClockDifference`, `DateTime`, `MathTan`, `UsingTor`) VALUES(?, NOW(), ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?);";
+	private static final String insertSampleStr = "INSERT INTO `Samples`(`IP`,`TimeStamp`,`UserAgent`, `AcceptHeaders`, `PluginDetails`, `TimeZone`, `ScreenDetails`, `Fonts`, `CookiesEnabled`, `SuperCookie`, `DoNotTrack`, `ClockDifference`, `DateTime`, `MathTan`, `UsingTor`, `AdsBlocked`) VALUES(?, NOW(), ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?);";
 	private static final String getSampleCountStr = "SELECT COUNT(*) FROM `Samples`;";
 
 	private static final String NO_JAVASCRIPT = "no javascript";
@@ -168,6 +168,13 @@ public class FingerprintDAO {
 						+ " It does so by performing a TorDNSEL request for each client.");
 				characteristics.add(bean);
 			}
+			{
+				CharacteristicBean bean = getCharacteristicBean(conn, sampleCount, "AdsBlocked", fingerprint.getAdsBlocked());
+				bean.setName("Ads blocked?");
+				bean.setNameHoverText("Checks whether ad blocking software is installed."
+						+ " It does so by attempting to display an ad and checking whether it was successful.");
+				characteristics.add(bean);
+			}
 
 			return sampleID;
 
@@ -229,6 +236,13 @@ public class FingerprintDAO {
 		insertSample.setString(index, fingerprint.getMathTan());
 		++index;
 		insertSample.setBoolean(index, fingerprint.isUsingTor());
+		++index;
+		if(fingerprint.getAdsBlocked() != null){
+			insertSample.setBoolean(index, fingerprint.getAdsBlocked());
+		}
+		else{
+			insertSample.setNull(index, java.sql.Types.BOOLEAN);
+		}
 
 		insertSample.execute();
 
@@ -317,6 +331,7 @@ public class FingerprintDAO {
 				+ " AND `DateTime`" + (fingerprint.getDateTime() == null ? " IS NULL" : " = ?")
 				+ " AND `MathTan`" + (fingerprint.getMathTan() == null ? " IS NULL" : " = ?")
 				+ " AND `UsingTor` = ?"
+				+ " AND `AdsBlocked`" + (fingerprint.getAdsBlocked() == null ? " IS NULL" : " = ?")
 				+ ";";
 		PreparedStatement checkExists = conn.prepareStatement(query);
 		
@@ -372,6 +387,10 @@ public class FingerprintDAO {
 		}
 		checkExists.setBoolean(index, fingerprint.isUsingTor());
 		++index;
+		if (fingerprint.getAdsBlocked() != null) {
+			checkExists.setBoolean(index, fingerprint.getAdsBlocked());
+			++index;
+		}
 
 		ResultSet rs = checkExists.executeQuery();
 
@@ -424,6 +443,7 @@ public class FingerprintDAO {
 				+ " AND `DateTime`" + (fingerprint.getDateTime() == null ? " IS NULL" : " = ?")
 				+ " AND `MathTan`" + (fingerprint.getMathTan() == null ? " IS NULL" : " = ?")
 				+ " AND `UsingTor` = ?"
+				+ " AND `AdsBlocked`" + (fingerprint.getAdsBlocked() == null ? " IS NULL" : " = ?")
 				+ ";";
 		PreparedStatement checkExists = conn.prepareStatement(query);
 
@@ -476,6 +496,10 @@ public class FingerprintDAO {
 		}
 		checkExists.setBoolean(index, fingerprint.isUsingTor());
 		++index;
+		if (fingerprint.getAdsBlocked() != null) {
+			checkExists.setBoolean(index, fingerprint.getAdsBlocked());
+			++index;
+		}
 
 		ResultSet rs = checkExists.executeQuery();
 
@@ -498,19 +522,29 @@ public class FingerprintDAO {
 	 * @return
 	 * @throws SQLException
 	 */
-	private static CharacteristicBean getCharacteristicBean(Connection conn, int num_samples, String dbname, boolean value) throws SQLException {
+	private static CharacteristicBean getCharacteristicBean(Connection conn, int num_samples, String dbname, Boolean value) throws SQLException {
 		CharacteristicBean chrbean = new CharacteristicBean();
 
-		if (value) {
-			chrbean.setValue("Yes");
+		PreparedStatement getCount;
+		String querystr = "SELECT COUNT(*) FROM `Samples` WHERE `" + dbname + "`";
+		if (value != null) {
+			if (value){
+				chrbean.setValue("Yes");
+			}
+			else {
+				chrbean.setValue("No");
+			}
+			querystr += " = ?;";
+
+			getCount = conn.prepareStatement(querystr);
+			getCount.setBoolean(1, value);
 		}
 		else {
-			chrbean.setValue("No");
-		}
+			chrbean.setValue(NO_JAVASCRIPT);
 
-		PreparedStatement getCount;
-		getCount = conn.prepareStatement("SELECT COUNT(*) FROM `Samples` WHERE `" + dbname + "` = ?");
-		getCount.setBoolean(1, value);
+			querystr += " IS NULL;";
+			getCount = conn.prepareStatement(querystr);
+		}
 
 		ResultSet rs = getCount.executeQuery();
 		rs.next();

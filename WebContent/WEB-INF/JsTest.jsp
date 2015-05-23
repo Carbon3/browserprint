@@ -65,6 +65,14 @@
     		value: getMathTan()
 		}).appendTo('#formdiv');
 		
+		//AdsBlocked
+		$('<input>').attr({
+    		type: 'hidden',
+    		id: 'AdsBlocked',
+    		name: 'AdsBlocked',
+    		value: getAdsBlocked()
+		}).appendTo('#formdiv');
+		
 		//Wait for a while before submitting the page.
 		//We do this to allow time for the Flash to detect and write the fonts out.
 		window.setTimeout(submitDetailsForm, 4000);
@@ -104,8 +112,16 @@
 		<div id="formdiv">
 		</div>
 	</form>
-	<div>
+	<!-- Flash for detecting fonts. -->
+	<div style="display:none;">
 		<embed pluginspage="http://www.macromedia.com/go/getflashplayer" type="application/x-shockwave-flash" src="FontList.swf">
+	</div>
+	<!-- Part of the ad blocking test. -->
+	<script type="text/javascript">
+        google_ad_height = 90;
+    </script> 
+	<div id="ad" style="display:none;">
+		<script type="text/javascript" src="http://pagead2.googlesyndication.com/pagead/show_ads.js"></script>
 	</div>
 </body>
 </html>

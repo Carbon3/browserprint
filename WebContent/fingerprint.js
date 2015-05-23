@@ -107,3 +107,13 @@ function getDateTime(){
 function getMathTan(){
 	return Math.tan(-1e300);
 }
+
+function getAdsBlocked(){
+	if($('#ad').height() == 0){
+		//Ads are blocked.
+		return 1;
+	} else {
+		//Ads are not blocked.
+		return 0;
+	}
+}
