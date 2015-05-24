@@ -181,7 +181,8 @@ public class FingerprintDAO {
 				if(bean.getValue().equals(NO_JAVASCRIPT) == false){
 					bean.setValue("<img width=\"400\" height=\"60\" src=\"" + bean.getValue() + "\">");
 				}
-				bean.setNameHoverText("");
+				bean.setNameHoverText("Rendering of a specific picture with the HTML5 Canvas element following a fixed set of instructions."
+						+ " The picture presents some slight noticeable variations depending on the OS and the browser used.");
 				characteristics.add(bean);
 			}
 			{
@@ -190,7 +191,8 @@ public class FingerprintDAO {
 				if(bean.getValue().equals(NO_JAVASCRIPT) == false){
 					bean.setValue("<img width=\"500\" height=\"200\" src=\"" + bean.getValue() + "\">");
 				}
-				bean.setNameHoverText("");
+				bean.setNameHoverText("Rendering of specific 3D forms following a fixed set of instructions."
+						+ " The picture presents some slight noticeable variations depending on the device of the user.");
 				characteristics.add(bean);
 			}
 

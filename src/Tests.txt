@@ -54,3 +54,11 @@ It does so by performing a TorDNSEL request for each client.
 ### Blocking Ads?
 Checks whether ad blocking software is installed.
 It does so by attempting to display an ad and checking whether it was successful.
+
+### Canvas
+Rendering of a specific picture with the HTML5 Canvas element following a fixed set of instructions.
+The picture presents some slight noticeable variations depending on the OS and the browser used.
+
+### WebGL
+Rendering of specific 3D forms following a fixed set of instructions.
+The picture presents some slight noticeable variations depending on the device of the user.
