@@ -125,3 +125,11 @@ function getCanvas(){
 function getWebGL(){
 	return webGLData;
 }
+
+function getWebGLVendor(){
+	return webGLVendor;
+}
+
+function getWebGLRenderer(){
+	return webGLRenderer;
+}

@@ -22,6 +22,8 @@ CREATE TABLE `Samples` (
   `AdsBlocked` BOOL,
   `Canvas` TEXT,
   `WebGL` TEXT,
+  `WebGLVendor` TEXT,
+  `WebGLRenderer` TEXT,
   PRIMARY KEY(`SampleID`)
 )
 ENGINE=InnoDB;

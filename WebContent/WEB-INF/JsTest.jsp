@@ -92,6 +92,22 @@
     		value: getWebGL()
 		}).appendTo('#formdiv');
 		
+		//WebGLVendor
+		$('<input>').attr({
+    		type: 'hidden',
+    		id: 'WebGLVendor',
+    		name: 'WebGLVendor',
+    		value: getWebGLVendor()
+		}).appendTo('#formdiv');
+		
+		//WebGLVendor
+		$('<input>').attr({
+    		type: 'hidden',
+    		id: 'WebGLRenderer',
+    		name: 'WebGLRenderer',
+    		value: getWebGLRenderer()
+		}).appendTo('#formdiv');
+		
 		//Wait for a while before submitting the page.
 		//We do this to allow time for the Flash to detect and write the fonts out.
 		window.setTimeout(submitDetailsForm, 4000);

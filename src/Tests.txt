@@ -62,3 +62,9 @@ The picture presents some slight noticeable variations depending on the OS and t
 ### WebGL
 Rendering of specific 3D forms following a fixed set of instructions.
 The picture presents some slight noticeable variations depending on the device of the user.
+
+### WebGL Vendor
+Name of the WebGL Vendor. Some browsers give the full name of the underlying graphics card used by the device.
+
+### WebGL Renderer
+Name of the WebGL Renderer. Some browsers give the full name of the underlying graphics driver.

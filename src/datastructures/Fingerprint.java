@@ -29,6 +29,8 @@ public class Fingerprint {
 	
 	private String canvas;
 	private String webGL;
+	private String webGLVendor;
+	private String webGLRenderer;
 
 	public Fingerprint() {
 		sampleSetID = null;
@@ -193,5 +195,21 @@ public class Fingerprint {
 
 	public void setWebGL(String webGL) {
 		this.webGL = webGL;
+	}
+
+	public String getWebGLVendor() {
+		return webGLVendor;
+	}
+
+	public void setWebGLVendor(String webGLVendor) {
+		this.webGLVendor = webGLVendor;
+	}
+
+	public String getWebGLRenderer() {
+		return webGLRenderer;
+	}
+
+	public void setWebGLRenderer(String webGLRenderer) {
+		this.webGLRenderer = webGLRenderer;
 	}
 }

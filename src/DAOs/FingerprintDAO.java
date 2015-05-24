@@ -22,7 +22,7 @@ public class FingerprintDAO {
 	 * @return the threadID of the post if successful. Else returns null if the
 	 *         post doesn't exist or an error occurs.
 	 */
-	private static final String insertSampleStr = "INSERT INTO `Samples`(`IP`,`TimeStamp`,`UserAgent`, `AcceptHeaders`, `PluginDetails`, `TimeZone`, `ScreenDetails`, `Fonts`, `CookiesEnabled`, `SuperCookie`, `DoNotTrack`, `ClockDifference`, `DateTime`, `MathTan`, `UsingTor`, `AdsBlocked`, `Canvas`, `WebGL`) VALUES(?, NOW(), ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?);";
+	private static final String insertSampleStr = "INSERT INTO `Samples`(`IP`,`TimeStamp`,`UserAgent`, `AcceptHeaders`, `PluginDetails`, `TimeZone`, `ScreenDetails`, `Fonts`, `CookiesEnabled`, `SuperCookie`, `DoNotTrack`, `ClockDifference`, `DateTime`, `MathTan`, `UsingTor`, `AdsBlocked`, `Canvas`, `WebGL`, `WebGLVendor`, `WebGLRenderer`) VALUES(?, NOW(), ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?);";
 	private static final String getSampleCountStr = "SELECT COUNT(*) FROM `Samples`;";
 
 	private static final String NO_JAVASCRIPT = "no javascript";
@@ -195,6 +195,18 @@ public class FingerprintDAO {
 						+ " The picture presents some slight noticeable variations depending on the device of the user.");
 				characteristics.add(bean);
 			}
+			{
+				CharacteristicBean bean = getCharacteristicBean(conn, sampleCount, "WebGLVendor", fingerprint.getWebGLVendor());
+				bean.setName("WebGL Vendor");
+				bean.setNameHoverText("Name of the WebGL Vendor. Some browsers give the full name of the underlying graphics card used by the device.");
+				characteristics.add(bean);
+			}
+			{
+				CharacteristicBean bean = getCharacteristicBean(conn, sampleCount, "WebGLRenderer", fingerprint.getWebGLRenderer());
+				bean.setName("WebGL Renderer");
+				bean.setNameHoverText("Name of the WebGL Renderer. Some browsers give the full name of the underlying graphics driver.");
+				characteristics.add(bean);
+			}
 
 			return sampleID;
 
@@ -267,6 +279,10 @@ public class FingerprintDAO {
 		insertSample.setString(index, fingerprint.getCanvas());
 		++index;
 		insertSample.setString(index, fingerprint.getWebGL());
+		++index;
+		insertSample.setString(index, fingerprint.getWebGLVendor());
+		++index;
+		insertSample.setString(index, fingerprint.getWebGLRenderer());
 
 		insertSample.execute();
 
@@ -358,6 +374,8 @@ public class FingerprintDAO {
 				+ " AND `AdsBlocked`" + (fingerprint.getAdsBlocked() == null ? " IS NULL" : " = ?")
 				+ " AND `Canvas`" + (fingerprint.getCanvas() == null ? " IS NULL" : " = ?")
 				+ " AND `WebGL`" + (fingerprint.getWebGL() == null ? " IS NULL" : " = ?")
+				+ " AND `WebGLVendor`" + (fingerprint.getWebGLVendor() == null ? " IS NULL" : " = ?")
+				+ " AND `WebGLRenderer`" + (fingerprint.getWebGLRenderer() == null ? " IS NULL" : " = ?")
 				+ ";";
 		PreparedStatement checkExists = conn.prepareStatement(query);
 		
@@ -425,6 +443,14 @@ public class FingerprintDAO {
 			checkExists.setString(index, fingerprint.getWebGL());
 			++index;
 		}
+		if (fingerprint.getWebGLVendor() != null) {
+			checkExists.setString(index, fingerprint.getWebGLVendor());
+			++index;
+		}
+		if (fingerprint.getWebGLRenderer() != null) {
+			checkExists.setString(index, fingerprint.getWebGLRenderer());
+			++index;
+		}
 
 		ResultSet rs = checkExists.executeQuery();
 
@@ -480,6 +506,8 @@ public class FingerprintDAO {
 				+ " AND `AdsBlocked`" + (fingerprint.getAdsBlocked() == null ? " IS NULL" : " = ?")
 				+ " AND `Canvas`" + (fingerprint.getCanvas() == null ? " IS NULL" : " = ?")
 				+ " AND `WebGL`" + (fingerprint.getWebGL() == null ? " IS NULL" : " = ?")
+				+ " AND `WebGLVendor`" + (fingerprint.getWebGLVendor() == null ? " IS NULL" : " = ?")
+				+ " AND `WebGLRenderer`" + (fingerprint.getWebGLRenderer() == null ? " IS NULL" : " = ?")
 				+ ";";
 		PreparedStatement checkExists = conn.prepareStatement(query);
 
@@ -542,6 +570,14 @@ public class FingerprintDAO {
 		}
 		if (fingerprint.getWebGL() != null) {
 			checkExists.setString(index, fingerprint.getWebGL());
+			++index;
+		}
+		if (fingerprint.getWebGLVendor() != null) {
+			checkExists.setString(index, fingerprint.getWebGLVendor());
+			++index;
+		}
+		if (fingerprint.getWebGLRenderer() != null) {
+			checkExists.setString(index, fingerprint.getWebGLRenderer());
 			++index;
 		}
 
