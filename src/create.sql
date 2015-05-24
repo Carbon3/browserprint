@@ -8,6 +8,7 @@ CREATE TABLE `Samples` (
   `SampleID` BIGINT UNSIGNED NOT NULL AUTO_INCREMENT,
   `UserAgent` TEXT,
   `AcceptHeaders` TEXT,
+  `Platform` TEXT,
   `PluginDetails` TEXT,
   `TimeZone` VARCHAR(5),
   `ScreenDetails` TEXT,

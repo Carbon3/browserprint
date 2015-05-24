@@ -1,3 +1,7 @@
+function getPlatform(){
+	return window.navigator.platform;
+}
+
 function getPluginDetails() {
 	var plugins = "";
 

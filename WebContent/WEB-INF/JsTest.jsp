@@ -16,6 +16,14 @@
 		//PluginDetails
 		$('<input>').attr({
     		type: 'hidden',
+    		id: 'Platform',
+    		name: 'Platform',
+    		value: getPlatform()
+		}).appendTo('#formdiv')
+		
+		//PluginDetails
+		$('<input>').attr({
+    		type: 'hidden',
     		id: 'PluginDetails',
     		name: 'PluginDetails',
     		value: getPluginDetails()

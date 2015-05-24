@@ -63,6 +63,7 @@ public class TestServlet extends HttpServlet {
 		/*
 		 * Extract the rest of the fingerprint from the POST details.
 		 */
+		fingerprint.setPlatform(request.getParameter("Platform"));
 		fingerprint.setPluginDetails(request.getParameter("PluginDetails"));
 		fingerprint.setTimeZone(request.getParameter("TimeZone"));
 		fingerprint.setScreenDetails(request.getParameter("ScreenDetails"));

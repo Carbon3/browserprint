@@ -7,6 +7,7 @@ public class Fingerprint {
 	private String user_agent;
 	private String accept_headers;
 
+	private String platform;
 	private String pluginDetails;
 	private String timeZone;
 	private String screenDetails;
@@ -36,6 +37,7 @@ public class Fingerprint {
 		sampleSetID = null;
 		user_agent = null;
 		accept_headers = null;
+		platform = null;
 		pluginDetails = null;
 		timeZone = null;
 		screenDetails = null;
@@ -75,6 +77,14 @@ public class Fingerprint {
 
 	public void setAccept_headers(String accept_headers) {
 		this.accept_headers = accept_headers;
+	}
+
+	public String getPlatform() {
+		return platform;
+	}
+
+	public void setPlatform(String platform) {
+		this.platform = platform;
 	}
 
 	public String getPluginDetails() {

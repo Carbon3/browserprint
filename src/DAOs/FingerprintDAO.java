@@ -22,7 +22,7 @@ public class FingerprintDAO {
 	 * @return the threadID of the post if successful. Else returns null if the
 	 *         post doesn't exist or an error occurs.
 	 */
-	private static final String insertSampleStr = "INSERT INTO `Samples`(`IP`,`TimeStamp`,`UserAgent`, `AcceptHeaders`, `PluginDetails`, `TimeZone`, `ScreenDetails`, `Fonts`, `CookiesEnabled`, `SuperCookie`, `DoNotTrack`, `ClockDifference`, `DateTime`, `MathTan`, `UsingTor`, `AdsBlocked`, `Canvas`, `WebGL`, `WebGLVendor`, `WebGLRenderer`) VALUES(?, NOW(), ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?);";
+	private static final String insertSampleStr = "INSERT INTO `Samples`(`IP`,`TimeStamp`,`UserAgent`, `AcceptHeaders`, `Platform`, `PluginDetails`, `TimeZone`, `ScreenDetails`, `Fonts`, `CookiesEnabled`, `SuperCookie`, `DoNotTrack`, `ClockDifference`, `DateTime`, `MathTan`, `UsingTor`, `AdsBlocked`, `Canvas`, `WebGL`, `WebGLVendor`, `WebGLRenderer`) VALUES(?, NOW(), ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?);";
 	private static final String getSampleCountStr = "SELECT COUNT(*) FROM `Samples`;";
 
 	private static final String NO_JAVASCRIPT = "no javascript";
@@ -84,6 +84,12 @@ public class FingerprintDAO {
 				bean.setName("HTTP_ACCEPT Headers");
 				bean.setNameHoverText("The concatenation of three headers from the HTTP request:"
 						+ " The Accept request header, the Accept-Encoding request header, and the Accept-Language request header.");
+				characteristics.add(bean);
+			}
+			{
+				CharacteristicBean bean = getCharacteristicBean(conn, sampleCount, "Platform", fingerprint.getPlatform());
+				bean.setName("Platform (javascript)");
+				bean.setNameHoverText("The name of the platform the browser is running on, detected using javascript.");
 				characteristics.add(bean);
 			}
 			{
@@ -243,6 +249,8 @@ public class FingerprintDAO {
 		++index;
 		insertSample.setString(index, fingerprint.getAccept_headers());
 		++index;
+		insertSample.setString(index, fingerprint.getPlatform());
+		++index;
 		insertSample.setString(index, fingerprint.getPluginDetails());
 		++index;
 		insertSample.setString(index, fingerprint.getTimeZone());
@@ -360,6 +368,7 @@ public class FingerprintDAO {
 		String query = "SELECT `Samples`.`SampleID` FROM `SampleSets` INNER JOIN `Samples` ON `SampleSets`.`SampleID` = `Samples`.`SampleID` WHERE `SampleSetID` = ?"
 				+ " AND `UserAgent`" + (fingerprint.getUser_agent() == null ? " IS NULL" : " = ?")
 				+ " AND `AcceptHeaders`" + (fingerprint.getAccept_headers() == null ? " IS NULL" : " = ?")
+				+ " AND `Platform`" + (fingerprint.getPlatform() == null ? " IS NULL" : " = ?")
 				+ " AND `PluginDetails`" + (fingerprint.getPluginDetails() == null ? " IS NULL" : " = ?")
 				+ " AND `TimeZone`" + (fingerprint.getTimeZone() == null ? " IS NULL" : " = ?")
 				+ " AND `ScreenDetails`" + (fingerprint.getScreenDetails() == null ? " IS NULL" : " = ?")
@@ -389,6 +398,10 @@ public class FingerprintDAO {
 		}
 		if (fingerprint.getAccept_headers() != null) {
 			checkExists.setString(index, fingerprint.getAccept_headers());
+			++index;
+		}
+		if (fingerprint.getPlatform() != null) {
+			checkExists.setString(index, fingerprint.getPlatform());
 			++index;
 		}
 		if (fingerprint.getPluginDetails() != null) {
@@ -492,6 +505,7 @@ public class FingerprintDAO {
 		String query = "SELECT COUNT(*) FROM `Samples` WHERE"
 				+ " `UserAgent`" + (fingerprint.getUser_agent() == null ? " IS NULL" : " = ?")
 				+ " AND `AcceptHeaders`" + (fingerprint.getAccept_headers() == null ? " IS NULL" : " = ?")
+				+ " AND `Platform`" + (fingerprint.getPlatform() == null ? " IS NULL" : " = ?")
 				+ " AND `PluginDetails`" + (fingerprint.getPluginDetails() == null ? " IS NULL" : " = ?")
 				+ " AND `TimeZone`" + (fingerprint.getTimeZone() == null ? " IS NULL" : " = ?")
 				+ " AND `ScreenDetails`" + (fingerprint.getScreenDetails() == null ? " IS NULL" : " = ?")
@@ -518,6 +532,10 @@ public class FingerprintDAO {
 		}
 		if (fingerprint.getAccept_headers() != null) {
 			checkExists.setString(index, fingerprint.getAccept_headers());
+			++index;
+		}
+		if (fingerprint.getPlatform() != null) {
+			checkExists.setString(index, fingerprint.getPlatform());
 			++index;
 		}
 		if (fingerprint.getPluginDetails() != null) {

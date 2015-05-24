@@ -46,6 +46,10 @@
 		<li>The difference between the client and the server's clocks, in minutes, detected using JavaScript.</li>
 		<li>The value returned by the JavaScript function toLocaleString() called on the UNIX epoch.</li>
 		<li>The output of the JavaScript Math.tan(-1e300).</li>
+		<li>An image created by the client's browser using a HTML5 canvas.</li>
+		<li>A 3D image created by the client's browser using WebGL.</li>
+		<li>The name of the WebGL vendor of the client's browser; this may be the name of the client's graphics card.</li>
+		<li>The name of the WebGL renderer of the client's browser; this may be the name of the client's underlying graphics driver.</li>
 	</ul>
 	
 	<h3>Cookies</h3>

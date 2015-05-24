@@ -34,7 +34,6 @@ try {
         webGLRenderer = "Not supported";
     }
 } catch(e){
-	alert(e);
     webGLData = "Not supported";
     webGLVendor = "Not supported";
     webGLRenderer = "Not supported";
