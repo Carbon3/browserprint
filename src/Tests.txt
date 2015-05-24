@@ -8,6 +8,9 @@ The User-Agent header sent with the HTTP request for the page.
 The concatenation of three headers from the HTTP request:
 the Accept request header, the Accept-Encoding request header, and the Accept-Language request header.
 
+### Platform (javascript)
+The name of the platform the browser is running on, detected using JavaScript.
+
 ### Browser Plugin Details
 A list of the browsers installed plugins as detected using JavaScript.
 

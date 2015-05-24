@@ -89,7 +89,7 @@ public class FingerprintDAO {
 			{
 				CharacteristicBean bean = getCharacteristicBean(conn, sampleCount, "Platform", fingerprint.getPlatform());
 				bean.setName("Platform (javascript)");
-				bean.setNameHoverText("The name of the platform the browser is running on, detected using javascript.");
+				bean.setNameHoverText("The name of the platform the browser is running on, detected using JavaScript.");
 				characteristics.add(bean);
 			}
 			{
