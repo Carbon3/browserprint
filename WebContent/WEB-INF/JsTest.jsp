@@ -148,7 +148,7 @@
 		</div>
 	</form>
 	<!-- Flash for detecting fonts. -->
-	<div style="display:none;">
+	<div>
 		<embed pluginspage="http://www.macromedia.com/go/getflashplayer" type="application/x-shockwave-flash" src="FontList.swf">
 	</div>
 	<!-- Part of the ad blocking test. -->
