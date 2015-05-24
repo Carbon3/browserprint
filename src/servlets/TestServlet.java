@@ -70,7 +70,6 @@ public class TestServlet extends HttpServlet {
 		fingerprint.setSuperCookie(request.getParameter("SuperCookie"));
 		fingerprint.setDateTime(request.getParameter("DateTime"));
 		fingerprint.setMathTan(request.getParameter("MathTan"));
-
 		{
 			String adsBlocked = request.getParameter("AdsBlocked");
 			if (adsBlocked != null) {
@@ -82,6 +81,8 @@ public class TestServlet extends HttpServlet {
 				}
 			}
 		}
+		fingerprint.setCanvas(request.getParameter("Canvas"));
+		fingerprint.setWebGL(request.getParameter("WebGL"));
 
 		{
 			long ourTime = new Date().getTime();

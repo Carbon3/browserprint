@@ -26,6 +26,9 @@ public class Fingerprint {
 	private String ipAddress;
 	
 	private Boolean adsBlocked;
+	
+	private String canvas;
+	private String webGL;
 
 	public Fingerprint() {
 		sampleSetID = null;
@@ -44,6 +47,8 @@ public class Fingerprint {
 		usingTor = false;
 		ipAddress = null;
 		adsBlocked = null;
+		canvas = null;
+		webGL = null;
 	}
 
 	public Integer getSampleSetID() {
@@ -172,5 +177,21 @@ public class Fingerprint {
 
 	public void setAdsBlocked(Boolean adsBlocked) {
 		this.adsBlocked = adsBlocked;
+	}
+
+	public String getCanvas() {
+		return canvas;
+	}
+
+	public void setCanvas(String canvas) {
+		this.canvas = canvas;
+	}
+
+	public String getWebGL() {
+		return webGL;
+	}
+
+	public void setWebGL(String webGL) {
+		this.webGL = webGL;
 	}
 }

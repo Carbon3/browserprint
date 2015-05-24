@@ -20,6 +20,8 @@ CREATE TABLE `Samples` (
   `MathTan` TEXT,
   `UsingTor` BOOL NOT NULL,
   `AdsBlocked` BOOL,
+  `Canvas` TEXT,
+  `WebGL` TEXT,
   PRIMARY KEY(`SampleID`)
 )
 ENGINE=InnoDB;

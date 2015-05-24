@@ -117,3 +117,11 @@ function getAdsBlocked(){
 		return 0;
 	}
 }
+
+function getCanvas(){
+	return canvasData;
+}
+
+function getWebGL(){
+	return webGLData;
+}

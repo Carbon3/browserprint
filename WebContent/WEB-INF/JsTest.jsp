@@ -7,6 +7,9 @@
 	<title>Libre-Panopticlick</title>
 	<script type="text/javascript" src="jquery-1.11.2.min.js"></script>
 	<script type="text/javascript" src="PluginDetect.js"></script>
+	<script type="text/javascript" src="canvas.js"></script>
+	<script type="text/javascript" src="three.min.js"></script>
+	<script type="text/javascript" src="webGL.js"></script>
 	<script type="text/javascript" src="fingerprint.js"></script>
 	<script type="text/javascript">
 	window.onload = function(){
@@ -71,6 +74,22 @@
     		id: 'AdsBlocked',
     		name: 'AdsBlocked',
     		value: getAdsBlocked()
+		}).appendTo('#formdiv');
+		
+		//Canvas
+		$('<input>').attr({
+    		type: 'hidden',
+    		id: 'Canvas',
+    		name: 'Canvas',
+    		value: getCanvas()
+		}).appendTo('#formdiv');
+		
+		//WebGL
+		$('<input>').attr({
+    		type: 'hidden',
+    		id: 'WebGL',
+    		name: 'WebGL',
+    		value: getWebGL()
 		}).appendTo('#formdiv');
 		
 		//Wait for a while before submitting the page.

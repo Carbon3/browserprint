@@ -22,7 +22,7 @@ public class FingerprintDAO {
 	 * @return the threadID of the post if successful. Else returns null if the
 	 *         post doesn't exist or an error occurs.
 	 */
-	private static final String insertSampleStr = "INSERT INTO `Samples`(`IP`,`TimeStamp`,`UserAgent`, `AcceptHeaders`, `PluginDetails`, `TimeZone`, `ScreenDetails`, `Fonts`, `CookiesEnabled`, `SuperCookie`, `DoNotTrack`, `ClockDifference`, `DateTime`, `MathTan`, `UsingTor`, `AdsBlocked`) VALUES(?, NOW(), ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?);";
+	private static final String insertSampleStr = "INSERT INTO `Samples`(`IP`,`TimeStamp`,`UserAgent`, `AcceptHeaders`, `PluginDetails`, `TimeZone`, `ScreenDetails`, `Fonts`, `CookiesEnabled`, `SuperCookie`, `DoNotTrack`, `ClockDifference`, `DateTime`, `MathTan`, `UsingTor`, `AdsBlocked`, `Canvas`, `WebGL`) VALUES(?, NOW(), ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?);";
 	private static final String getSampleCountStr = "SELECT COUNT(*) FROM `Samples`;";
 
 	private static final String NO_JAVASCRIPT = "no javascript";
@@ -175,6 +175,24 @@ public class FingerprintDAO {
 						+ " It does so by attempting to display an ad and checking whether it was successful.");
 				characteristics.add(bean);
 			}
+			{
+				CharacteristicBean bean = getCharacteristicBean(conn, sampleCount, "Canvas", fingerprint.getCanvas());
+				bean.setName("Canvas");
+				if(bean.getValue().equals(NO_JAVASCRIPT) == false){
+					bean.setValue("<img width=\"400\" height=\"60\" src=\"" + bean.getValue() + "\">");
+				}
+				bean.setNameHoverText("");
+				characteristics.add(bean);
+			}
+			{
+				CharacteristicBean bean = getCharacteristicBean(conn, sampleCount, "WebGL", fingerprint.getWebGL());
+				bean.setName("WebGL");
+				if(bean.getValue().equals(NO_JAVASCRIPT) == false){
+					bean.setValue("<img width=\"500\" height=\"200\" src=\"" + bean.getValue() + "\">");
+				}
+				bean.setNameHoverText("");
+				characteristics.add(bean);
+			}
 
 			return sampleID;
 
@@ -243,6 +261,10 @@ public class FingerprintDAO {
 		else{
 			insertSample.setNull(index, java.sql.Types.BOOLEAN);
 		}
+		++index;
+		insertSample.setString(index, fingerprint.getCanvas());
+		++index;
+		insertSample.setString(index, fingerprint.getWebGL());
 
 		insertSample.execute();
 
@@ -332,6 +354,8 @@ public class FingerprintDAO {
 				+ " AND `MathTan`" + (fingerprint.getMathTan() == null ? " IS NULL" : " = ?")
 				+ " AND `UsingTor` = ?"
 				+ " AND `AdsBlocked`" + (fingerprint.getAdsBlocked() == null ? " IS NULL" : " = ?")
+				+ " AND `Canvas`" + (fingerprint.getCanvas() == null ? " IS NULL" : " = ?")
+				+ " AND `WebGL`" + (fingerprint.getWebGL() == null ? " IS NULL" : " = ?")
 				+ ";";
 		PreparedStatement checkExists = conn.prepareStatement(query);
 		
@@ -391,6 +415,14 @@ public class FingerprintDAO {
 			checkExists.setBoolean(index, fingerprint.getAdsBlocked());
 			++index;
 		}
+		if (fingerprint.getCanvas() != null) {
+			checkExists.setString(index, fingerprint.getCanvas());
+			++index;
+		}
+		if (fingerprint.getWebGL() != null) {
+			checkExists.setString(index, fingerprint.getWebGL());
+			++index;
+		}
 
 		ResultSet rs = checkExists.executeQuery();
 
@@ -444,6 +476,8 @@ public class FingerprintDAO {
 				+ " AND `MathTan`" + (fingerprint.getMathTan() == null ? " IS NULL" : " = ?")
 				+ " AND `UsingTor` = ?"
 				+ " AND `AdsBlocked`" + (fingerprint.getAdsBlocked() == null ? " IS NULL" : " = ?")
+				+ " AND `Canvas`" + (fingerprint.getCanvas() == null ? " IS NULL" : " = ?")
+				+ " AND `WebGL`" + (fingerprint.getWebGL() == null ? " IS NULL" : " = ?")
 				+ ";";
 		PreparedStatement checkExists = conn.prepareStatement(query);
 
@@ -498,6 +532,14 @@ public class FingerprintDAO {
 		++index;
 		if (fingerprint.getAdsBlocked() != null) {
 			checkExists.setBoolean(index, fingerprint.getAdsBlocked());
+			++index;
+		}
+		if (fingerprint.getCanvas() != null) {
+			checkExists.setString(index, fingerprint.getCanvas());
+			++index;
+		}
+		if (fingerprint.getWebGL() != null) {
+			checkExists.setString(index, fingerprint.getWebGL());
 			++index;
 		}
 
