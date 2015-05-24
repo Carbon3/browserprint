@@ -38,6 +38,7 @@
 	</div>
 	<p>
 		Libre-Panopticlick is a free open source project designed to provide the same and better functionality as the <a href="https://panopticlick.eff.org/">original Panopticlick</a>.
+		Several of the tests are based on publicly available code from <a href="https://amiunique.org/">Am I unique?</a>.
 	</p>
 </div>
 <%@include file="WEB-INF/footer.html" %>
