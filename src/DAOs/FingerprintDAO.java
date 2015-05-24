@@ -194,7 +194,7 @@ public class FingerprintDAO {
 			{
 				CharacteristicBean bean = getCharacteristicBean(conn, sampleCount, "WebGL", fingerprint.getWebGL());
 				bean.setName("WebGL");
-				if(bean.getValue().equals(NO_JAVASCRIPT) == false){
+				if(bean.getValue().equals(NO_JAVASCRIPT) == false && bean.getValue().equals("Not supported") == false){
 					bean.setValue("<img width=\"500\" height=\"200\" src=\"" + bean.getValue() + "\">");
 				}
 				bean.setNameHoverText("Rendering of specific 3D forms following a fixed set of instructions."
