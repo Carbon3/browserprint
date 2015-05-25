@@ -86,6 +86,7 @@ public class TestServlet extends HttpServlet {
 		fingerprint.setWebGL(request.getParameter("WebGL"));
 		fingerprint.setWebGLVendor(request.getParameter("WebGLVendor"));
 		fingerprint.setWebGLRenderer(request.getParameter("WebGLRenderer"));
+		fingerprint.setPlatformFlash(request.getParameter("PlatformFlash"));
 
 		{
 			long ourTime = new Date().getTime();

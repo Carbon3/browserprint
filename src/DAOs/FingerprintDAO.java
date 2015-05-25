@@ -22,10 +22,11 @@ public class FingerprintDAO {
 	 * @return the threadID of the post if successful. Else returns null if the
 	 *         post doesn't exist or an error occurs.
 	 */
-	private static final String insertSampleStr = "INSERT INTO `Samples`(`IP`,`TimeStamp`,`UserAgent`, `AcceptHeaders`, `Platform`, `PluginDetails`, `TimeZone`, `ScreenDetails`, `Fonts`, `CookiesEnabled`, `SuperCookie`, `DoNotTrack`, `ClockDifference`, `DateTime`, `MathTan`, `UsingTor`, `AdsBlocked`, `Canvas`, `WebGL`, `WebGLVendor`, `WebGLRenderer`) VALUES(?, NOW(), ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?);";
+	private static final String insertSampleStr = "INSERT INTO `Samples`(`IP`,`TimeStamp`,`UserAgent`, `AcceptHeaders`, `Platform`, `PlatformFlash`, `PluginDetails`, `TimeZone`, `ScreenDetails`, `Fonts`, `CookiesEnabled`, `SuperCookie`, `DoNotTrack`, `ClockDifference`, `DateTime`, `MathTan`, `UsingTor`, `AdsBlocked`, `Canvas`, `WebGL`, `WebGLVendor`, `WebGLRenderer`) VALUES(?, NOW(), ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?);";
 	private static final String getSampleCountStr = "SELECT COUNT(*) FROM `Samples`;";
 
 	private static final String NO_JAVASCRIPT = "no javascript";
+	private static final String NO_FLASH = "no flash";
 
 	public static final Integer processFingerprint(Fingerprint fingerprint, CharacteristicsBean chrsbean, CharacteristicBean uniquenessbean) {
 		Connection conn = null;
@@ -93,6 +94,15 @@ public class FingerprintDAO {
 				characteristics.add(bean);
 			}
 			{
+				CharacteristicBean bean = getCharacteristicBean(conn, sampleCount, "PlatformFlash", fingerprint.getPlatformFlash());
+				if(bean.getValue().equals(NO_JAVASCRIPT)){
+					bean.setValue(NO_FLASH);
+				}
+				bean.setName("Platform (Flash)");
+				bean.setNameHoverText("The name of the platform the browser is running on, detected using Flash.");
+				characteristics.add(bean);
+			}
+			{
 				CharacteristicBean bean = getCharacteristicBean(conn, sampleCount, "PluginDetails", fingerprint.getPluginDetails());
 				bean.setName("Browser Plugin Details");
 				bean.setNameHoverText("A list of the browsers installed plugins as detected using JavaScript.");
@@ -114,6 +124,9 @@ public class FingerprintDAO {
 				CharacteristicBean bean = getCharacteristicBean(conn, sampleCount, "Fonts", fingerprint.getFonts());
 				if (bean.getValue().equals("")) {
 					bean.setValue("No fonts detected");
+				}
+				else if(bean.getValue().equals(NO_JAVASCRIPT)){
+					bean.setValue(NO_FLASH);
 				}
 				bean.setName("System Fonts");
 				bean.setNameHoverText("The fonts installed on the client's machine, detected using Flash.");
@@ -251,6 +264,8 @@ public class FingerprintDAO {
 		++index;
 		insertSample.setString(index, fingerprint.getPlatform());
 		++index;
+		insertSample.setString(index, fingerprint.getPlatformFlash());
+		++index;
 		insertSample.setString(index, fingerprint.getPluginDetails());
 		++index;
 		insertSample.setString(index, fingerprint.getTimeZone());
@@ -369,6 +384,7 @@ public class FingerprintDAO {
 				+ " AND `UserAgent`" + (fingerprint.getUser_agent() == null ? " IS NULL" : " = ?")
 				+ " AND `AcceptHeaders`" + (fingerprint.getAccept_headers() == null ? " IS NULL" : " = ?")
 				+ " AND `Platform`" + (fingerprint.getPlatform() == null ? " IS NULL" : " = ?")
+				+ " AND `PlatformFlash`" + (fingerprint.getPlatformFlash() == null ? " IS NULL" : " = ?")
 				+ " AND `PluginDetails`" + (fingerprint.getPluginDetails() == null ? " IS NULL" : " = ?")
 				+ " AND `TimeZone`" + (fingerprint.getTimeZone() == null ? " IS NULL" : " = ?")
 				+ " AND `ScreenDetails`" + (fingerprint.getScreenDetails() == null ? " IS NULL" : " = ?")
@@ -402,6 +418,10 @@ public class FingerprintDAO {
 		}
 		if (fingerprint.getPlatform() != null) {
 			checkExists.setString(index, fingerprint.getPlatform());
+			++index;
+		}
+		if (fingerprint.getPlatformFlash() != null) {
+			checkExists.setString(index, fingerprint.getPlatformFlash());
 			++index;
 		}
 		if (fingerprint.getPluginDetails() != null) {
@@ -506,6 +526,7 @@ public class FingerprintDAO {
 				+ " `UserAgent`" + (fingerprint.getUser_agent() == null ? " IS NULL" : " = ?")
 				+ " AND `AcceptHeaders`" + (fingerprint.getAccept_headers() == null ? " IS NULL" : " = ?")
 				+ " AND `Platform`" + (fingerprint.getPlatform() == null ? " IS NULL" : " = ?")
+				+ " AND `PlatformFlash`" + (fingerprint.getPlatformFlash() == null ? " IS NULL" : " = ?")
 				+ " AND `PluginDetails`" + (fingerprint.getPluginDetails() == null ? " IS NULL" : " = ?")
 				+ " AND `TimeZone`" + (fingerprint.getTimeZone() == null ? " IS NULL" : " = ?")
 				+ " AND `ScreenDetails`" + (fingerprint.getScreenDetails() == null ? " IS NULL" : " = ?")
@@ -536,6 +557,10 @@ public class FingerprintDAO {
 		}
 		if (fingerprint.getPlatform() != null) {
 			checkExists.setString(index, fingerprint.getPlatform());
+			++index;
+		}
+		if (fingerprint.getPlatformFlash() != null) {
+			checkExists.setString(index, fingerprint.getPlatformFlash());
 			++index;
 		}
 		if (fingerprint.getPluginDetails() != null) {

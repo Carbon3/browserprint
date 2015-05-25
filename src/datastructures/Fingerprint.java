@@ -8,6 +8,7 @@ public class Fingerprint {
 	private String accept_headers;
 
 	private String platform;
+	private String platformFlash;
 	private String pluginDetails;
 	private String timeZone;
 	private String screenDetails;
@@ -53,6 +54,7 @@ public class Fingerprint {
 		adsBlocked = null;
 		canvas = null;
 		webGL = null;
+		platformFlash = null;
 	}
 
 	public Integer getSampleSetID() {
@@ -85,6 +87,14 @@ public class Fingerprint {
 
 	public void setPlatform(String platform) {
 		this.platform = platform;
+	}
+
+	public String getPlatformFlash() {
+		return platformFlash;
+	}
+
+	public void setPlatformFlash(String platformFlash) {
+		this.platformFlash = platformFlash;
 	}
 
 	public String getPluginDetails() {

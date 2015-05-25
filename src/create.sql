@@ -9,6 +9,7 @@ CREATE TABLE `Samples` (
   `UserAgent` TEXT,
   `AcceptHeaders` TEXT,
   `Platform` TEXT,
+  `PlatformFlash` TEXT,
   `PluginDetails` TEXT,
   `TimeZone` VARCHAR(5),
   `ScreenDetails` TEXT,
