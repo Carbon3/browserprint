@@ -27,6 +27,9 @@ The screen size and colour depth of the monitor displaying the client's web brow
 The resolution of the client's monitor(s).
 Different from the other screen size test in that this number can be the cumulative resolution of the monitors in multiple monitor set ups.
 
+### Language (Flash)
+The language of the client's browser, as detected using Flash.
+
 ### System Fonts
 The fonts installed on the client's machine, detected using Flash.
 
