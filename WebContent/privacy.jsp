@@ -37,10 +37,10 @@
 		<li>The value of the DNT (Do Not Track) header from the HTTP request for the page.</li>
 		<li>Whether the client is thought to be using Tor or not. Detected by performing a TorDNSEL request.</li>
 		<li>Whether JavaScript is enabled or not.</li>
-		<li>The name of the platform the browser is running on, detected using JavaScript.</li>
+		<li>The name of the platform the browser is running on, detected using JavaScript and flash.</li>
 		<li>A list of your installed browser plugins, as detected using JavaScript.</li>
 		<li>The time-zone configured on your machine, as detected using JavaScript.</li>
-		<li>The screen size and colour depth of the monitor displaying the client's web browser, as detected using JavaScript.</li>
+		<li>The screen size and colour depth of the monitor displaying the client's web browser, as detected using JavaScript and flash.</li>
 		<li>The fonts installed on the client's machine, detected using Flash.</li>
 		<li>Whether cookies are enabled, detected by creating a cookie and then retrieving it.</li>
 		<li>Whether localStorage, sessionStorage, and Internet Explorer's userData are available in the browser, detected using JavaScript.</li>

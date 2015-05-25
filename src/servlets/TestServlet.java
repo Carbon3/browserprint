@@ -67,6 +67,7 @@ public class TestServlet extends HttpServlet {
 		fingerprint.setPluginDetails(request.getParameter("PluginDetails"));
 		fingerprint.setTimeZone(request.getParameter("TimeZone"));
 		fingerprint.setScreenDetails(request.getParameter("ScreenDetails"));
+		fingerprint.setScreenDetailsFlash(request.getParameter("ScreenDetailsFlash"));
 		fingerprint.setFonts(request.getParameter("Fonts"));
 		fingerprint.setSuperCookie(request.getParameter("SuperCookie"));
 		fingerprint.setDateTime(request.getParameter("DateTime"));

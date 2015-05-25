@@ -22,7 +22,7 @@ public class FingerprintDAO {
 	 * @return the threadID of the post if successful. Else returns null if the
 	 *         post doesn't exist or an error occurs.
 	 */
-	private static final String insertSampleStr = "INSERT INTO `Samples`(`IP`,`TimeStamp`,`UserAgent`, `AcceptHeaders`, `Platform`, `PlatformFlash`, `PluginDetails`, `TimeZone`, `ScreenDetails`, `Fonts`, `CookiesEnabled`, `SuperCookie`, `DoNotTrack`, `ClockDifference`, `DateTime`, `MathTan`, `UsingTor`, `AdsBlocked`, `Canvas`, `WebGL`, `WebGLVendor`, `WebGLRenderer`) VALUES(?, NOW(), ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?);";
+	private static final String insertSampleStr = "INSERT INTO `Samples`(`IP`,`TimeStamp`,`UserAgent`, `AcceptHeaders`, `Platform`, `PlatformFlash`, `PluginDetails`, `TimeZone`, `ScreenDetails`, `ScreenDetailsFlash`, `Fonts`, `CookiesEnabled`, `SuperCookie`, `DoNotTrack`, `ClockDifference`, `DateTime`, `MathTan`, `UsingTor`, `AdsBlocked`, `Canvas`, `WebGL`, `WebGLVendor`, `WebGLRenderer`) VALUES(?, NOW(), ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?);";
 	private static final String getSampleCountStr = "SELECT COUNT(*) FROM `Samples`;";
 
 	private static final String NO_JAVASCRIPT = "no javascript";
@@ -118,6 +118,16 @@ public class FingerprintDAO {
 				CharacteristicBean bean = getCharacteristicBean(conn, sampleCount, "ScreenDetails", fingerprint.getScreenDetails());
 				bean.setName("Screen Size and Color Depth");
 				bean.setNameHoverText("The screen size and colour depth of the monitor displaying the client's web browser.");
+				characteristics.add(bean);
+			}
+			{
+				CharacteristicBean bean = getCharacteristicBean(conn, sampleCount, "ScreenDetailsFlash", fingerprint.getScreenDetailsFlash());
+				if(bean.getValue().equals(NO_JAVASCRIPT)){
+					bean.setValue(NO_FLASH);
+				}
+				bean.setName("Screen Size (Flash)");
+				bean.setNameHoverText("The resolution of the client's monitor(s)."
+						+ " Different from the other screen size test in that this number can be the cumulative resolution of the monitors in multiple monitor set ups.");
 				characteristics.add(bean);
 			}
 			{
@@ -272,6 +282,8 @@ public class FingerprintDAO {
 		++index;
 		insertSample.setString(index, fingerprint.getScreenDetails());
 		++index;
+		insertSample.setString(index, fingerprint.getScreenDetailsFlash());
+		++index;
 		insertSample.setString(index, fingerprint.getFonts());
 		++index;
 		insertSample.setBoolean(index, fingerprint.isCookiesEnabled());
@@ -388,6 +400,7 @@ public class FingerprintDAO {
 				+ " AND `PluginDetails`" + (fingerprint.getPluginDetails() == null ? " IS NULL" : " = ?")
 				+ " AND `TimeZone`" + (fingerprint.getTimeZone() == null ? " IS NULL" : " = ?")
 				+ " AND `ScreenDetails`" + (fingerprint.getScreenDetails() == null ? " IS NULL" : " = ?")
+				+ " AND `ScreenDetailsFlash`" + (fingerprint.getScreenDetailsFlash() == null ? " IS NULL" : " = ?")
 				+ " AND `Fonts`" + (fingerprint.getFonts() == null ? " IS NULL" : " = ?")
 				+ " AND `CookiesEnabled` = ?"
 				+ " AND `SuperCookie`" + (fingerprint.getSuperCookie() == null ? " IS NULL" : " = ?")
@@ -434,6 +447,10 @@ public class FingerprintDAO {
 		}
 		if (fingerprint.getScreenDetails() != null) {
 			checkExists.setString(index, fingerprint.getScreenDetails());
+			++index;
+		}
+		if (fingerprint.getScreenDetailsFlash() != null) {
+			checkExists.setString(index, fingerprint.getScreenDetailsFlash());
 			++index;
 		}
 		if (fingerprint.getFonts() != null) {
@@ -530,6 +547,7 @@ public class FingerprintDAO {
 				+ " AND `PluginDetails`" + (fingerprint.getPluginDetails() == null ? " IS NULL" : " = ?")
 				+ " AND `TimeZone`" + (fingerprint.getTimeZone() == null ? " IS NULL" : " = ?")
 				+ " AND `ScreenDetails`" + (fingerprint.getScreenDetails() == null ? " IS NULL" : " = ?")
+				+ " AND `ScreenDetailsFlash`" + (fingerprint.getScreenDetailsFlash() == null ? " IS NULL" : " = ?")
 				+ " AND `Fonts`" + (fingerprint.getFonts() == null ? " IS NULL" : " = ?")
 				+ " AND `CookiesEnabled` = ?"
 				+ " AND `SuperCookie`" + (fingerprint.getSuperCookie() == null ? " IS NULL" : " = ?")
@@ -573,6 +591,10 @@ public class FingerprintDAO {
 		}
 		if (fingerprint.getScreenDetails() != null) {
 			checkExists.setString(index, fingerprint.getScreenDetails());
+			++index;
+		}
+		if (fingerprint.getScreenDetailsFlash() != null) {
+			checkExists.setString(index, fingerprint.getScreenDetailsFlash());
 			++index;
 		}
 		if (fingerprint.getFonts() != null) {

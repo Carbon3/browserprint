@@ -11,6 +11,9 @@ the Accept request header, the Accept-Encoding request header, and the Accept-La
 ### Platform (JavaScript)
 The name of the platform the browser is running on, detected using JavaScript.
 
+### Platform (Flash)
+The name of the platform the browser is running on, detected using Flash.
+
 ### Browser Plugin Details
 A list of the browsers installed plugins as detected using JavaScript.
 
@@ -19,6 +22,10 @@ The time-zone configured on the client's machine.
 
 ### Screen Size and Color Depth
 The screen size and colour depth of the monitor displaying the client's web browser.
+
+### Screen Size (Flash)
+The resolution of the client's monitor(s).
+Different from the other screen size test in that this number can be the cumulative resolution of the monitors in multiple monitor set ups.
 
 ### System Fonts
 The fonts installed on the client's machine, detected using Flash.

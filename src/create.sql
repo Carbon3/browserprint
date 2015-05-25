@@ -13,6 +13,7 @@ CREATE TABLE `Samples` (
   `PluginDetails` TEXT,
   `TimeZone` VARCHAR(5),
   `ScreenDetails` TEXT,
+  `ScreenDetailsFlash` TEXT,
   `Fonts` TEXT,
   `CookiesEnabled` BOOL NOT NULL,
   `SuperCookie` TEXT,
