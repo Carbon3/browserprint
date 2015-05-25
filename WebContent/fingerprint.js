@@ -2,6 +2,10 @@ function getPlatform(){
 	return window.navigator.platform;
 }
 
+function getPlatformFlash(flash){
+	return flash.getOS();
+}
+
 function getPluginDetails() {
 	var plugins = "";
 
@@ -40,6 +44,14 @@ function getPluginDetails() {
 
 function getScreenDetails() {
 	return screen.width + "x" + screen.height + "x" + screen.colorDepth;
+}
+
+function getScreenDetailsFlash(flash){
+	return flash.getResolution().join("x");
+}
+
+function getFonts(flash){
+	return flash.getFonts();//.join().replace(/[&\/\\#,+()$~%.'":*?<>{}]/g, '_');
 }
 
 function getTimeZone() {
@@ -136,4 +148,8 @@ function getWebGLVendor(){
 
 function getWebGLRenderer(){
 	return webGLRenderer;
+}
+
+function getLanguageFlash(flash){
+	return flash.getLanguage();
 }

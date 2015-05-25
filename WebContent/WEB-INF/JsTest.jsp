@@ -13,13 +13,23 @@
 	<script type="text/javascript" src="fingerprint.js"></script>
 	<script type="text/javascript">
 	window.onload = function(){
-		//PluginDetails
+		var flash = document.getElementById("OSData");
+		
+		//Platform
 		$('<input>').attr({
     		type: 'hidden',
     		id: 'Platform',
     		name: 'Platform',
     		value: getPlatform()
 		}).appendTo('#formdiv')
+		
+		//PlatformFlash
+		$('<input>').attr({
+    		type: 'hidden',
+    		id: 'PlatformFlash',
+    		name: 'PlatformFlash',
+    		value: getPlatformFlash(flash)
+		}).appendTo('#formdiv');
 		
 		//PluginDetails
 		$('<input>').attr({
@@ -45,11 +55,28 @@
     		value: getScreenDetails()
 		}).appendTo('#formdiv');
 		
+		//ScreenDetailsFlash
+		$('<input>').attr({
+    		type: 'hidden',
+    		id: 'ScreenDetailsFlash',
+    		name: 'ScreenDetailsFlash',
+    		value: getScreenDetailsFlash(flash)
+		}).appendTo('#formdiv');
+		
+		//LanguageFlash
+		$('<input>').attr({
+    		type: 'hidden',
+    		id: 'LanguageFlash',
+    		name: 'LanguageFlash',
+    		value: getLanguageFlash(flash)
+		}).appendTo('#formdiv');
+		
 		//Fonts
 		$('<input>').attr({
     		type: 'hidden',
     		id: 'Fonts',
-    		name: 'Fonts'
+    		name: 'Fonts',
+    		value: getFonts(flash)
 		}).appendTo('#formdiv');
 		
 		//SuperCookie
@@ -133,18 +160,6 @@
 		
 		$('#detailsForm').submit();
 	}
-
-	//For the FontList swf to call
-	function populateFontList(fontArr)
-	{
-		var fonts = "";
-		fonts = fontArr[0];
-		for(var i = 1; i < fontArr.length; ++i){
-			fonts += ", ";
-			fonts += fontArr[i];
-		}
-		$('#Fonts').attr('value', fonts);
-	}
 	</script>
 </head>
 <body>
@@ -157,7 +172,7 @@
 	</form>
 	<!-- Flash for detecting fonts. -->
 	<div>
-		<embed pluginspage="http://www.macromedia.com/go/getflashplayer" type="application/x-shockwave-flash" src="FontList.swf">
+		<embed id="OSData" pluginspage="http://www.macromedia.com/go/getflashplayer" type="application/x-shockwave-flash" src="OSData.swf">
 	</div>
 	<!-- Part of the ad blocking test. -->
 	<script type="text/javascript">
