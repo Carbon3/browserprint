@@ -13,6 +13,7 @@ public class Fingerprint {
 	private String timeZone;
 	private String screenDetails;
 	private String screenDetailsFlash;
+	private String languageFlash;
 	private String fonts;
 
 	private boolean cookiesEnabled;
@@ -44,6 +45,7 @@ public class Fingerprint {
 		timeZone = null;
 		screenDetails = null;
 		screenDetailsFlash = null;
+		languageFlash = null;
 		fonts = null;
 		cookiesEnabled = false;
 		superCookie = null;
@@ -129,6 +131,14 @@ public class Fingerprint {
 
 	public void setScreenDetailsFlash(String screenDetailsFlash) {
 		this.screenDetailsFlash = screenDetailsFlash;
+	}
+	
+	public String getLanguageFlash() {
+		return languageFlash;
+	}
+
+	public void setLanguageFlash(String languageFlash) {
+		this.languageFlash = languageFlash;
 	}
 
 	public String getFonts() {

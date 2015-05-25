@@ -14,6 +14,7 @@ CREATE TABLE `Samples` (
   `TimeZone` VARCHAR(5),
   `ScreenDetails` TEXT,
   `ScreenDetailsFlash` TEXT,
+  `LanguageFlash` TEXT,
   `Fonts` TEXT,
   `CookiesEnabled` BOOL NOT NULL,
   `SuperCookie` TEXT,
