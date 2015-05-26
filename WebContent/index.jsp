@@ -19,7 +19,7 @@
 <link type="text/css" href="style.css" rel="stylesheet">
 </head>
 <body>
-<%@include file="WEB-INF/header.html" %>
+<%@include file="/WEB-INF/header.html" %>
 <div id="content">
 	<p>
 		Does your web browser have a unique fingerprint?
@@ -29,7 +29,7 @@
 	</p>
 	<p>
 		This is a free service provided for research purposes.
-		If you are worried about privacy feel free to read our <a href="privacy.jsp">privacy policy</a>.
+		If you are worried about privacy feel free to read our <a href="privacy">privacy policy</a>.
 	</p>
 	<div id="testLink">
 		<p>
@@ -41,6 +41,6 @@
 		Several of the tests are based on publicly available code from <a href="https://amiunique.org/">Am I unique?</a>.
 	</p>
 </div>
-<%@include file="WEB-INF/footer.jsp" %>
+<%@include file="/WEB-INF/footer.jsp" %>
 </body>
 </html>

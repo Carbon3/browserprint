@@ -19,7 +19,7 @@
 <link type="text/css" href="style.css" rel="stylesheet">
 </head>
 <body>
-<%@include file="WEB-INF/header.html" %>
+<%@include file="header.html" %>
 <div id="content">
 	<h2>Information we collect</h2>
 	<p>
@@ -90,6 +90,6 @@
 		We will do our best to prevent theft or misuse of collected data, however, such incidents are still possible.
 	</p>
 </div>
-<%@include file="WEB-INF/footer.jsp" %>
+<%@include file="footer.jsp" %>
 </body>
 </html>

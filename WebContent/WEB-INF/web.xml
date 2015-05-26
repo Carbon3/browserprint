@@ -31,7 +31,7 @@
 	<servlet>
 		<display-name>PrivacyPage</display-name>
 		<servlet-name>PrivacyPage</servlet-name>
-		<jsp-file>/privacy.jsp</jsp-file>
+		<jsp-file>/WEB-INF/privacy.jsp</jsp-file>
 	</servlet>
 	<servlet-mapping>
 		<servlet-name>PrivacyPage</servlet-name>
