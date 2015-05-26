@@ -41,6 +41,6 @@
 			<td class="tableValue">${ chr.value }</td>
 		</tr></c:forEach>
 	</table>
-<%@include file="footer.html" %>
+<%@include file="footer.jsp" %>
 </body>
 </html>

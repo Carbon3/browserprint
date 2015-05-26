@@ -41,6 +41,6 @@
 		Several of the tests are based on publicly available code from <a href="https://amiunique.org/">Am I unique?</a>.
 	</p>
 </div>
-<%@include file="WEB-INF/footer.html" %>
+<%@include file="WEB-INF/footer.jsp" %>
 </body>
 </html>

@@ -90,6 +90,6 @@
 		We will do our best to prevent theft or misuse of collected data, however, such incidents are still possible.
 	</p>
 </div>
-<%@include file="WEB-INF/footer.html" %>
+<%@include file="WEB-INF/footer.jsp" %>
 </body>
 </html>

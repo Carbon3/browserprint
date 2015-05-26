@@ -60,4 +60,9 @@
 		<param-name>IpAddressHandling</param-name>
 		<param-value>FULL</param-value>
 	</context-param>
+	<!-- The email address that you want people to report bugs or suggestions to. -->
+	<context-param>
+		<param-name>devEmail</param-name>
+		<param-value>tD66BSHWU@gmail.com</param-value>
+	</context-param>
 </web-app>
