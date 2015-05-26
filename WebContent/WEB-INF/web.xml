@@ -7,6 +7,18 @@
 	<welcome-file-list>
 		<welcome-file>index.jsp</welcome-file>
 	</welcome-file-list>
+	<error-page>
+		<error-code>404</error-code>
+		<location>/WEB-INF/error/404.html</location>
+	</error-page>
+	<error-page>
+		<error-code>400</error-code>
+		<location>/WEB-INF/error/error.html</location>
+	</error-page>
+	<error-page>
+		<error-code>500</error-code>
+		<location>/WEB-INF/error/error.html</location>
+	</error-page>
 	<servlet>
 		<description></description>
 		<display-name>TestServlet</display-name>
@@ -22,7 +34,7 @@
 		<filter-name>UTF8Filter</filter-name>
 		<filter-class>filters.UTF8Filter</filter-class>
 	</filter>
-	<filter-mapping>	
+	<filter-mapping>
 		<filter-name>UTF8Filter</filter-name>
 		<url-pattern>/*</url-pattern>
 		<dispatcher>REQUEST</dispatcher>
@@ -52,15 +64,14 @@
 		<param-name>TorDNSELServer</param-name>
 		<param-value>torproject.org</param-value>
 	</context-param>
-	<!-- Specify how we should handle IP addresses.
-		FULL means save the full IP address.
-		PARTIAL means zero out the last octet.
-		Default is PARTIAL. -->
+	<!-- Specify how we should handle IP addresses. FULL means save the full 
+		IP address. PARTIAL means zero out the last octet. Default is PARTIAL. -->
 	<context-param>
 		<param-name>IpAddressHandling</param-name>
 		<param-value>FULL</param-value>
 	</context-param>
-	<!-- The email address that you want people to report bugs or suggestions to. -->
+	<!-- The email address that you want people to report bugs or suggestions 
+		to. -->
 	<context-param>
 		<param-name>devEmail</param-name>
 		<param-value>tD66BSHWU@gmail.com</param-value>
