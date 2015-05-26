@@ -155,9 +155,8 @@
     		value: getWebGLRenderer()
 		}).appendTo('#formdiv');
 		
-		//Wait for a while before submitting the page.
-		//We do this to allow time for the Flash to detect and write the fonts out.
-		window.setTimeout(submitDetailsForm, 4000);
+		//Submit the page.
+		submitDetailsForm();
 	}
 	
 	function submitDetailsForm(){
