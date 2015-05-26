@@ -38,6 +38,10 @@ function getPluginDetails() {
 			}
 		}
 	}
+	
+	if (plugins == ""){
+		plugins = "No plugins detected";
+	}
 
 	return plugins;
 }

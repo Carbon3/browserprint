@@ -24,12 +24,15 @@
 		}).appendTo('#formdiv')
 		
 		//PlatformFlash
-		$('<input>').attr({
-    		type: 'hidden',
-    		id: 'PlatformFlash',
-    		name: 'PlatformFlash',
-    		value: getPlatformFlash(flash)
-		}).appendTo('#formdiv');
+		try{
+			$('<input>').attr({
+	    		type: 'hidden',
+	    		id: 'PlatformFlash',
+	    		name: 'PlatformFlash',
+	    		value: getPlatformFlash(flash)
+			}).appendTo('#formdiv');
+		}catch(e){
+		}
 		
 		//PluginDetails
 		$('<input>').attr({
@@ -56,28 +59,37 @@
 		}).appendTo('#formdiv');
 		
 		//ScreenDetailsFlash
-		$('<input>').attr({
-    		type: 'hidden',
-    		id: 'ScreenDetailsFlash',
-    		name: 'ScreenDetailsFlash',
-    		value: getScreenDetailsFlash(flash)
-		}).appendTo('#formdiv');
+		try{
+			$('<input>').attr({
+	    		type: 'hidden',
+	    		id: 'ScreenDetailsFlash',
+	    		name: 'ScreenDetailsFlash',
+	    		value: getScreenDetailsFlash(flash)
+			}).appendTo('#formdiv');
+		}catch(e){
+		}
 		
 		//LanguageFlash
-		$('<input>').attr({
-    		type: 'hidden',
-    		id: 'LanguageFlash',
-    		name: 'LanguageFlash',
-    		value: getLanguageFlash(flash)
-		}).appendTo('#formdiv');
+		try{
+			$('<input>').attr({
+	    		type: 'hidden',
+	    		id: 'LanguageFlash',
+	    		name: 'LanguageFlash',
+	    		value: getLanguageFlash(flash)
+			}).appendTo('#formdiv');
+		}catch(e){
+		}
 		
 		//Fonts
-		$('<input>').attr({
-    		type: 'hidden',
-    		id: 'Fonts',
-    		name: 'Fonts',
-    		value: getFonts(flash)
-		}).appendTo('#formdiv');
+		try{
+			$('<input>').attr({
+	    		type: 'hidden',
+	    		id: 'Fonts',
+	    		name: 'Fonts',
+	    		value: getFonts(flash)
+			}).appendTo('#formdiv');
+		}catch(e){
+		}
 		
 		//SuperCookie
 		$('<input>').attr({

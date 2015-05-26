@@ -25,8 +25,8 @@ public class FingerprintDAO {
 	private static final String insertSampleStr = "INSERT INTO `Samples`(`IP`,`TimeStamp`,`UserAgent`, `AcceptHeaders`, `Platform`, `PlatformFlash`, `PluginDetails`, `TimeZone`, `ScreenDetails`, `ScreenDetailsFlash`, `LanguageFlash`, `Fonts`, `CookiesEnabled`, `SuperCookie`, `DoNotTrack`, `ClockDifference`, `DateTime`, `MathTan`, `UsingTor`, `AdsBlocked`, `Canvas`, `WebGL`, `WebGLVendor`, `WebGLRenderer`) VALUES(?, NOW(), ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?);";
 	private static final String getSampleCountStr = "SELECT COUNT(*) FROM `Samples`;";
 
-	private static final String NO_JAVASCRIPT = "no javascript";
-	private static final String NO_FLASH = "no flash";
+	private static final String NO_JAVASCRIPT = "No JavaScript";
+	private static final String NO_FLASH = "No Flash";
 
 	public static final Integer processFingerprint(Fingerprint fingerprint, CharacteristicsBean chrsbean, CharacteristicBean uniquenessbean) {
 		Connection conn = null;
