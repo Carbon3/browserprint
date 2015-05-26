@@ -20,7 +20,6 @@
 		<location>/WEB-INF/error/error.html</location>
 	</error-page>
 	<servlet>
-		<description></description>
 		<display-name>TestServlet</display-name>
 		<servlet-name>TestServlet</servlet-name>
 		<servlet-class>servlets.TestServlet</servlet-class>
@@ -28,6 +27,15 @@
 	<servlet-mapping>
 		<servlet-name>TestServlet</servlet-name>
 		<url-pattern>/Test</url-pattern>
+	</servlet-mapping>
+	<servlet>
+		<display-name>PrivacyPage</display-name>
+		<servlet-name>PrivacyPage</servlet-name>
+		<jsp-file>/privacy.jsp</jsp-file>
+	</servlet>
+	<servlet-mapping>
+		<servlet-name>PrivacyPage</servlet-name>
+		<url-pattern>/privacy</url-pattern>
 	</servlet-mapping>
 	<!-- Set up the filters -->
 	<filter>
