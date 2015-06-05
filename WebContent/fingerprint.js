@@ -30,8 +30,9 @@ function getPluginDetails() {
 			 * Try the method that works with IE. Uses an MIT licensed script,
 			 * PluginDetect.
 			 */
-			var plugin_names = [ "Java", "QuickTime", "DevalVR", "Shockwave",
-					"Flash", "WindowsMediaplayer", "Silverlight", "VLC" ];
+			var plugin_names = ["QuickTime", "Java", "DevalVR", "Flash", "Shockwave",
+			        "WindowsMediaPlayer", "Silverlight", "VLC", "AdobeReader", "PDFReader",
+			        "RealPlayer", "IEcomponent", "ActiveX", "PDFjs"]
 			for (var i = 0; i < plugin_names.length; ++i) {
 				var version = PluginDetect.getVersion(plugin_names[i]);
 				if (version) {
