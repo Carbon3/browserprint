@@ -27,6 +27,7 @@ public class FingerprintDAO {
 
 	private static final String NO_JAVASCRIPT = "No JavaScript";
 	private static final String NO_FLASH = "No Flash";
+	private static final String NOT_SUPPORTED = "Not supported";
 
 	public static final Integer processFingerprint(Fingerprint fingerprint, CharacteristicsBean chrsbean, CharacteristicBean uniquenessbean) {
 		Connection conn = null;
@@ -216,7 +217,7 @@ public class FingerprintDAO {
 			{
 				CharacteristicBean bean = getCharacteristicBean(conn, sampleCount, "Canvas", fingerprint.getCanvas());
 				bean.setName("Canvas");
-				if(bean.getValue().equals(NO_JAVASCRIPT) == false){
+				if(bean.getValue().equals(NO_JAVASCRIPT) == false && bean.getValue().equals(NOT_SUPPORTED) == false){
 					bean.setValue("<img width=\"400\" height=\"60\" src=\"" + bean.getValue() + "\">");
 				}
 				bean.setNameHoverText("Rendering of a specific picture with the HTML5 Canvas element following a fixed set of instructions."
@@ -226,7 +227,7 @@ public class FingerprintDAO {
 			{
 				CharacteristicBean bean = getCharacteristicBean(conn, sampleCount, "WebGL", fingerprint.getWebGL());
 				bean.setName("WebGL");
-				if(bean.getValue().equals(NO_JAVASCRIPT) == false && bean.getValue().equals("Not supported") == false){
+				if(bean.getValue().equals(NO_JAVASCRIPT) == false && bean.getValue().equals(NOT_SUPPORTED) == false){
 					bean.setValue("<img width=\"500\" height=\"200\" src=\"" + bean.getValue() + "\">");
 				}
 				bean.setNameHoverText("Rendering of specific 3D forms following a fixed set of instructions."
