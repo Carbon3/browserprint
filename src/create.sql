@@ -25,7 +25,6 @@ CREATE TABLE `Samples` (
   `UsingTor` BOOL NOT NULL,
   `AdsBlocked` BOOL,
   `Canvas` TEXT,
-  `WebGL` TEXT,
   `WebGLVendor` TEXT,
   `WebGLRenderer` TEXT,
   PRIMARY KEY(`SampleID`)

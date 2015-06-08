@@ -22,7 +22,7 @@ public class FingerprintDAO {
 	 * @return the threadID of the post if successful. Else returns null if the
 	 *         post doesn't exist or an error occurs.
 	 */
-	private static final String insertSampleStr = "INSERT INTO `Samples`(`IP`,`TimeStamp`,`UserAgent`, `AcceptHeaders`, `Platform`, `PlatformFlash`, `PluginDetails`, `TimeZone`, `ScreenDetails`, `ScreenDetailsFlash`, `LanguageFlash`, `Fonts`, `CookiesEnabled`, `SuperCookie`, `DoNotTrack`, `ClockDifference`, `DateTime`, `MathTan`, `UsingTor`, `AdsBlocked`, `Canvas`, `WebGL`, `WebGLVendor`, `WebGLRenderer`) VALUES(?, NOW(), ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?);";
+	private static final String insertSampleStr = "INSERT INTO `Samples`(`IP`,`TimeStamp`,`UserAgent`, `AcceptHeaders`, `Platform`, `PlatformFlash`, `PluginDetails`, `TimeZone`, `ScreenDetails`, `ScreenDetailsFlash`, `LanguageFlash`, `Fonts`, `CookiesEnabled`, `SuperCookie`, `DoNotTrack`, `ClockDifference`, `DateTime`, `MathTan`, `UsingTor`, `AdsBlocked`, `Canvas`, `WebGLVendor`, `WebGLRenderer`) VALUES(?, NOW(), ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?);";
 	private static final String getSampleCountStr = "SELECT COUNT(*) FROM `Samples`;";
 
 	private static final String NO_JAVASCRIPT = "No JavaScript";
@@ -225,16 +225,6 @@ public class FingerprintDAO {
 				characteristics.add(bean);
 			}
 			{
-				CharacteristicBean bean = getCharacteristicBean(conn, sampleCount, "WebGL", fingerprint.getWebGL());
-				bean.setName("WebGL");
-				if(bean.getValue().equals(NO_JAVASCRIPT) == false && bean.getValue().equals(NOT_SUPPORTED) == false){
-					bean.setValue("<img width=\"500\" height=\"200\" src=\"" + bean.getValue() + "\">");
-				}
-				bean.setNameHoverText("Rendering of specific 3D forms following a fixed set of instructions."
-						+ " The picture presents some slight noticeable variations depending on the device of the user.");
-				characteristics.add(bean);
-			}
-			{
 				CharacteristicBean bean = getCharacteristicBean(conn, sampleCount, "WebGLVendor", fingerprint.getWebGLVendor());
 				bean.setName("WebGL Vendor");
 				bean.setNameHoverText("Name of the WebGL Vendor. Some browsers give the full name of the underlying graphics card used by the device.");
@@ -324,8 +314,6 @@ public class FingerprintDAO {
 		}
 		++index;
 		insertSample.setString(index, fingerprint.getCanvas());
-		++index;
-		insertSample.setString(index, fingerprint.getWebGL());
 		++index;
 		insertSample.setString(index, fingerprint.getWebGLVendor());
 		++index;
@@ -424,7 +412,6 @@ public class FingerprintDAO {
 				+ " AND `UsingTor` = ?"
 				+ " AND `AdsBlocked`" + (fingerprint.getAdsBlocked() == null ? " IS NULL" : " = ?")
 				+ " AND `Canvas`" + (fingerprint.getCanvas() == null ? " IS NULL" : " = ?")
-				+ " AND `WebGL`" + (fingerprint.getWebGL() == null ? " IS NULL" : " = ?")
 				+ " AND `WebGLVendor`" + (fingerprint.getWebGLVendor() == null ? " IS NULL" : " = ?")
 				+ " AND `WebGLRenderer`" + (fingerprint.getWebGLRenderer() == null ? " IS NULL" : " = ?")
 				+ ";";
@@ -506,10 +493,6 @@ public class FingerprintDAO {
 			checkExists.setString(index, fingerprint.getCanvas());
 			++index;
 		}
-		if (fingerprint.getWebGL() != null) {
-			checkExists.setString(index, fingerprint.getWebGL());
-			++index;
-		}
 		if (fingerprint.getWebGLVendor() != null) {
 			checkExists.setString(index, fingerprint.getWebGLVendor());
 			++index;
@@ -576,7 +559,6 @@ public class FingerprintDAO {
 				+ " AND `UsingTor` = ?"
 				+ " AND `AdsBlocked`" + (fingerprint.getAdsBlocked() == null ? " IS NULL" : " = ?")
 				+ " AND `Canvas`" + (fingerprint.getCanvas() == null ? " IS NULL" : " = ?")
-				+ " AND `WebGL`" + (fingerprint.getWebGL() == null ? " IS NULL" : " = ?")
 				+ " AND `WebGLVendor`" + (fingerprint.getWebGLVendor() == null ? " IS NULL" : " = ?")
 				+ " AND `WebGLRenderer`" + (fingerprint.getWebGLRenderer() == null ? " IS NULL" : " = ?")
 				+ ";";
@@ -653,10 +635,6 @@ public class FingerprintDAO {
 		}
 		if (fingerprint.getCanvas() != null) {
 			checkExists.setString(index, fingerprint.getCanvas());
-			++index;
-		}
-		if (fingerprint.getWebGL() != null) {
-			checkExists.setString(index, fingerprint.getWebGL());
 			++index;
 		}
 		if (fingerprint.getWebGLVendor() != null) {

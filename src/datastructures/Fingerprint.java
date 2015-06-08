@@ -32,7 +32,6 @@ public class Fingerprint {
 	private Boolean adsBlocked;
 	
 	private String canvas;
-	private String webGL;
 	private String webGLVendor;
 	private String webGLRenderer;
 
@@ -41,6 +40,7 @@ public class Fingerprint {
 		user_agent = null;
 		accept_headers = null;
 		platform = null;
+		platformFlash = null;
 		pluginDetails = null;
 		timeZone = null;
 		screenDetails = null;
@@ -57,8 +57,8 @@ public class Fingerprint {
 		ipAddress = null;
 		adsBlocked = null;
 		canvas = null;
-		webGL = null;
-		platformFlash = null;
+		webGLVendor = null;
+		webGLRenderer = null;
 	}
 
 	public Integer getSampleSetID() {
@@ -227,14 +227,6 @@ public class Fingerprint {
 
 	public void setCanvas(String canvas) {
 		this.canvas = canvas;
-	}
-
-	public String getWebGL() {
-		return webGL;
-	}
-
-	public void setWebGL(String webGL) {
-		this.webGL = webGL;
 	}
 
 	public String getWebGLVendor() {

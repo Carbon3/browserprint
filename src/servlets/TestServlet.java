@@ -85,7 +85,6 @@ public class TestServlet extends HttpServlet {
 			}
 		}
 		fingerprint.setCanvas(request.getParameter("Canvas"));
-		fingerprint.setWebGL(request.getParameter("WebGL"));
 		fingerprint.setWebGLVendor(request.getParameter("WebGLVendor"));
 		fingerprint.setWebGLRenderer(request.getParameter("WebGLRenderer"));
 		fingerprint.setPlatformFlash(request.getParameter("PlatformFlash"));

@@ -131,14 +131,6 @@
     		value: getCanvas()
 		}).appendTo('#formdiv');
 		
-		//WebGL
-		$('<input>').attr({
-    		type: 'hidden',
-    		id: 'WebGL',
-    		name: 'WebGL',
-    		value: getWebGL()
-		}).appendTo('#formdiv');
-		
 		//WebGLVendor
 		$('<input>').attr({
     		type: 'hidden',
