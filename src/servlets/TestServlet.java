@@ -12,8 +12,8 @@ import javax.servlet.http.HttpServletResponse;
 
 import util.TorCheck;
 import DAOs.FingerprintDAO;
-import beans.CharacteristicBean;
 import beans.CharacteristicsBean;
+import beans.UniquenessBean;
 import datastructures.Fingerprint;
 
 /**
@@ -118,7 +118,7 @@ public class TestServlet extends HttpServlet {
 	 */
 	private void serveRequest(HttpServletRequest request, HttpServletResponse response, Fingerprint fingerprint) throws ServletException, IOException {
 		CharacteristicsBean chrsbean = new CharacteristicsBean();
-		CharacteristicBean uniquenessbean = new CharacteristicBean();
+		UniquenessBean uniquenessbean = new UniquenessBean();
 		FingerprintDAO.processFingerprint(fingerprint, chrsbean, uniquenessbean);
 		request.setAttribute("chrBean", chrsbean);
 		request.setAttribute("uniquessbean", uniquenessbean);

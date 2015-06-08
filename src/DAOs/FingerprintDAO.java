@@ -11,6 +11,7 @@ import org.apache.commons.lang3.StringEscapeUtils;
 
 import beans.CharacteristicBean;
 import beans.CharacteristicsBean;
+import beans.UniquenessBean;
 import datastructures.Fingerprint;
 
 public class FingerprintDAO {
@@ -29,7 +30,7 @@ public class FingerprintDAO {
 	private static final String NO_FLASH = "No Flash";
 	private static final String NOT_SUPPORTED = "Not supported";
 
-	public static final Integer processFingerprint(Fingerprint fingerprint, CharacteristicsBean chrsbean, CharacteristicBean uniquenessbean) {
+	public static final Integer processFingerprint(Fingerprint fingerprint, CharacteristicsBean chrsbean, UniquenessBean uniquenessbean) {
 		Connection conn = null;
 		try {
 			conn = Database.getConnection();
@@ -62,12 +63,12 @@ public class FingerprintDAO {
 			 * Get uniqueness.
 			 */
 			int sampleOccurrences = getSampleOccurrences(conn, fingerprint);
-			uniquenessbean.setName("");
 			if (sampleOccurrences == 1) {
-				uniquenessbean.setValue("unique");
+				uniquenessbean.setUnique(true);
 			} else {
-				uniquenessbean.setValue("");
+				uniquenessbean.setUnique(false);
 			}
+			uniquenessbean.setNum_samples(sampleCount);
 			uniquenessbean.setInX(((double) sampleCount) / ((double) sampleOccurrences));
 			uniquenessbean.setBits(Math.abs(Math.log(uniquenessbean.getInX()) / Math.log(2)));
 
