@@ -79,7 +79,7 @@ public class TestServlet extends HttpServlet {
 				if (adsBlocked.equals("1")) {
 					fingerprint.setAdsBlocked(true);
 				}
-				else if(adsBlocked.equals("0")){
+				else if (adsBlocked.equals("0")) {
 					fingerprint.setAdsBlocked(false);
 				}
 			}

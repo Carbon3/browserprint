@@ -45,3 +45,8 @@ td.tableValue{
 .hovertext:hover{
 	text-decoration:underline;
 }
+
+img{
+	border:none;
+	outline:none
+}
