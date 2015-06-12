@@ -7,9 +7,6 @@
 	<title>Libre-Panopticlick</title>
 	<script type="text/javascript" src="jquery-1.11.2.min.js"></script>
 	<script type="text/javascript" src="PluginDetect.js"></script>
-	<script type="text/javascript" src="canvas.js"></script>
-	<script type="text/javascript" src="three.min.js"></script>
-	<script type="text/javascript" src="webGL.js"></script>
 	<script type="text/javascript" src="fingerprint.js"></script>
 	<script type="text/javascript">
 	window.onload = function(){
