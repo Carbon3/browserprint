@@ -5,9 +5,9 @@
 <head>
 	<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 	<title>Libre-Panopticlick</title>
-	<script type="text/javascript" src="jquery-1.11.2.min.js"></script>
-	<script type="text/javascript" src="PluginDetect.js"></script>
-	<script type="text/javascript" src="fingerprint.js"></script>
+	<script type="text/javascript" src="scripts/jquery-1.11.2.min.js"></script>
+	<script type="text/javascript" src="scripts/PluginDetect.js"></script>
+	<script type="text/javascript" src="scripts/fingerprint.js"></script>
 	<script type="text/javascript">
 	window.onload = function(){
 		var flash = document.getElementById("OSData");
