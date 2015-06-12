@@ -172,7 +172,7 @@
 	</form>
 	<!-- Flash for detecting fonts. -->
 	<div>
-		<embed id="OSData" pluginspage="http://www.macromedia.com/go/getflashplayer" type="application/x-shockwave-flash" src="OSData.swf">
+		<embed id="OSData" pluginspage="http://www.macromedia.com/go/getflashplayer" type="application/x-shockwave-flash" src="flash/OSData.swf">
 	</div>
 	<!-- Part of the ad blocking test. -->
 	<script type="text/javascript">
