@@ -10,7 +10,7 @@ public class Fingerprint {
 	private String platform;
 	private String platformFlash;
 	private String pluginDetails;
-	private String timeZone;
+	private Integer timeZone;
 	private String screenDetails;
 	private String screenDetailsFlash;
 	private String languageFlash;
@@ -109,11 +109,11 @@ public class Fingerprint {
 		this.pluginDetails = pluginDetails;
 	}
 
-	public String getTimeZone() {
+	public Integer getTimeZone() {
 		return timeZone;
 	}
 
-	public void setTimeZone(String timeZone) {
+	public void setTimeZone(Integer timeZone) {
 		this.timeZone = timeZone;
 	}
 

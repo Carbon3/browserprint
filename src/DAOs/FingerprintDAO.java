@@ -279,7 +279,12 @@ public class FingerprintDAO {
 		++index;
 		insertSample.setString(index, fingerprint.getPluginDetails());
 		++index;
-		insertSample.setString(index, fingerprint.getTimeZone());
+		if(fingerprint.getTimeZone() != null){
+			insertSample.setInt(index, fingerprint.getTimeZone());
+		}
+		else{
+			insertSample.setNull(index, java.sql.Types.INTEGER);
+		}
 		++index;
 		insertSample.setString(index, fingerprint.getScreenDetails());
 		++index;
@@ -443,7 +448,7 @@ public class FingerprintDAO {
 			++index;
 		}
 		if (fingerprint.getTimeZone() != null) {
-			checkExists.setString(index, fingerprint.getTimeZone());
+			checkExists.setInt(index, fingerprint.getTimeZone());
 			++index;
 		}
 		if (fingerprint.getScreenDetails() != null) {
@@ -587,7 +592,7 @@ public class FingerprintDAO {
 			++index;
 		}
 		if (fingerprint.getTimeZone() != null) {
-			checkExists.setString(index, fingerprint.getTimeZone());
+			checkExists.setInt(index, fingerprint.getTimeZone());
 			++index;
 		}
 		if (fingerprint.getScreenDetails() != null) {
@@ -744,6 +749,47 @@ public class FingerprintDAO {
 		return chrbean;
 	}
 
+	/**
+	 * Create a CharacteristicBean.
+	 * 
+	 * @param conn
+	 *            A connection to the database.
+	 * @param num_samples
+	 *            The number of samples in the database.
+	 * @param value
+	 *            The value of this sample.
+	 * @return
+	 * @throws SQLException
+	 */
+	private static CharacteristicBean getCharacteristicBean(Connection conn, int num_samples, String dbname, Integer value) throws SQLException {
+		CharacteristicBean chrbean = new CharacteristicBean();
+
+		PreparedStatement getCount;
+		String querystr = "SELECT COUNT(*) FROM `Samples` WHERE `" + dbname + "`";
+		if (value != null) {
+			chrbean.setValue(value.toString());
+			querystr += " = ?;";
+
+			getCount = conn.prepareStatement(querystr);
+			getCount.setInt(1, value);
+		}
+		else {
+			chrbean.setValue(NO_JAVASCRIPT);
+
+			querystr += " IS NULL;";
+			getCount = conn.prepareStatement(querystr);
+		}
+
+		ResultSet rs = getCount.executeQuery();
+		rs.next();
+		int count = rs.getInt(1);
+		rs.close();
+		chrbean.setInX(((double) num_samples) / ((double) count));
+		chrbean.setBits(Math.abs(Math.log(chrbean.getInX()) / Math.log(2)));
+
+		return chrbean;
+	}
+	
 	/**
 	 * Create a CharacteristicBean.
 	 * 

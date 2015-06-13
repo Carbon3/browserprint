@@ -11,7 +11,7 @@ CREATE TABLE `Samples` (
   `Platform` TEXT,
   `PlatformFlash` TEXT,
   `PluginDetails` TEXT,
-  `TimeZone` VARCHAR(5),
+  `TimeZone` INT,
   `ScreenDetails` TEXT,
   `ScreenDetailsFlash` TEXT,
   `LanguageFlash` TEXT,

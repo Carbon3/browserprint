@@ -65,7 +65,15 @@ public class TestServlet extends HttpServlet {
 		 */
 		fingerprint.setPlatform(request.getParameter("Platform"));
 		fingerprint.setPluginDetails(request.getParameter("PluginDetails"));
-		fingerprint.setTimeZone(request.getParameter("TimeZone"));
+		{
+			Integer timezone;
+			try {
+				timezone = Integer.parseInt(request.getParameter("TimeZone"));
+			} catch (NumberFormatException ex) {
+				timezone = null;
+			}
+			fingerprint.setTimeZone(timezone);
+		}
 		fingerprint.setScreenDetails(request.getParameter("ScreenDetails"));
 		fingerprint.setScreenDetailsFlash(request.getParameter("ScreenDetailsFlash"));
 		fingerprint.setLanguageFlash(request.getParameter("LanguageFlash"));
