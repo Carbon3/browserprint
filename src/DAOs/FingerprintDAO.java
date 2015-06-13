@@ -15,14 +15,6 @@ import beans.UniquenessBean;
 import datastructures.Fingerprint;
 
 public class FingerprintDAO {
-	/**
-	 * Get the threadID of a post.
-	 * 
-	 * @param board
-	 * @param postID
-	 * @return the threadID of the post if successful. Else returns null if the
-	 *         post doesn't exist or an error occurs.
-	 */
 	private static final String insertSampleStr = "INSERT INTO `Samples`(`IP`,`TimeStamp`,`UserAgent`, `AcceptHeaders`, `Platform`, `PlatformFlash`, `PluginDetails`, `TimeZone`, `ScreenDetails`, `ScreenDetailsFlash`, `LanguageFlash`, `Fonts`, `CookiesEnabled`, `SuperCookie`, `DoNotTrack`, `ClockDifference`, `DateTime`, `MathTan`, `UsingTor`, `AdsBlocked`, `Canvas`, `WebGLVendor`, `WebGLRenderer`) VALUES(?, NOW(), ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?);";
 	private static final String getSampleCountStr = "SELECT COUNT(*) FROM `Samples`;";
 
