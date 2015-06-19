@@ -25,7 +25,8 @@
     <servlet-name>TestServlet</servlet-name>
     <url-pattern>/Test</url-pattern>
   </servlet-mapping>
-  <display-name>PrivacyPage</display-name>
+  <servlet>
+    <display-name>PrivacyPage</display-name>
     <servlet-name>PrivacyPage</servlet-name>
     <jsp-file>/WEB-INF/privacy.jsp</jsp-file>
   </servlet>
