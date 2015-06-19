@@ -2,6 +2,8 @@ package servlets;
 
 import java.io.IOException;
 import java.io.UnsupportedEncodingException;
+import java.security.MessageDigest;
+import java.security.NoSuchAlgorithmException;
 import java.util.Date;
 
 import javax.servlet.ServletException;
@@ -148,8 +150,9 @@ public class TestServlet extends HttpServlet {
 	 * 
 	 * @param request
 	 * @return
+	 * @throws ServletException
 	 */
-	private Fingerprint getBasicFingerprint(HttpServletRequest request) {
+	private Fingerprint getBasicFingerprint(HttpServletRequest request) throws ServletException {
 		Fingerprint fingerprint = new Fingerprint();
 
 		fingerprint.setUser_agent(getUserAgentHeaderString(request));
@@ -303,18 +306,37 @@ public class TestServlet extends HttpServlet {
 	 * 
 	 * @param request
 	 * @return
+	 * @throws NoSuchAlgorithmException
 	 */
-	private String getClientIP(HttpServletRequest request) {
+	private String getClientIP(HttpServletRequest request) throws ServletException {
 		String ipHandling = getServletContext().getInitParameter("IpAddressHandling");
 		if (ipHandling != null) {
-			if (ipHandling.equals("FULL")) {
-				// Collect full IP address.
-				return request.getRemoteAddr();
+			if (ipHandling.equals("HASH")) {
+				// Collect the salted hash of the IP address.
+				try {
+					MessageDigest digest = MessageDigest.getInstance("SHA-1");
+					digest.reset();
+					digest.update(request.getRemoteAddr().getBytes("UTF-8"));
+					String salt = getServletContext().getInitParameter("IpHashSalt");
+					if (salt != null) {
+						digest.update(salt.getBytes("UTF-8"));
+					}
+
+					return new String(digest.digest());
+				} catch (NoSuchAlgorithmException ex) {
+					throw new ServletException(ex);
+				} catch (UnsupportedEncodingException ex) {
+					throw new ServletException(ex);
+				}
+			}
+			else if (ipHandling.equals("PARTIAL")) {
+				// Collect IP address with last octet set to zero
+				String ip = request.getRemoteAddr();
+				ip = ip.replaceAll("\\.\\d+$", ".0");
+				return ip;
 			}
 		}
-		// Default handling method: Collect IP address with last octet set to zero
-		String ip = request.getRemoteAddr();
-		ip = ip.replaceAll("\\.\\d+$", ".0");
-		return ip;
+		// Default handling method: Collect full IP address.
+		return request.getRemoteAddr();
 	}
 }
