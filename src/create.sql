@@ -1,6 +1,6 @@
-DROP DATABASE IF EXISTS `lpanopticlick`;
-CREATE DATABASE `lpanopticlick`;
-USE `lpanopticlick`;
+DROP DATABASE IF EXISTS `browserprint`;
+CREATE DATABASE `browserprint`;
+USE `browserprint`;
 
 CREATE TABLE `Samples` (
   `IP` TEXT NOT NULL,
@@ -27,6 +27,19 @@ CREATE TABLE `Samples` (
   `Canvas` TEXT,
   `WebGLVendor` TEXT,
   `WebGLRenderer` TEXT,
+  PRIMARY KEY(`SampleID`)
+)
+ENGINE=InnoDB;
+
+CREATE TABLE `SampleStatistics` (
+  `SampleID` BIGINT UNSIGNED NOT NULL,
+  `BrowserGroup` TEXT,
+  `BrowserVersion` TEXT,
+  `OSGroup` TEXT,
+  `OSVersion` TEXT,
+  FOREIGN KEY(`SampleID`) REFERENCES `Samples`(`SampleID`)
+    ON DELETE CASCADE
+    ON UPDATE CASCADE,
   PRIMARY KEY(`SampleID`)
 )
 ENGINE=InnoDB;

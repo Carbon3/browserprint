@@ -1,5 +1,5 @@
 # Supported Tests
-Libre-Panopticlick implements the following tests:
+Browserprint implements the following tests:
 
 ### User Agent
 The User-Agent header sent with the HTTP request for the page.

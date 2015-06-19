@@ -20,7 +20,7 @@ public class Database {
 		try {
 			initContext = new InitialContext();
 			envContext = (Context) initContext.lookup("java:/comp/env");
-			ds = (DataSource) envContext.lookup("jdbc/lpanopticlickDB");
+			ds = (DataSource) envContext.lookup("jdbc/browserprintDB");
 		} catch (NamingException e) {
 			e.printStackTrace();
 			ds = null;

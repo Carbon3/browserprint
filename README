@@ -6,14 +6,14 @@ You need to have Apache Tomcat and MySQL installed for this to work.
 
   * Start MySQL.
   * Run the create.sql file found in the src directory through MySQL.
-  * Copy the file libre-panopticlick.war to your Tomcat webapps directory.
+  * Copy the file browserprint.war to your Tomcat webapps directory.
   * Start Tomcat (`<`TomcatDirectory`>`/bin/startup.sh). The .war file will be automatically unpacked by Tomcat.
   * Stop Tomcat (`<`TomcatDirectory`>`/bin/shutdown.sh).
-  * Delete the file libre-panopticlick.war from your webapps directory.
-  * Edit libre-panopticlick/META-INFO/context.xml to fit your database.
-  * Configure the server's public IP address as serversPublicIP in libre-panopticlick/WEB-INF/web.xml.
+  * Delete the file browserprint.war from your webapps directory.
+  * Edit browserprint/META-INFO/context.xml to fit your database.
+  * Configure the server's public IP address as serversPublicIP in browserprint/WEB-INF/web.xml.
   * Start Tomcat.
 
-The page can now be accessed at http://localhost:8080/libre-panopticlick/ (assuming default Tomcat settings).
+The page can now be accessed at http://localhost:8080/browserprint/ (assuming default Tomcat settings).
 
 This project was created using the Eclipse IDE configured to use Tomcat and can be easily set up and modified using them.

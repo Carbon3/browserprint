@@ -4,7 +4,7 @@
 <html>
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-<title>Libre-Panopticlick</title>
+<title>Browserprint</title>
 <script type="text/javascript" src="scripts/jquery-1.11.2.min.js"></script>
 <script type="text/javascript">
 	/*
@@ -37,7 +37,7 @@
 		</p>
 	</div>
 	<p>
-		Libre-Panopticlick is a free open source project designed to provide the same and better functionality as the <a href="https://panopticlick.eff.org/">original Panopticlick</a>.
+		Browserprint is a free open source project designed to provide the same and better functionality as the <a href="https://panopticlick.eff.org/">original Panopticlick</a>.
 		Several of the tests are based on publicly available code from <a href="https://amiunique.org/">Am I unique?</a>.
 	</p>
 </div>

@@ -20,9 +20,9 @@
 
 	<!-- url: The JDBC connection url for connecting to your MySQL database. -->
 
-	<Resource name="jdbc/lpanopticlickDB" auth="Container" type="javax.sql.DataSource"
+	<Resource name="jdbc/browserprintDB" auth="Container" type="javax.sql.DataSource"
 		maxActive="100" maxIdle="30" maxWait="10000"
 		driverClassName="com.mysql.jdbc.Driver"
 		username="root"
-		url="jdbc:mysql://localhost:3306/lpanopticlick" />
+		url="jdbc:mysql://localhost:3306/browserprint" />
 </Context>
