@@ -10,7 +10,7 @@
 <body>
 <%@include file="header.html" %>
 	<script type="text/javascript" src="scripts/jquery-1.11.2.min.js"></script>
-	<script src="http://code.highcharts.com/highcharts.js"></script>
+	<script type="text/javascript" src="scripts/highcharts.js"></script>
 	<script>
 		/*
 		 * Modified code from Am I Unique?
