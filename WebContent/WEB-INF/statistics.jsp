@@ -1,12 +1,14 @@
-<%@ page language="java" contentType="text/html; charset=UTF-8"
-	pageEncoding="UTF-8"%>
-<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<%@page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%><%-- These comments are to prevent excess whitespace in the output.
+--%><%@page session="false"%><%--
+--%><!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
 <html>
 <head>
-<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-<title>Browserprint - Statistics</title>
+	<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+	<title>Browserprint - Statistics</title>
+	<link type="text/css" href="style.css" rel="stylesheet">
 </head>
 <body>
+<%@include file="header.html" %>
 	<script type="text/javascript" src="scripts/jquery-1.11.2.min.js"></script>
 	<script src="http://code.highcharts.com/highcharts.js"></script>
 	<script>
@@ -338,5 +340,6 @@
 	<div id="osGraph" style="height: auto; width: auto" data-highcharts-chart="2"></div>
 	<div id="browserGraph" style="height: auto; width: auto" data-highcharts-chart="3"></div>
 	<div id="timezoneGraph" style="height: auto; width: auto" data-highcharts-chart="4"></div>
+<%@include file="footer.jsp" %>
 </body>
 </html>
