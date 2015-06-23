@@ -128,10 +128,10 @@ public class TestServlet extends HttpServlet {
 	 */
 	private void serveRequest(HttpServletRequest request, HttpServletResponse response, Fingerprint fingerprint) throws ServletException, IOException {
 		CharacteristicsBean chrsbean = new CharacteristicsBean();
-		UniquenessBean uniquenessbean = new UniquenessBean();
-		FingerprintDAO.processFingerprint(fingerprint, chrsbean, uniquenessbean);
+		UniquenessBean uniquenessBean = new UniquenessBean();
+		FingerprintDAO.processFingerprint(fingerprint, chrsbean, uniquenessBean);
 		request.setAttribute("chrBean", chrsbean);
-		request.setAttribute("uniquessbean", uniquenessbean);
+		request.setAttribute("uniquessBean", uniquenessBean);
 
 		/*
 		 * Save SampleSetID in a cookie if we have one now.
