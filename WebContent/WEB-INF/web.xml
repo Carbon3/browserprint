@@ -26,12 +26,12 @@
     <url-pattern>/Test</url-pattern>
   </servlet-mapping>
   <servlet>
-    <display-name>StatisticsServlet</display-name>
-    <servlet-name>StatisticsServlet</servlet-name>
-    <servlet-class>servlets.StatisticsServlet</servlet-class>
+    <display-name>JSONServlet</display-name>
+    <servlet-name>JSONServlet</servlet-name>
+    <servlet-class>servlets.JSONServlet</servlet-class>
   </servlet>
   <servlet-mapping>
-    <servlet-name>StatisticsServlet</servlet-name>
+    <servlet-name>JSONServlet</servlet-name>
     <url-pattern>/json</url-pattern>
   </servlet-mapping>
     <servlet>

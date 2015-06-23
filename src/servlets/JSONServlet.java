@@ -13,13 +13,13 @@ import DAOs.StatisticsDAO;
 /**
  * Servlet implementation class ChartsServlet
  */
-public class StatisticsServlet extends HttpServlet {
+public class JSONServlet extends HttpServlet {
 	private static final long serialVersionUID = 1L;
        
     /**
      * @see HttpServlet#HttpServlet()
      */
-    public StatisticsServlet() {
+    public JSONServlet() {
         super();
         // TODO Auto-generated constructor stub
     }
