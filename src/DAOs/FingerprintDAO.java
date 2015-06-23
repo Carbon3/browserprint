@@ -44,6 +44,11 @@ public class FingerprintDAO {
 				 * Insert SampleID into SampleSets table.
 				 */
 				insertSampleSet(conn, fingerprint, sampleID);
+				
+				/*
+				 * Save statistics of the fingerprint.
+				 */
+				StatisticsDAO.saveStatistics(sampleID, fingerprint);
 			}
 
 			/*

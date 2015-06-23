@@ -36,7 +36,7 @@ CREATE TABLE `SampleStatistics` (
   `BrowserGroup` TEXT,
   `BrowserVersion` TEXT,
   `OSGroup` TEXT,
-  `OSVersion` TEXT,
+  `OSName` TEXT,
   FOREIGN KEY(`SampleID`) REFERENCES `Samples`(`SampleID`)
     ON DELETE CASCADE
     ON UPDATE CASCADE,

@@ -26,6 +26,24 @@
     <url-pattern>/Test</url-pattern>
   </servlet-mapping>
   <servlet>
+    <display-name>StatisticsServlet</display-name>
+    <servlet-name>StatisticsServlet</servlet-name>
+    <servlet-class>servlets.StatisticsServlet</servlet-class>
+  </servlet>
+  <servlet-mapping>
+    <servlet-name>StatisticsServlet</servlet-name>
+    <url-pattern>/json</url-pattern>
+  </servlet-mapping>
+    <servlet>
+    <display-name>StatisticsPage</display-name>
+    <servlet-name>StatisticsPage</servlet-name>
+    <jsp-file>/WEB-INF/statistics.jsp</jsp-file>
+  </servlet>
+  <servlet-mapping>
+    <servlet-name>StatisticsPage</servlet-name>
+    <url-pattern>/statistics</url-pattern>
+  </servlet-mapping>
+  <servlet>
     <display-name>PrivacyPage</display-name>
     <servlet-name>PrivacyPage</servlet-name>
     <jsp-file>/WEB-INF/privacy.jsp</jsp-file>
