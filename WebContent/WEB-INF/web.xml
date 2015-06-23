@@ -25,6 +25,15 @@
     <servlet-name>TestServlet</servlet-name>
     <url-pattern>/Test</url-pattern>
   </servlet-mapping>
+    <servlet>
+    <display-name>StatisticsServlet</display-name>
+    <servlet-name>StatisticsServlet</servlet-name>
+    <servlet-class>servlets.StatisticsServlet</servlet-class>
+  </servlet>
+  <servlet-mapping>
+    <servlet-name>StatisticsServlet</servlet-name>
+    <url-pattern>/statistics</url-pattern>
+  </servlet-mapping>
   <servlet>
     <display-name>JSONServlet</display-name>
     <servlet-name>JSONServlet</servlet-name>
@@ -33,15 +42,6 @@
   <servlet-mapping>
     <servlet-name>JSONServlet</servlet-name>
     <url-pattern>/json</url-pattern>
-  </servlet-mapping>
-    <servlet>
-    <display-name>StatisticsPage</display-name>
-    <servlet-name>StatisticsPage</servlet-name>
-    <jsp-file>/WEB-INF/statistics.jsp</jsp-file>
-  </servlet>
-  <servlet-mapping>
-    <servlet-name>StatisticsPage</servlet-name>
-    <url-pattern>/statistics</url-pattern>
   </servlet-mapping>
   <servlet>
     <display-name>PrivacyPage</display-name>
@@ -70,27 +70,18 @@
     <url-pattern>/*</url-pattern>
     <dispatcher>REQUEST</dispatcher>
   </filter-mapping>
-  <!-- The public IP address of the server. -->
   <context-param>
     <param-name>serversPublicIP</param-name>
     <param-value>1.2.3.4</param-value>
   </context-param>
-  <!-- The address of the TorDNSEL server used for deciding whether clients are using Tor or not. -->
   <context-param>
     <param-name>TorDNSELServer</param-name>
     <param-value>torproject.org</param-value>
   </context-param>
-  <!--
-  	The way that we collect IP addresses.
-  	FULL = [Default] Collect the full IP address.
-  	PARTIAL = Remove the last octet from IP addresses.
-  	HASH = Take the salted hash of the IP address. Salt is specified with IpHashSalt context parameter.
-   -->
   <context-param>
     <param-name>IpAddressHandling</param-name>
     <param-value>HASH</param-value>
   </context-param>
-  <!-- The salt to use when hashing IP addresses if HASH is the value of the IpAddressHandling context parameter. -->
   <context-param>
     <param-name>IpHashSalt</param-name>
     <param-value>ChangeMyValue</param-value>
