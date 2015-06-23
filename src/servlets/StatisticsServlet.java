@@ -7,6 +7,9 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import DAOs.StatisticsDAO;
+import beans.StatisticsBean;
+
 /**
  * Servlet implementation class StatisticsServlet
  */
@@ -24,6 +27,9 @@ public class StatisticsServlet extends HttpServlet {
 	 * @see HttpServlet#doGet(HttpServletRequest request, HttpServletResponse response)
 	 */
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+		StatisticsBean statisticsBean = StatisticsDAO.getStatistics();
+		request.setAttribute("statisticsBean", statisticsBean);
+		
 		/*
 		 * Forward to the statistics page.
 		 */

@@ -8,7 +8,7 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-import DAOs.StatisticsDAO;
+import DAOs.JSONDAO;
 
 /**
  * Servlet implementation class ChartsServlet
@@ -37,16 +37,16 @@ public class JSONServlet extends HttpServlet {
 		}
 		
 		if(chart.equals("usingTor")){
-			out.print(StatisticsDAO.getPercentageTorUsers());
+			out.print(JSONDAO.getPercentageTorUsers());
 		}
 		else if(chart.equals("OS")){
-			out.print(StatisticsDAO.getOSBreakdown());
+			out.print(JSONDAO.getOSBreakdown());
 		}
 		else if(chart.equals("browser")){
-			out.print(StatisticsDAO.getBrowserBreakdown());
+			out.print(JSONDAO.getBrowserBreakdown());
 		}
 		else if(chart.equals("timezone")){
-			out.print(StatisticsDAO.getTimezones());
+			out.print(JSONDAO.getTimezones());
 		}
 	}
 

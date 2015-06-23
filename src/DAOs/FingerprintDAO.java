@@ -520,7 +520,7 @@ public class FingerprintDAO {
 		return sampleID;
 	}
 
-	private static int getSampleCount(Connection conn) throws SQLException {
+	public static int getSampleCount(Connection conn) throws SQLException {
 		PreparedStatement getSampleCount = conn.prepareStatement(getSampleCountStr);
 		ResultSet rs = getSampleCount.executeQuery();
 		rs.next();
