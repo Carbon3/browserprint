@@ -51,7 +51,8 @@
 	
 	<h3>IP addresses</h3>
 	<p>
-		The IP address of clients is stored along with their fingerprint.
+		The salted hash of IP addresses is collected for most clients.
+		For clients who are using Tor (and hence whose IP address is hidden) we instead store the entire IP address of the exit-node they used. 
 	</p>
 	
 	<h3>Timestamps</h3>
