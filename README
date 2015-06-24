@@ -12,6 +12,7 @@ You need to have Apache Tomcat and MySQL installed for this to work.
   * Delete the file browserprint.war from your webapps directory.
   * Edit browserprint/META-INFO/context.xml to fit your database.
   * Configure the server's public IP address as serversPublicIP in browserprint/WEB-INF/web.xml.
+  * Check web.xml.README for other configurable options you may want to use in browserprint/WEB-INF/web.xml.
   * Start Tomcat.
 
 The page can now be accessed at http://localhost:8080/browserprint/ (assuming default Tomcat settings).
