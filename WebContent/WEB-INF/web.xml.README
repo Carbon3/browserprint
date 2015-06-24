@@ -1,0 +1,57 @@
+<!--
+	Context parameters for this application and what they mean.
+-->
+  <!--
+       The public IP address of the server.
+       This value is used when performing TorDNSEL requests.
+  -->
+  <context-param>
+    <param-name>serversPublicIP</param-name>
+    <param-value>1.2.3.4</param-value>
+  </context-param>
+  
+  <!--
+       The address of the TorDNSEL server used for deciding whether clients are using Tor or not.
+       This option is useful if you want to run your own TorDNSEL server instead of using the Tor Project one.
+  -->
+  <context-param>
+    <param-name>TorDNSELServer</param-name>
+    <param-value>torproject.org</param-value>
+  </context-param>
+  
+  <!--
+  	The way that we collect IP addresses with fingerprints.
+  	FULL = [Default] Collect the full IP address.
+  	PARTIAL = Zero out the last octet from IP addresses (e.g., 1.2.3.4 becomes 1.2.3.0).
+  	HASH = Take the salted hash of the IP address. The value of the salt is specified with IpHashSalt context parameter.
+  -->
+  <context-param>
+    <param-name>IpAddressHandling</param-name>
+    <param-value>HASH</param-value>
+  </context-param>
+  
+  <!--
+       The salt to use when hashing IP addresses if HASH is the value of the IpAddressHandling context parameter.
+  -->
+  <context-param>
+    <param-name>IpHashSalt</param-name>
+    <param-value>ChangeMyValue</param-value>
+  </context-param>
+  
+  <!--
+       Whether we want to always store the full IP address of Tor clients.
+       A value of 1 enables this option.
+       Disabled by default, and all non-1 values disable it. 
+  -->
+  <context-param>
+    <param-name>SaveTorUserIP</param-name>
+    <param-value>1</param-value>
+  </context-param>
+  
+  <!--
+       The email that you want clients to send bug reports and/or suggestions.
+  -->
+  <context-param>
+    <param-name>devEmail</param-name>
+    <param-value>example@example.com</param-value>
+  </context-param>
