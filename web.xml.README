@@ -21,6 +21,7 @@
   
   <!--
   	The way that we collect IP addresses with fingerprints.
+	If you change this option from HASH you should update privacy.jsp to reflect the new IP address collection method.
   	FULL = [Default] Collect the full IP address.
   	PARTIAL = Zero out the last octet from IP addresses (e.g., 1.2.3.4 becomes 1.2.3.0).
   	HASH = Take the salted hash of the IP address. The value of the salt is specified with IpHashSalt context parameter.
@@ -42,6 +43,7 @@
        Whether we want to always store the full IP address of Tor clients.
        A value of 1 enables this option.
        Disabled by default, and all non-1 values disable it. 
+       If you change this option from 1 you should update privacy.jsp to reflect the new IP address collection method.
   -->
   <context-param>
     <param-name>SaveTorUserIP</param-name>
