@@ -165,7 +165,7 @@ public class TestServlet extends HttpServlet {
 				getServletContext().getInitParameter("TorDNSELServer")
 				) == true);
 
-		fingerprint.setIpAddress(getClientIP(request));
+		fingerprint.setIpAddress(getClientIP(request, fingerprint.isUsingTor()));
 
 		Cookie cookies[] = request.getCookies();
 		if (cookies != null) {
@@ -308,7 +308,14 @@ public class TestServlet extends HttpServlet {
 	 * @return
 	 * @throws NoSuchAlgorithmException
 	 */
-	private String getClientIP(HttpServletRequest request) throws ServletException {
+	private String getClientIP(HttpServletRequest request, boolean isUsingTor) throws ServletException {
+		if(isUsingTor){
+			String saveTorUserIP = getServletContext().getInitParameter("SaveTorUserIP");
+			if(saveTorUserIP != null && saveTorUserIP.equals("1")){
+				//Return full exit-node IP address.
+				return request.getRemoteAddr();
+			}
+		}
 		String ipHandling = getServletContext().getInitParameter("IpAddressHandling");
 		if (ipHandling != null) {
 			if (ipHandling.equals("HASH")) {
