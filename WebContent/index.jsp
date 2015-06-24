@@ -11,10 +11,10 @@
 	 * Script that adds js_enabled=true to the end of the test_link.
 	 * This is how we know that Javascript is enabled.
 	 */
-	window.onload = function() {
+	$(function() {
 		var test_link = $("#test_link");
 		test_link.attr("href", test_link.attr("href") + "?js_enabled=true");
-	}
+	});
 </script>
 <link type="text/css" href="style.css" rel="stylesheet">
 </head>

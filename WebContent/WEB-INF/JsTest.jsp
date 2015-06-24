@@ -9,7 +9,7 @@
 	<script type="text/javascript" src="scripts/PluginDetect.js"></script>
 	<script type="text/javascript" src="scripts/fingerprint.js"></script>
 	<script type="text/javascript">
-	window.onload = function(){
+	$(function(){
 		var flash = document.getElementById("OSData");
 		
 		//Platform
@@ -146,7 +146,7 @@
 		
 		//Submit the page.
 		submitDetailsForm();
-	}
+	});
 	
 	function submitDetailsForm(){
 		//Time, for clock skew test.
